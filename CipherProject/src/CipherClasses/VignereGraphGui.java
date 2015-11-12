@@ -29,11 +29,6 @@ public class VignereGraphGui {
     private int gWidth, gHeight;
 
 
-    /**
-     * Constructor to be called by subclass
-     * @param text
-     * @param n
-     */
     public VignereGraphGui(String text, int n) {
         originalText = text;
         cipherText = text.toUpperCase().replaceAll("\\s", "");
@@ -173,13 +168,13 @@ public class VignereGraphGui {
                 currentGraph = selectedGraph.getSelectedIndex() - 1;
             } else if (e.getSource() == leftShift && selectedGraph.getSelectedIndex() != 0) {
                 graphs[currentGraph].shift(-1);
-                textArea.setText(Text.shiftNthLetters(textArea.getText(), currentGraph, patternLength, false, true));
-                patternField.setText(Text.shiftNthLetters(patternField.getText(), currentGraph, patternLength, true, false));
+                textArea.setText(Text.formatText(Text.shiftNthLetters(textArea.getText(), currentGraph, patternLength, false), Text.SPECIAL_FORMAT));
+                patternField.setText(Text.shiftNthLetters(patternField.getText(), currentGraph, patternLength, true));
                 frame.repaint();
             } else if (e.getSource() == rightShift && selectedGraph.getSelectedIndex() != 0) {
                 graphs[currentGraph].shift(1);
-                textArea.setText(Text.shiftNthLetters(textArea.getText(), currentGraph, patternLength, true, true));
-                patternField.setText(Text.shiftNthLetters(patternField.getText(), currentGraph, patternLength, false, false));
+                textArea.setText(Text.formatText(Text.shiftNthLetters(textArea.getText(), currentGraph, patternLength, true), Text.SPECIAL_FORMAT));
+                patternField.setText(Text.shiftNthLetters(patternField.getText(), currentGraph, patternLength, false));
                 frame.repaint();
             } else if (e.getSource() == checkStandard) {
                 createStandardGraph();

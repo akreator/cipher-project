@@ -8,7 +8,7 @@ public class Text {
 
     public static final String[] alphabet = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
         "s", "t", "u", "v", "w", "x", "y", "z"};
-    public static double[] standardRelativeFrequency = {0.64290624, 0.11745023999999998, 0.21899904, 0.33479616, 0.99990144, 0.17538816000000002,
+    public static final double[] standardRelativeFrequency = {0.64290624, 0.11745023999999998, 0.21899904, 0.33479616, 0.99990144, 0.17538816000000002,
         0.1586208, 0.47971968000000004, 0.54836352, 0.01204416, 0.06077184, 0.316848, 0.18940032, 0.53128128, 0.59095104, 0.15185088,
         0.0074784, 0.47129664, 0.49806143999999997, 0.71288832, 0.21710975999999998, 0.07698816, 0.18585792, 0.011807999999999999,
         0.15539328, 0.0058252799999999995};
@@ -21,7 +21,16 @@ public class Text {
     public static final int ONLY_LETTERS = 6;
     public static final int NO_CHANGE = 7;
     public static final int NUMS_TO_LETTERS = 8;
+    
+    private Text() {
+    }
 
+    /**
+     * Method for shifting characters in a given text by a certain amount.
+     * @param text: text to be converted
+     * @param shiftAmt: the amount that the letters should be shifted
+     * @return : changed text
+     */
     public static String shift(String text, int shiftAmt) {
         char[] plainTextArray = text.toCharArray();
         for (int i = 0; i < plainTextArray.length; i++) {
@@ -29,15 +38,15 @@ public class Text {
                 char temp = plainTextArray[i];
                 plainTextArray[i] = (char) (shiftAmt + (int) plainTextArray[i]);
 
-                if (isLowercase(temp) && plainTextArray[i] > 122 || isUppercase(temp) && plainTextArray[i] > 90) {
+                if (Character.isLowerCase(temp) && plainTextArray[i] > 122 || Character.isUpperCase(temp) && plainTextArray[i] > 90) {
                     plainTextArray[i] = (char) ((int) plainTextArray[i] - 26);
-                } else if (Text.isLowercase(temp) && plainTextArray[i] < 97 || Text.isUppercase(temp) && plainTextArray[i] < 65) {
+                } else if (Character.isLowerCase(temp) && plainTextArray[i] < 97 || Character.isUpperCase(temp) && plainTextArray[i] < 65) {
                     plainTextArray[i] = (char) ((int) plainTextArray[i] + 26);
                 } 
 
-                if (Text.isLowercase(temp) && plainTextArray[i] < 97) {
+                if (Character.isLowerCase(temp) && plainTextArray[i] < 97) {
                     plainTextArray[i] = (char) ((int) plainTextArray[i] + 26);
-                } else if (Text.isUppercase(temp) && plainTextArray[i] < 65) {
+                } else if (Character.isUpperCase(temp) && plainTextArray[i] < 65) {
                     plainTextArray[i] = (char) ((int) plainTextArray[i] + 26);
                 }
             }
@@ -45,7 +54,9 @@ public class Text {
         return new String(plainTextArray);
     }
 
-    public static String unnecessarilyLongSubstitute(String text, JTable switchTable) {
+
+     //I'm only keeping this in as a memento of my pain.
+    private static String unnecessarilyLongSubstitute(String text, JTable switchTable) {
         ArrayList<ArrayList<Integer>> indexes = new ArrayList<ArrayList<Integer>>();
         //indexes is an arraylist containing each character followed by the indicies that its found at
         // ----> characters are in same order as messagechars
@@ -92,6 +103,13 @@ public class Text {
         return new String(changedText);
     }
 
+    /**
+     * Substitute characters in the text for other characters.
+     * Characters that are not replaced are converted to lowercase; replaced characters are uppercase
+     * @param str: text to be encrypted/decrypted
+     * @param replacements: { {original character, replacement character}, ...}
+     * @return : text with characters replaced according to replacements
+     */
     public static String substitute(String str, String[][] replacements) {
         if (str.equals("") || str.isEmpty()) {
             return "";
@@ -126,6 +144,12 @@ public class Text {
         return new String(text);
     }
 
+    /**
+     * Method that calculates the frequency of all characters in the text.
+     * Includes everything but whitespace.
+     * @param text: Text to be analyzed
+     * @return : 2D array, each internal array containing the character and its frequency
+     */
     public static Object[][] getMessageFrequency(String text) {
         ArrayList<Integer> charAmts = new ArrayList();
         ArrayList<Character> messageChars = new ArrayList();
@@ -148,6 +172,12 @@ public class Text {
         return frequency;
     }
 
+    /**
+     * Calculate the frequency of specific patterns in the text
+     * @param text: the message to parse through
+     * @param lookFor: the patterns to look for
+     * @return : A 2D array, each array containing a pattern and its frequency
+     */
     public static Object[][] getSpecificMessageFrequency(String text, ArrayList<String> lookFor) {
         text = text.toLowerCase().replaceAll("\\s", "");
         ArrayList<Integer> amts = new ArrayList<Integer>();
@@ -173,16 +203,13 @@ public class Text {
         return frequency;
     }
 
-    public static boolean isLowercase(char c) {
-        int cNum = (int) c;
-        return (cNum >= 97 && cNum <= 122);
-    }
-
-    public static boolean isUppercase(char c) {
-        int cNum = (int) c;
-        return (cNum >= 65 && cNum <= 90);
-    }
-
+    /**
+     * Encrypt or decrypt text using a Vigenere cipher.
+     * @param plainText: text to be encrypted/decrypted
+     * @param keyword: keyword to use in encryption
+     * @param encrypt: true = encrypt; false = decrypt
+     * @return : encrypted/decrypted text
+     */
     public static String vigenereCrypt(String plainText, String keyword, boolean encrypt) {
         StringBuffer text = new StringBuffer();
         char[] keywordArray = keyword.toCharArray();
@@ -191,9 +218,9 @@ public class Text {
         for (int i = 0; i < plainText.length(); i++) {
             shiftAmt = 0;
             if (Character.isLetter(plainText.charAt(i))) {
-                if (isLowercase(keywordArray[k])) {
+                if (Character.isLowerCase(keywordArray[k])) {
                     shiftAmt = (int) keywordArray[k] - 97;
-                } else if (isUppercase(keywordArray[k])) {
+                } else if (Character.isUpperCase(keywordArray[k])) {
                     shiftAmt = (int) keywordArray[k] - 65;
                 } else if (Character.isDigit(keywordArray[k])) {
                     shiftAmt = Character.getNumericValue(keywordArray[k]);
@@ -213,7 +240,15 @@ public class Text {
         return newText;
     }
 
-    public static String shiftNthLetters(String text, int n, int patternLength, boolean right, boolean format) {
+    /**
+     * Shift the nth letters of the text by an 1 in either direction
+     * @param text: text to be analyzed
+     * @param n: index to start at
+     * @param patternLength: the amount of letter to jump (the "nth" letters)
+     * @param right: whether or not the text will be shifted right
+     * @return : the text with the nth letters shifted by one
+     */
+    public static String shiftNthLetters(String text, int n, int patternLength, boolean right) {
         char[] textArray = text.replaceAll("\\s", "").toCharArray();
         for (int i = n; i < textArray.length; i += patternLength) {
             if (right && Character.isLetter(textArray[i])) {
@@ -222,12 +257,16 @@ public class Text {
                 textArray[i] = shift(String.valueOf(textArray[i]), -1).charAt(0);
             }
         }
-        if (format)
-            return formatText(new String(textArray), SPECIAL_FORMAT);
-        else
-            return new String(textArray);
+        return new String(textArray);
     }
 
+    /**
+     * Returns the nth letters of the text. 
+     * @param text: text to analyze
+     * @param n: starting index
+     * @param patternLength: amount of letters to jump (the "nth" letters"
+     * @return : The nth letters of the text
+     */
     public static String getNthLetters(String text, int n, int patternLength) {
         char[] textArray = text.toCharArray();
         ArrayList<Character> newArray = new ArrayList();
@@ -238,6 +277,12 @@ public class Text {
         return "" + newArray;
     }
     
+    /**
+     * Group the text by a given amount
+     * @param text: the text to be grouped
+     * @param amount: the length of a group
+     * @return : the grouped text
+     */
     public static String group(String text, int amount) {
         StringBuffer newText = new StringBuffer();
         text = text.replaceAll("\\s", "");
@@ -251,6 +296,12 @@ public class Text {
         return new String(newText);
     }
 
+    /**
+     * Format the given text
+     * @param text: text to be formatted
+     * @param type: How the text is to be formatted
+     * @return : the formatted text
+     */
     public static String formatText(String text, int type) {
         switch (type) {
             case SPECIAL_FORMAT:
@@ -283,7 +334,6 @@ public class Text {
                 return nText;
                 
         }
-        System.out.println("what");
         return "ERROR";
     }
 }

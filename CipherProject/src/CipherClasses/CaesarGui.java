@@ -1,6 +1,5 @@
 package CipherClasses;
 
-
 import javax.swing.*;
 import java.awt.Toolkit;
 import java.awt.BorderLayout;
@@ -12,11 +11,6 @@ import java.awt.event.ActionListener;
 public class CaesarGui {
 
     private JFrame frame = new JFrame();
-
-    private double[] standardFrequency = {0.64290624, 0.11745023999999998, 0.21899904, 0.33479616, 0.99990144, 0.17538816000000002,
-        0.1586208, 0.47971968000000004, 0.54836352, 0.01204416, 0.06077184, 0.316848, 0.18940032, 0.53128128, 0.59095104, 0.15185088,
-        0.0074784, 0.47129664, 0.49806143999999997, 0.71288832, 0.21710975999999998, 0.07698816, 0.18585792, 0.011807999999999999,
-        0.15539328, 0.0058252799999999995};
 
     private JButton rightShift, leftShift, enter; 
     private GraphComp messageComp, standardComp;
@@ -68,7 +62,7 @@ public class CaesarGui {
 
         //YOU THOUGHT THAT WAS BAD??
         //WELCOME TO THE SECOND LEVEL OF THE INFERNO: BOX LAYOUTS
-        standardComp = new GraphComp(40, 50, 395, 200, "Standard English Letter Frequency", standardFrequency);
+        standardComp = new GraphComp(40, 50, 395, 200, "Standard English Letter Frequency", Text.standardRelativeFrequency);
         messageComp = new GraphComp(15, 50, 395, 200, "Letter Frequency of Text", "");
         JPanel graphPane = new JPanel();
         graphPane.setLayout(new BoxLayout(graphPane, BoxLayout.LINE_AXIS));

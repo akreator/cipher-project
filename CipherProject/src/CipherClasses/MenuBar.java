@@ -11,7 +11,7 @@ import javax.swing.event.CaretListener;
 
 public class MenuBar extends JMenuBar {
 
-    private JMenuItem[] switchItems = new JMenuItem[4], fileItems = new JMenuItem[4], formatItems = new JMenuItem[10];
+    private JMenuItem[] switchItems = new JMenuItem[4], fileItems = new JMenuItem[5], formatItems = new JMenuItem[10];
     private JFrame frame;
     private JTextArea textArea;
     private String beforeFormat = "Enter text here.";
@@ -32,7 +32,7 @@ public class MenuBar extends JMenuBar {
     public void init() {
         //fileMenu
         JMenu fileMenu = new JMenu("File");
-        String[] fileNames = {"Instructions", "About", "Save", "Load"};
+        String[] fileNames = {"Instructions", "About", "Save", "Load", "Properties"};
         for (int i = 0; i < fileItems.length; i++) {
             fileItems[i] = new JMenuItem(fileNames[i]);
             fileItems[i].addActionListener(new FileListener(i));
@@ -144,17 +144,8 @@ public class MenuBar extends JMenuBar {
                     System.out.println("hey");
                     break;
                 case 1:
-                    JOptionPane.showMessageDialog(frame, "Designed and coded by Audrey Kintisch.\n"
-                            + "\nV6.2 11/4/15: Added grouping to formatting, fixed alphabet error"
-                            + "\nV6.1 10/30/15: Bug fixes"
-                            + "\nV6.0 10/29/15: Added text formatting, updated menu bar"
-                            + "\nV5.2 10/26/15: Updated substitution - 2 rows"
-                            + "\nV5.1 10/18/15: Bug fixes"
-                            + "\nV5.0 10/14/15: Added Substitution Cipher"
-                            + "\nV4.0 10/12/15: Added Vignere Cipher - unknown keyword - graphs"
-                            + "\nV3.0 10/11/15: Added Vignere Cipher - unknown keyword - pattern finder"
-                            + "\nV2.0   10/1/15: Added Vignere Cipher - known keyword, menu bar"
-                            + "\nV1.0   9/25/15: Caesar cipher",
+                    JOptionPane.showMessageDialog(frame, "Designed and coded by Asch."
+                            + "\nPlease send any feedback or questions to akreator0@gmail.com",
                             "Credits", JOptionPane.PLAIN_MESSAGE);
                     break;
             }
