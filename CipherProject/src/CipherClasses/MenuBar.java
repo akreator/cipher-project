@@ -109,7 +109,6 @@ public class MenuBar extends JMenuBar {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (formatNum <= formatItems.length) {
-                System.out.println("a");
                 formatting = true;
                 if (textArea.getSelectedText() == null)
                     textArea.setText(Text.formatText(textArea.getText(), formatNum));
@@ -141,7 +140,6 @@ public class MenuBar extends JMenuBar {
         public void actionPerformed(ActionEvent e) {
             switch (fileNum) {
                 case 0:
-                    System.out.println("hey");
                     break;
                 case 1:
                     JOptionPane.showMessageDialog(frame, "Designed and coded by Asch."
