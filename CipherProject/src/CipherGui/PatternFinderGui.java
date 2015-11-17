@@ -1,5 +1,6 @@
-package CipherClasses;
+package CipherGui;
 
+import TextTools.Calculations;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,36 +17,24 @@ import javax.swing.*;
  *
  * @author Audrey
  */
-public class PatternFinderGui {
-    private JFrame frame;
+public class PatternFinderGui extends GUI {
     private JButton enter, history, knownLength;
     private JTextField patternField;
-    private JTextArea textArea;
+    private MyTextArea textArea;
     private JLabel repLabel, distanceLabel;
     private int shortestDistance, repetitions;
     private String pattern, cipherText;
     private ArrayList<History> patternHist = new ArrayList();
     
-    public PatternFinderGui() {
-        cipherText = "Enter text here.";
-        frame = new JFrame("Vignere Cipher: Decipering Tool");
-        frame.setSize(950, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public PatternFinderGui(String text) {
+        super(950, 300, "Vignere Cipher: Deciphering Tool");
+        cipherText = text;
         init();
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
         frame.setVisible(true);
     }
     
-    public PatternFinderGui(String text) {
-        cipherText = text;
-        frame = new JFrame("Vignere Cipher: Decipering Tool");
-        frame.setSize(950, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        init();
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
-        frame.setVisible(true);
+    public PatternFinderGui() {
+        this("Enter text here.");
     }
     
     private void init() {
@@ -60,10 +49,8 @@ public class PatternFinderGui {
         JPanel fieldPane = new JPanel();
         fieldPane.setPreferredSize(new Dimension(5, 5));
         fieldPane.add(patternField);
-        textArea = new JTextArea(cipherText, 7, 30);
-        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
+        textArea = new MyTextArea(cipherText, 7, 30, true);
+        frame.add(textArea);
         repLabel = new JLabel("Pattern found x times.");
         distanceLabel = new JLabel("Shortest distance between repetitions: x");
         JLabel patternLabel = new JLabel("Pattern to look for:");
@@ -212,7 +199,7 @@ public class PatternFinderGui {
                     acceptNum = j > 0;
                 }
                 if (acceptNum) {
-                    new VignereGraphGui(textArea.getText(), j);
+                    new VigenereGraphGui(textArea.getText(), j);
                     frame.setVisible(false);
                     frame.dispose();
                 }

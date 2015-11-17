@@ -1,4 +1,4 @@
-package CipherClasses;
+package CipherGui;
 
 import java.awt.Dimension;
 import java.util.ArrayList;

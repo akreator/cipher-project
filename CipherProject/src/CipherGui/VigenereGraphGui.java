@@ -1,22 +1,19 @@
-package CipherClasses;
+package CipherGui;
 
 
+import TextTools.*;
 import javax.swing.*;
-import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.TextArea;
-import java.util.ArrayList;
 
-public class VignereGraphGui {
+public class VigenereGraphGui extends GUI {
 
-    private JFrame frame = new JFrame(), sFrame = new JFrame();
+    private JFrame sFrame = new JFrame();
 
     private JButton rightShift, leftShift, back, checkStandard; 
-    private JTextArea textArea;
+    private MyTextArea textArea;
     private JLabel shiftLabel = new JLabel("Shift: " + 0);
     
     //Vignere stuff
@@ -29,7 +26,8 @@ public class VignereGraphGui {
     private int gWidth, gHeight;
 
 
-    public VignereGraphGui(String text, int n) {
+    public VigenereGraphGui(String text, int n) {
+        super(1200, 500, "Vignere Frequency Analysis");
         originalText = text;
         cipherText = text.toUpperCase().replaceAll("\\s", "");
         patternLength = n;
@@ -45,14 +43,7 @@ public class VignereGraphGui {
         else
             gWidth = 1200 / (n + 1);
         gHeight = 100;
-        
-        frame.setTitle("Vigenere Frequency Analysis");
-        frame.setSize(1200, 500);
-        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-
         init();
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
         frame.setVisible(true);
     }
 
@@ -67,7 +58,8 @@ public class VignereGraphGui {
         checkStandard.addActionListener(new VignereGuiListener());
         back = new JButton("Back");
         back.addActionListener(new VignereGuiListener());
-        textArea = new MyTextArea(Text.formatText(cipherText, Text.SPECIAL_FORMAT), 7, 60, false, 12);
+        textArea = new MyTextArea(TextFormatter.formatText(cipherText, TextFormatter.SPECIAL_FORMAT), 7, 60, false);
+        frame.addTextArea(textArea);
         
         //initialize the JComboBox
         String[] graphNums = new String[patternLength + 1];
@@ -114,7 +106,7 @@ public class VignereGraphGui {
         
         int paneNum = 0;
         for (int i = 0; i < patternLength; i ++) {
-            GraphComp g = new GraphComp(5, 20, gWidth, gHeight, "Graph #" + (i + 1), Text.getNthLetters(cipherText, i, patternLength));
+            GraphComp g = new GraphComp(5, 20, gWidth, gHeight, "Graph #" + (i + 1), Crypter.getNthLetters(cipherText, i, patternLength));
             graphs[i] = g;
             if(i != 0 && i % 5 == 0) 
                 paneNum++;
@@ -149,7 +141,7 @@ public class VignereGraphGui {
         sFrame.setSize(350, 200);
         sFrame.setDefaultCloseOperation(sFrame.DISPOSE_ON_CLOSE);
 
-        GraphComp standardComp = new GraphComp(0, 10, 300, 100, "Standard English Letter Frequency", Text.standardRelativeFrequency);
+        GraphComp standardComp = new GraphComp(0, 10, 300, 100, "Standard English Letter Frequency", Crypter.standardRelativeFrequency);
         JPanel fillerPaneY = new JPanel();
         fillerPaneY.setPreferredSize(new Dimension(0, 15));
         JPanel fillerPaneX = new JPanel();
@@ -168,13 +160,13 @@ public class VignereGraphGui {
                 currentGraph = selectedGraph.getSelectedIndex() - 1;
             } else if (e.getSource() == leftShift && selectedGraph.getSelectedIndex() != 0) {
                 graphs[currentGraph].shift(-1);
-                textArea.setText(Text.formatText(Text.shiftNthLetters(textArea.getText(), currentGraph, patternLength, false), Text.SPECIAL_FORMAT));
-                patternField.setText(Text.shiftNthLetters(patternField.getText(), currentGraph, patternLength, true));
+                textArea.setText(TextFormatter.formatText(Crypter.shiftNthLetters(textArea.getText(), currentGraph, patternLength, false), TextFormatter.SPECIAL_FORMAT));
+                patternField.setText(Crypter.shiftNthLetters(patternField.getText(), currentGraph, patternLength, true));
                 frame.repaint();
             } else if (e.getSource() == rightShift && selectedGraph.getSelectedIndex() != 0) {
                 graphs[currentGraph].shift(1);
-                textArea.setText(Text.formatText(Text.shiftNthLetters(textArea.getText(), currentGraph, patternLength, true), Text.SPECIAL_FORMAT));
-                patternField.setText(Text.shiftNthLetters(patternField.getText(), currentGraph, patternLength, false));
+                textArea.setText(TextFormatter.formatText(Crypter.shiftNthLetters(textArea.getText(), currentGraph, patternLength, true), TextFormatter.SPECIAL_FORMAT));
+                patternField.setText(Crypter.shiftNthLetters(patternField.getText(), currentGraph, patternLength, false));
                 frame.repaint();
             } else if (e.getSource() == checkStandard) {
                 createStandardGraph();

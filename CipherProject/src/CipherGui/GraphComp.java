@@ -1,5 +1,6 @@
-package CipherClasses;
+package CipherGui;
 
+import TextTools.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
@@ -111,7 +112,7 @@ public class GraphComp extends JComponent {
             int rHeight = (int) (gHeight * frequency[i]);
             Rectangle rect = new Rectangle(x + (rSpacing - rWidth) + rSpacing * i, y + (gHeight - rHeight), rWidth, rHeight);
             g2.draw(rect);
-            g2.drawString("" + Text.alphabet[i], x + (rSpacing - rWidth) + rSpacing * i + rWidth / 4, y + gHeight + 10);
+            g2.drawString("" + TextFormatter.alphabet[i], x + (rSpacing - rWidth) + rSpacing * i + rWidth / 4, y + gHeight + 10);
         }
 
     }

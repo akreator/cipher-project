@@ -1,4 +1,4 @@
-package CipherClasses;
+package TextTools;
 
 
 import java.util.ArrayList;
@@ -28,9 +28,6 @@ public class Calculations {
         return commonFactor;
     }
     
-    public static int getLCM(int a, int b) {
-        return 0;
-    }
     
     public static ArrayList<Integer> getFactors(int n) {
         ArrayList<Integer> aFacts = new ArrayList();

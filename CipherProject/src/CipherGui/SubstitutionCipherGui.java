@@ -1,6 +1,7 @@
-package CipherClasses;
+package CipherGui;
 
 
+import TextTools.Crypter;
 import javax.swing.*;
 import java.awt.Toolkit;
 import java.awt.BorderLayout;
@@ -16,10 +17,9 @@ import java.util.ArrayList;
  *
  * @author Audrey
  */
-public class SubstitutionCipherGui {
+public class SubstitutionCipherGui extends GUI {
 
-    private JFrame frame;
-    private JTextArea originalTextArea, newTextArea;
+    private MyTextArea originalTextArea, newTextArea;
     private Object[][] standardFrequency = {
         {"e", 12.702}, {"t", 9.056}, {"a", 8.167}, {"o", 7.507}, {"i", 6.966},
         {"n", 6.749}, {"s", 6.327}, {"h", 6.094}, {"r", 5.987}, {"d", 4.253},
@@ -37,24 +37,17 @@ public class SubstitutionCipherGui {
     private JComboBox analyzeOptions;
 
     public SubstitutionCipherGui() {
-        frame = new JFrame("Substitution Cipher");
-        frame.setSize(945, 595);
-
+        super(945, 595, "Substitution Cipher");
         init();
-
-        Dimension dim = new Dimension(Toolkit.getDefaultToolkit().getScreenSize());
-        frame.setLocation(dim.width / 2 - frame.getWidth() / 2, dim.height / 2 - frame.getHeight() / 2);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
         frame.setVisible(true);
     }
 
-    public void init() {
+    private void init() {
         //create northpane
-        originalTextArea = new MyTextArea("Enter text here.", 5, 70, true, 14);
+        originalTextArea = new MyTextArea("Enter text here.", 5, 70, true);
+        frame.addTextArea(originalTextArea);
         JScrollPane originalScroll = new JScrollPane(originalTextArea,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        // JLabel analyzeL = new JLabel("Analyze:");
         String[] options = {"Analyze...", "Letters", "Letters and Numbers",
             "Letters, numbers, and punctuation", "Top row"};
         analyzeOptions = new JComboBox(options);
@@ -73,7 +66,7 @@ public class SubstitutionCipherGui {
         standardPane.add(sLabel);
         standardPane.add(sPane);
         //messageTable
-        messageTable = new FrequencyTable(Text.getMessageFrequency(""), columnNames);
+        messageTable = new FrequencyTable(Crypter.getMessageFrequency(""), columnNames);
         JScrollPane mPane = new JScrollPane(messageTable.createTable());
         JLabel mLabel = new JLabel("Frequency of Input Characters");
         JPanel messagePane = new JPanel();
@@ -118,7 +111,8 @@ public class SubstitutionCipherGui {
         centerPane.add(enter);
 
         //southpane
-        newTextArea = new MyTextArea("", 6, 70, false, 14);
+        newTextArea = new MyTextArea("", 6, 70, false);
+        frame.add(newTextArea);
         JScrollPane newScroll = new JScrollPane(newTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         JPanel southPane = new JPanel();
         southPane.add(newScroll);
@@ -151,27 +145,27 @@ public class SubstitutionCipherGui {
                 int include = analyzeOptions.getSelectedIndex();
                 switch (include) {
                     case 1:
-                        messageTable.updateTable(Text.getMessageFrequency(
+                        messageTable.updateTable(Crypter.getMessageFrequency(
                                 originalTextArea.getText().replaceAll("[^a-zA-Z]", "")));
                         break;
                     case 2:
-                        messageTable.updateTable(Text.getMessageFrequency(
+                        messageTable.updateTable(Crypter.getMessageFrequency(
                                 originalTextArea.getText().replaceAll("[^a-zA-Z0-9]", "")));
                         break;
                     case 3:
-                        messageTable.updateTable(Text.getMessageFrequency(originalTextArea.getText()));
+                        messageTable.updateTable(Crypter.getMessageFrequency(originalTextArea.getText()));
                         break;
                     case 4:
                         updateReplacements();
                         ArrayList<String> array = new ArrayList<String>();
                         for ( String[] r : replacements) 
                             array.add(r[1]);
-                        messageTable.updateTable(Text.getSpecificMessageFrequency(originalTextArea.getText(), array));
+                        messageTable.updateTable(Crypter.getSpecificMessageFrequency(originalTextArea.getText(), array));
                 }
                 frame.repaint();
             } else if (e.getSource() == enter && !originalTextArea.getText().equals("") && originalTextArea.getText() != null) {
                 updateReplacements();
-                newTextArea.setText(Text.substitute(originalTextArea.getText(), replacements));
+                newTextArea.setText(Crypter.substitute(originalTextArea.getText(), replacements));
                 frame.repaint();
             }
         }

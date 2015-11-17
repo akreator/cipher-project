@@ -1,5 +1,6 @@
-package CipherClasses;
+package CipherGui;
 
+import TextTools.Crypter;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -9,28 +10,29 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VignereKnownGui{
+public class PigLatinGui extends GUI{
   
-  private JFrame frame = new JFrame();
-  private JTextField keywordField;
-  private JTextArea originalTextArea, newTextArea;
+  private MyTextArea originalTextArea, newTextArea;
   private JButton encipherButton, decryptButton;  
   
-  public VignereKnownGui () {
-    frame.setTitle("Vignere Cipher");
-    frame.setSize(900, 300);
-    frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-    
+  public PigLatinGui () {
+      super(900, 300, "Pig Latin");
+      init();
+      frame.setVisible(true);
+  }
+  
+  private void init() {
     //create items, add actionListeners
-    originalTextArea = new MyTextArea("Enter text here.", 7, 25, true, 14);
+    originalTextArea = new MyTextArea("Enter text here.", 7, 25, true);
+    frame.addTextArea(originalTextArea);
     JScrollPane scrollText = new JScrollPane(originalTextArea);
-    newTextArea = new MyTextArea("", 7, 25, false, 14);
+    newTextArea = new MyTextArea("", 7, 25, false);
+    frame.add(newTextArea);
     JScrollPane nscrollText = new JScrollPane(newTextArea);
-    keywordField = new JTextField("keyword", 20);
     encipherButton = new JButton(" Encrypt text ");
-    encipherButton.addActionListener(new VignereListener());
+    encipherButton.addActionListener(new PigLatinListener());
     decryptButton = new JButton (" Decrypt text ");
-    decryptButton.addActionListener(new VignereListener());
+    decryptButton.addActionListener(new PigLatinListener());
     
     //Southpane: keyword, and encrypt/decrypt buttons
     JPanel southPane = new JPanel();
@@ -39,7 +41,6 @@ public class VignereKnownGui{
     buttonPane.add(encipherButton);
     buttonPane.add(Box.createRigidArea(new Dimension(0, 10)));
     buttonPane.add(decryptButton);
-    southPane.add(keywordField);
     southPane.add(buttonPane);
     
     //centerpane
@@ -60,21 +61,16 @@ public class VignereKnownGui{
     frame.add(northPane, BorderLayout.NORTH);
     frame.add(centerPane);
     frame.add(southPane, BorderLayout.SOUTH);
-    
-    
-    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-    frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
     frame.setJMenuBar(new MenuBar(frame, originalTextArea));
-    frame.setVisible(true);
   }
   
-  class VignereListener implements ActionListener {
+  class PigLatinListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
       if(e.getSource() == decryptButton)       
-        newTextArea.setText(Text.vigenereCrypt(originalTextArea.getText(), keywordField.getText(), false));
+        newTextArea.setText(Crypter.toPigLatin(originalTextArea.getText(), false));
       else if (e.getSource() == encipherButton)     
-        newTextArea.setText(Text.vigenereCrypt(originalTextArea.getText(), keywordField.getText(), true));
+        newTextArea.setText(Crypter.toPigLatin(originalTextArea.getText(), true));
     }
   }
 }
