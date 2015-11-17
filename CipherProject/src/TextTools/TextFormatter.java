@@ -44,9 +44,9 @@ public class TextFormatter {
         StringBuffer newText = new StringBuffer(text);
         int n = 0;
         boolean isTwoDNum = false;
-        while (n < newText.length() - 1) {
+        while (n < newText.length()) {
             if (Character.isDigit(newText.charAt(n))) {
-                if(Character.isDigit(newText.charAt(n + 1)) && Integer.parseInt(newText.substring(n, n + 2)) < 26)
+                if(n < newText.length() - 1 && Character.isDigit(newText.charAt(n + 1)) && Integer.parseInt(newText.substring(n, n + 2)) < 26)
                     newText.replace(n, n + 2, alphabet[Integer.parseInt(newText.substring(n, n + 2))]);
                 else {
                     newText.replace(n, n + 1, alphabet[Integer.parseInt(newText.substring(n, n + 1))]);
