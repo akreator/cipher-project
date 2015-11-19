@@ -1,5 +1,7 @@
 package CipherGui;
 
+import Templates.MyGUI;
+import Templates.MyTextArea;
 import TextTools.Crypter;
 import javax.swing.*;
 import java.awt.Toolkit;
@@ -8,10 +10,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VigenereKnownGui extends GUI {
+public class VigenereKnownGui extends MyGUI {
 
     private JTextField keywordField;
-    private MyTextArea originalTextArea, newTextArea;
     private JButton encipherButton, decryptButton;
 
     public VigenereKnownGui() {
@@ -22,11 +23,9 @@ public class VigenereKnownGui extends GUI {
     
     public void init() {
         //create items, add actionListeners
-        originalTextArea = new MyTextArea("Enter text here.", 7, 25, true);
+        originalTextArea = new MyTextArea(7, 25, true, false);
         JScrollPane scrollText = new JScrollPane(originalTextArea);
-        frame.addTextArea(originalTextArea);
-        newTextArea = new MyTextArea("", 7, 25, false);
-        frame.addTextArea(newTextArea);
+        newTextArea = new MyTextArea(7, 25, false, true);
         JScrollPane nscrollText = new JScrollPane(newTextArea);
         keywordField = new JTextField("keyword", 20);
         encipherButton = new JButton(" Encrypt text ");

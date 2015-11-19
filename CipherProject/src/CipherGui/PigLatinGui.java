@@ -1,5 +1,7 @@
 package CipherGui;
 
+import Templates.MyGUI;
+import Templates.MyTextArea;
 import TextTools.Crypter;
 import javax.swing.*;
 import java.awt.Color;
@@ -10,9 +12,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PigLatinGui extends GUI{
+public class PigLatinGui extends MyGUI{
   
-  private MyTextArea originalTextArea, newTextArea;
   private JButton encipherButton, decryptButton;  
   
   public PigLatinGui () {
@@ -23,10 +24,9 @@ public class PigLatinGui extends GUI{
   
   private void init() {
     //create items, add actionListeners
-    originalTextArea = new MyTextArea("Enter text here.", 7, 25, true);
-    frame.addTextArea(originalTextArea);
+    originalTextArea = new MyTextArea(7, 25, true, false);
     JScrollPane scrollText = new JScrollPane(originalTextArea);
-    newTextArea = new MyTextArea("", 7, 25, false);
+    newTextArea = new MyTextArea(7, 25, false, true);
     frame.add(newTextArea);
     JScrollPane nscrollText = new JScrollPane(newTextArea);
     encipherButton = new JButton(" Encrypt text ");

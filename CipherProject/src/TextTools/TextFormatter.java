@@ -1,22 +1,22 @@
 package TextTools;
 
-import CipherGui.MyTextArea;
+import Templates.MyTextArea;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 public class TextFormatter {
-    
+
     public static final int SPECIAL_FORMAT = 0,
             UPPERCASE = 1, LOWERCASE = 2, NO_SPACES = 3,
             NO_NUMBERS = 4, NO_PUNCTUATION = 5, ONLY_LETTERS = 6,
             NO_CHANGE = 7, NUMS_TO_LETTERS = 8, GROUP = 9,
             CHANGE_TEXT_SIZE = 101;
-    
+
     public static final String[] alphabet = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
         "s", "t", "u", "v", "w", "x", "y", "z"};
-    
+
     private TextFormatter() {
     }
 
@@ -39,16 +39,16 @@ public class TextFormatter {
         }
         return new String(newText);
     }
-    
+
     public static String numsToLetters(String text) {
         StringBuffer newText = new StringBuffer(text);
         int n = 0;
         boolean isTwoDNum = false;
         while (n < newText.length()) {
             if (Character.isDigit(newText.charAt(n))) {
-                if(n < newText.length() - 1 && Character.isDigit(newText.charAt(n + 1)) && Integer.parseInt(newText.substring(n, n + 2)) < 26)
+                if (n < newText.length() - 1 && Character.isDigit(newText.charAt(n + 1)) && Integer.parseInt(newText.substring(n, n + 2)) < 26) {
                     newText.replace(n, n + 2, alphabet[Integer.parseInt(newText.substring(n, n + 2))]);
-                else {
+                } else {
                     newText.replace(n, n + 1, alphabet[Integer.parseInt(newText.substring(n, n + 1))]);
                 }
             }
@@ -89,10 +89,6 @@ public class TextFormatter {
             case ONLY_LETTERS:
                 return text.replaceAll("[^a-zA-Z]", "");
             case NUMS_TO_LETTERS:
-              /**  String nText = text;
-                for (int i = 0; i < 10; i++) {
-                    nText = nText.replaceAll(Integer.toString(i), alphabet[i].toUpperCase());
-                } */
                 return numsToLetters(text);
             case GROUP:
                 int groupNum = 0;

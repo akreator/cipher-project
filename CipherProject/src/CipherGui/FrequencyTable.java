@@ -2,15 +2,18 @@ package CipherGui;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.table.AbstractTableModel;
 
 /**
  *
  * @author Audrey
  */
-public class FrequencyTable {
+public class FrequencyTable extends JTable {
     private Object[][] messageFrequency;
     private String originalText;
     private String[] columnNames;
@@ -21,20 +24,9 @@ public class FrequencyTable {
     public FrequencyTable(Object[][] frequency, String[] names) {
         messageFrequency = frequency;
         columnNames = names;
-        createTable();
-    }
-    
-    public JTable createTable() {
-        table = new JTable(messageFrequency, columnNames);
-        table.setModel(tModel);
-        table.setPreferredScrollableViewportSize(new Dimension(20, 125));
-        table.setAutoCreateRowSorter(true);
-        
-        return table;
-    }
-    
-    public JTable getTable() {
-        return table;
+        setModel(tModel);
+        setPreferredScrollableViewportSize(new Dimension(20, 125));
+        setAutoCreateRowSorter(true);
     }
     
     public void updateTable(Object[][] newFrequency) {
@@ -43,6 +35,12 @@ public class FrequencyTable {
         table.revalidate();
     }
     
+    public void updateTableLook() {
+        tModel.fireTableStructureChanged();
+        updateUI();
+    }
+    
+    @Override
     public Object getValueAt(int row, int column) {
         return tModel.getValueAt(row, column);
     }

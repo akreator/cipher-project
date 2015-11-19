@@ -130,13 +130,17 @@ public class Crypter {
 
     private static String wordToPigLatin(String word, ArrayList<String> sp, ArrayList<Character> vwls) {
         int prefixEnd = 0;
-        for (int i = 0; i < word.length(); i++) {
-            if(vwls.contains(word.charAt(i))) {
-                prefixEnd = i;
-                break;
+        if (word.equals("the")) {
+            return word + "-ay";
+        } else {
+            for (int i = 0; i < word.length(); i++) {
+                if (vwls.contains(word.charAt(i))) {
+                    prefixEnd = i;
+                    break;
+                }
             }
+            return word.substring(prefixEnd) + "-" + word.substring(0, prefixEnd) + "ay";
         }
-        return word.substring(prefixEnd) + "-" + word.substring(0, prefixEnd) + "ay";
     }
 
     private static String wordFromPigLatin(String word, ArrayList<String> sp, ArrayList<Character> vwls) {
@@ -146,6 +150,9 @@ public class Crypter {
                 dashIndex = i;
                 break;
             }
+        }
+        if(dashIndex == 0) {
+            return word;
         }
         int prefixEnd = 0;
         for (int i = dashIndex + 1; i < word.length(); i++) {

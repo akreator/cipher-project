@@ -1,5 +1,7 @@
 package CipherGui;
 
+import Templates.MyGUI;
+import Templates.MyTextArea;
 import TextTools.Calculations;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,10 +19,9 @@ import javax.swing.*;
  *
  * @author Audrey
  */
-public class PatternFinderGui extends GUI {
+public class PatternFinderGui extends MyGUI {
     private JButton enter, history, knownLength;
     private JTextField patternField;
-    private MyTextArea textArea;
     private JLabel repLabel, distanceLabel;
     private int shortestDistance, repetitions;
     private String pattern, cipherText;
@@ -34,7 +35,7 @@ public class PatternFinderGui extends GUI {
     }
     
     public PatternFinderGui() {
-        this("Enter text here.");
+        this(MyGUI.getCipherText());
     }
     
     private void init() {
@@ -49,17 +50,17 @@ public class PatternFinderGui extends GUI {
         JPanel fieldPane = new JPanel();
         fieldPane.setPreferredSize(new Dimension(5, 5));
         fieldPane.add(patternField);
-        textArea = new MyTextArea(cipherText, 7, 30, true);
-        frame.add(textArea);
+        originalTextArea = new MyTextArea(7, 30, true, false);
+        originalTextArea.setText(cipherText);
         repLabel = new JLabel("Pattern found x times.");
         distanceLabel = new JLabel("Shortest distance between repetitions: x");
         JLabel patternLabel = new JLabel("Pattern to look for:");
         
-        //pane holds the textArea
+        //pane holds the originalTextArea
         JPanel pane = new JPanel();
         pane.setLayout(new BoxLayout(pane, BoxLayout.LINE_AXIS));
         pane.add(Box.createRigidArea(new Dimension(25, 0)));
-        JScrollPane scrollText = new JScrollPane(textArea);
+        JScrollPane scrollText = new JScrollPane(originalTextArea);
         pane.add(scrollText);
         pane.add(Box.createRigidArea(new Dimension(15, 0)));
 
@@ -98,7 +99,7 @@ public class PatternFinderGui extends GUI {
         frame.add(northPane, BorderLayout.NORTH);
         frame.add(pane);
         frame.add(bottomPane, BorderLayout.SOUTH);
-        frame.setJMenuBar(new MenuBar(frame, textArea));
+        frame.setJMenuBar(new MenuBar(frame, originalTextArea));
     }
 
     public void findPattern() {
@@ -106,17 +107,17 @@ public class PatternFinderGui extends GUI {
         int previousIndex = 0;
         repetitions = 0;
         shortestDistance = Integer.MAX_VALUE;
-        String cipherText = textArea.getText().toLowerCase().replaceAll("[^a-zA-Z]", "");
+        String cText = originalTextArea.getText().toLowerCase().replaceAll("[^a-zA-Z]", "");
         pattern = patternField.getText().toLowerCase();
 
-        if (cipherText.contains(pattern)) {
-            currentIndex = cipherText.indexOf(pattern);
+        if (cText.contains(pattern)) {
+            currentIndex = cText.indexOf(pattern);
             repetitions++;
                 
             boolean lastInstance = false;
             while (!lastInstance) {
                 previousIndex = currentIndex;
-                currentIndex = cipherText.indexOf(pattern, previousIndex + pattern.length());
+                currentIndex = cText.indexOf(pattern, previousIndex + pattern.length());
 
                 if (currentIndex == -1 && repetitions == 1) {
                     repLabel.setText("Pattern found " + repetitions + " times.");
@@ -199,7 +200,7 @@ public class PatternFinderGui extends GUI {
                     acceptNum = j > 0;
                 }
                 if (acceptNum) {
-                    new VigenereGraphGui(textArea.getText(), j);
+                    new VigenereGraphGui(originalTextArea.getText(), j);
                     frame.setVisible(false);
                     frame.dispose();
                 }

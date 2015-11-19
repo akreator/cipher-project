@@ -1,6 +1,8 @@
 package CipherGui;
 
 
+import Templates.MyGUI;
+import Templates.MyTextArea;
 import TextTools.*;
 import javax.swing.*;
 import java.awt.BorderLayout;
@@ -8,7 +10,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VigenereGraphGui extends GUI {
+public class VigenereGraphGui extends MyGUI {
 
     private JFrame sFrame = new JFrame();
 
@@ -58,8 +60,8 @@ public class VigenereGraphGui extends GUI {
         checkStandard.addActionListener(new VignereGuiListener());
         back = new JButton("Back");
         back.addActionListener(new VignereGuiListener());
-        textArea = new MyTextArea(TextFormatter.formatText(cipherText, TextFormatter.SPECIAL_FORMAT), 7, 60, false);
-        frame.addTextArea(textArea);
+        textArea = new MyTextArea(7, 60, false, false);
+        textArea.setText(TextFormatter.formatText(cipherText, TextFormatter.SPECIAL_FORMAT));
         
         //initialize the JComboBox
         String[] graphNums = new String[patternLength + 1];

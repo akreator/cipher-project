@@ -1,6 +1,8 @@
 package CipherGui;
 
 
+import Templates.MyGUI;
+import Templates.MyTextArea;
 import TextTools.Crypter;
 import javax.swing.*;
 import java.awt.Toolkit;
@@ -17,9 +19,8 @@ import java.util.ArrayList;
  *
  * @author Audrey
  */
-public class SubstitutionCipherGui extends GUI {
+public class SubstitutionCipherGui extends MyGUI {
 
-    private MyTextArea originalTextArea, newTextArea;
     private Object[][] standardFrequency = {
         {"e", 12.702}, {"t", 9.056}, {"a", 8.167}, {"o", 7.507}, {"i", 6.966},
         {"n", 6.749}, {"s", 6.327}, {"h", 6.094}, {"r", 5.987}, {"d", 4.253},
@@ -44,8 +45,7 @@ public class SubstitutionCipherGui extends GUI {
 
     private void init() {
         //create northpane
-        originalTextArea = new MyTextArea("Enter text here.", 5, 70, true);
-        frame.addTextArea(originalTextArea);
+        originalTextArea = new MyTextArea(5, 70, true, false);
         JScrollPane originalScroll = new JScrollPane(originalTextArea,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         String[] options = {"Analyze...", "Letters", "Letters and Numbers",
@@ -59,7 +59,7 @@ public class SubstitutionCipherGui extends GUI {
         // **** tablepane ****
         //standard table + label
         standardTable = new FrequencyTable(standardFrequency, columnNames);
-        JScrollPane sPane = new JScrollPane(standardTable.createTable());
+        JScrollPane sPane = new JScrollPane(standardTable);
         JLabel sLabel = new JLabel("Standard Frequency of English Letters");
         JPanel standardPane = new JPanel();
         standardPane.setLayout(new BoxLayout(standardPane, BoxLayout.PAGE_AXIS));
@@ -67,7 +67,7 @@ public class SubstitutionCipherGui extends GUI {
         standardPane.add(sPane);
         //messageTable
         messageTable = new FrequencyTable(Crypter.getMessageFrequency(""), columnNames);
-        JScrollPane mPane = new JScrollPane(messageTable.createTable());
+        JScrollPane mPane = new JScrollPane(messageTable);
         JLabel mLabel = new JLabel("Frequency of Input Characters");
         JPanel messagePane = new JPanel();
         messagePane.setLayout(new BoxLayout(messagePane, BoxLayout.PAGE_AXIS));
@@ -97,7 +97,7 @@ public class SubstitutionCipherGui extends GUI {
         switchTable = new JTable(fillerOptions, subAlphabet);
         switchTable.getTableHeader().setReorderingAllowed(false);
         switchTable.setPreferredScrollableViewportSize(new Dimension(switchTable.getWidth(),
-                switchTable.getHeight() - switchTable.getRowHeight()));
+                switchTable.getRowHeight() * 2));
         switchTable.setTableHeader(null);
         switchTable.setAutoCreateRowSorter(true);
         //switchTable.setFillsViewportHeight(true);
@@ -111,7 +111,7 @@ public class SubstitutionCipherGui extends GUI {
         centerPane.add(enter);
 
         //southpane
-        newTextArea = new MyTextArea("", 6, 70, false);
+        newTextArea = new MyTextArea(6, 70, false, true);
         frame.add(newTextArea);
         JScrollPane newScroll = new JScrollPane(newTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         JPanel southPane = new JPanel();

@@ -1,33 +1,32 @@
 package CipherGui;
 
 
+import Templates.MyGUI;
+import Templates.MyTextArea;
 import TextTools.*;
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 public class MenuBar extends JMenuBar {
 
-    private JMenuItem[] switchItems = new JMenuItem[5], fileItems = new JMenuItem[5], formatItems = new JMenuItem[11];
-    private MyFrame frame;
+    private JMenuItem[] switchItems = new JMenuItem[5], fileItems = new JMenuItem[4], formatItems = new JMenuItem[11];
+    private JFrame frame;
     private JTextArea textArea;
     private String beforeFormat = "Enter text here.";
     private boolean formatting = false;
 
-    public MenuBar(MyFrame jframe) {
+    public MenuBar(JFrame jframe) {
         frame = jframe;
         init();
     }
 
-    public MenuBar(MyFrame jframe, JTextArea ta) {
+    public MenuBar(JFrame jframe, MyTextArea ta) {
         frame = jframe;
         textArea = ta;
         init();
@@ -37,12 +36,12 @@ public class MenuBar extends JMenuBar {
     private void init() {
         //fileMenu
         JMenu fileMenu = new JMenu("File");
-        String[] fileNames = {"Instructions", "About", "Save", "Load", "Preferences"};
+        String[] fileNames = {"Instructions", "About", "Save", "Load"};
         for (int i = 0; i < fileItems.length; i++) {
             fileItems[i] = new JMenuItem(fileNames[i]);
             fileItems[i].addActionListener(new FileListener(i));
             fileMenu.add(fileItems[i]);
-            if ((i + 1) % 2 == 0) {
+            if (i == 1) {
                 fileMenu.add(new JSeparator());
             }
         }
@@ -102,6 +101,14 @@ public class MenuBar extends JMenuBar {
         formatMenu.add(formatItems[6]);
         this.add(formatMenu);
     }
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(new Color(201, 201, 201));
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+    }
 
     class TextListener implements CaretListener {
         @Override
@@ -131,13 +138,12 @@ public class MenuBar extends JMenuBar {
                 textArea.setText(beforeFormat);
             } else if (formatNum == TextFormatter.CHANGE_TEXT_SIZE) {
                 int amt = 0;
-                int previousTextSize = MyTextArea.getTextSize();
                 String input = JOptionPane.showInputDialog(null, "New font size:",
                         "Change font size", JOptionPane.PLAIN_MESSAGE);
                 try {
                     amt = Integer.parseInt(input);
-                    MyTextArea.setTextSize(amt);
-                    frame.updateTextAreas();
+                    MyTextArea.setFontSize(amt);
+                    MyGUI.updateTextAreas();
                 } catch (NumberFormatException n) {
                     JOptionPane.showMessageDialog(null, "Sorry, that is not a valid number", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -161,7 +167,7 @@ public class MenuBar extends JMenuBar {
                             "Credits", JOptionPane.PLAIN_MESSAGE);
                     break;
                 case 4:
-                    new PropertiesGui(frame);
+                    //new PropertiesGui(frame);
                     break;
             }
         }
