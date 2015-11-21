@@ -47,8 +47,8 @@ public class SubstitutionCipherGui extends MyGUI {
 
     private void init() {
         //create northpane
-        newTextArea = new MyTextArea(5, 70, true, false);
-        JScrollPane originalScroll = new JScrollPane(newTextArea,
+        originalTextArea = new MyTextArea(5, 70, true, false);
+        JScrollPane originalScroll = new JScrollPane(originalTextArea,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         String[] options = {"Analyze...", "Letters", "Letters and Numbers",
             "Letters, numbers, and punctuation", "Top row"};

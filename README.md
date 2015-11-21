@@ -11,6 +11,7 @@ Caesar (ROT13)
 Substitution (Atbash)
 Vignere
 Pig Latin
+Box Ciphr (transposition)
 
 *** IN-PROGRESS CIPHERS ***
 N/A
