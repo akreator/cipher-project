@@ -8,14 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-
 public class PropertiesGui extends MyGUI {
 
-    private String[] language = {"Select", "English", "Latin", "French", "Spanish"};
+    private String[] language = {"English", "Latin", "French", "Spanish"};
     private JButton next;
     private JComboBox languageChoice;
     private static int selectedButton;
-
 
     public PropertiesGui() {
         super(300, 500, "Properties");
@@ -52,10 +50,10 @@ public class PropertiesGui extends MyGUI {
         }
         preferencesPane.add(optionPane);
         preferencesPane.add(Box.createRigidArea(new Dimension(0, 10)));
-        
+
         next = new JButton("Continue");
         next.addActionListener(new PropertiesActionListener());
-        
+
         frame.add(preferencesPane, BorderLayout.CENTER);
         frame.add(Box.createRigidArea(new Dimension(10, 0)), BorderLayout.WEST);
         frame.add(Box.createRigidArea(new Dimension(10, 0)), BorderLayout.EAST);
@@ -64,23 +62,11 @@ public class PropertiesGui extends MyGUI {
     }
 
     class PropertiesActionListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == languageChoice) {
-                switch (languageChoice.getSelectedIndex()) {
-                    case 1:
-                        Properties.setLanguage(language[1]);
-                        break;
-                    case 2:
-                        Properties.setLanguage(language[2]);
-                        break;
-                    case 3:
-                        Properties.setLanguage(language[3]);
-                        break;
-                    case 4:
-                        Properties.setLanguage(language[4]);
-                        break;
-                }
+                Properties.setLanguage(language[languageChoice.getSelectedIndex()]);
             } else if (e.getSource().equals(next)) {
                 new CaesarGui();
                 frame.setVisible(false);

@@ -10,12 +10,13 @@ project has a GUI.  Which you should check out.  Because I spent a lot of time o
 Caesar (ROT13)
 Substitution (Atbash)
 Vignere
+Pig Latin
 
 *** IN-PROGRESS CIPHERS ***
-Pig latin
+N/A
 
 *** PLANNED CIPHERS ***
-Morse code
+Morse code\n
 (maybe) Homophonic substiution cipher
 
 
@@ -28,6 +29,8 @@ Then, run the jar file found there.
 
 History
 -------
+11/19/15: Reorganized classes, added themes feature
+11/17/15: Added numbers to letters, reorganized classes, started work on customization
 11/12/15: Created README
 11/11/15: Uploaded to GitHub 
 11/04/15: Added grouping to formatting, fixed alphabet error

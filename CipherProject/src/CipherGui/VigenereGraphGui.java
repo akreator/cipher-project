@@ -1,6 +1,7 @@
 package CipherGui;
 
 
+import Templates.MenuBar;
 import Templates.MyGUI;
 import Templates.MyTextArea;
 import TextTools.*;

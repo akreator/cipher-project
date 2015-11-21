@@ -1,8 +1,7 @@
-package CipherGui;
+package Templates;
 
 
-import Templates.MyGUI;
-import Templates.MyTextArea;
+import CipherGui.*;
 import TextTools.*;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,7 +14,7 @@ import javax.swing.event.CaretListener;
 
 public class MenuBar extends JMenuBar {
 
-    private JMenuItem[] switchItems = new JMenuItem[5], fileItems = new JMenuItem[4], formatItems = new JMenuItem[11];
+    private JMenuItem[] switchItems = new JMenuItem[6], fileItems = new JMenuItem[4], formatItems = new JMenuItem[11];
     private JFrame frame;
     private JTextArea textArea;
     private String beforeFormat = "Enter text here.";
@@ -50,7 +49,7 @@ public class MenuBar extends JMenuBar {
         //switch cipher menu
         JMenu switchCipherMenu = new JMenu("Switch Cipher");
         String[] switchNames = {
-            "Caesar Cipher", "Substitution Cipher", "Known Keyword", "Unknown Keyword", "Pig Latin"
+            "Caesar Cipher", "Substitution Cipher", "Known Keyword", "Unknown Keyword", "Pig Latin", "Box Cipher"
         };
         for (int i = 0; i < switchItems.length; i++) {
             switchItems[i] = new JMenuItem(switchNames[i]);
@@ -64,6 +63,7 @@ public class MenuBar extends JMenuBar {
         vignereCipherMenu.add(switchItems[3]);
         switchCipherMenu.add(vignereCipherMenu);
         switchCipherMenu.add(switchItems[4]);
+        switchCipherMenu.add(switchItems[5]);
         this.add(switchCipherMenu);
     }
 
@@ -195,6 +195,9 @@ public class MenuBar extends JMenuBar {
                     break;
                 case 4:
                     new PigLatinGui();
+                    break;
+                case 5:
+                    new BoxCipherGui();
                     break;
             }
             frame.setVisible(false);

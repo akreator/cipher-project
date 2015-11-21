@@ -1,4 +1,4 @@
-package CipherGui;
+package Templates;
 
 
 /**

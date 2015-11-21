@@ -1,10 +1,8 @@
 package Templates;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
-import java.util.ArrayList;
 import javax.swing.JFrame;
 
 public abstract class MyGUI {
@@ -40,5 +38,9 @@ public abstract class MyGUI {
     
     public static String getCipherText() {
         return cipherText;
+    }
+    
+    public static MyTextArea getOriginalTextArea() {
+        return originalTextArea;
     }
 }

@@ -325,4 +325,26 @@ public class Crypter {
         }
         return frequency;
     }
+
+    public static String createBox(int rows, int cols, String text) {
+        StringBuilder boxText = new StringBuilder();
+        text = text.replaceAll("\\s", "");
+        if (cols < text.length() && rows < text.length()) {
+            int rowNum = 0;
+            while(rowNum < rows && (rowNum + 1) * cols <= text.length()) {
+                boxText.append(TextFormatter.formatText(text.substring(cols * rowNum, cols * (rowNum + 1)), TextFormatter.SPECIAL_FORMAT));
+                boxText.append("\n");
+                rowNum++;
+            }
+            try {
+                boxText.append("\n");
+                boxText.append(TextFormatter.formatText(text.substring(rowNum * cols), TextFormatter.SPECIAL_FORMAT));
+            } catch (Exception e) {
+                //do nothing
+            }
+        } else {
+            return TextFormatter.formatText(text, TextFormatter.SPECIAL_FORMAT);
+        }
+        return boxText.toString();
+    }
 }

@@ -1,4 +1,4 @@
-package CipherGui;
+package Templates;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ public class FrequencyTable extends JTable {
     private Object[][] messageFrequency;
     private String originalText;
     private String[] columnNames;
-    private JTable table;
     private MyModel tModel = new MyModel();
 
     
@@ -31,8 +30,8 @@ public class FrequencyTable extends JTable {
     
     public void updateTable(Object[][] newFrequency) {
         tModel.changeData(newFrequency);
-        table.setAutoCreateRowSorter(true);
-        table.revalidate();
+        setAutoCreateRowSorter(true);
+        revalidate();
     }
     
     public void updateTableLook() {

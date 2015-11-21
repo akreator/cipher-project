@@ -1,10 +1,6 @@
 package TextTools;
 
-import Templates.MyTextArea;
-import java.awt.Component;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 
 public class TextFormatter {
 

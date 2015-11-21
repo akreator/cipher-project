@@ -1,10 +1,6 @@
 package Templates;
 
-import CipherGui.MenuBar;
-import CipherGui.SubstitutionCipherGui;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
 import javax.swing.*;
 
 public class Properties {
@@ -33,7 +29,12 @@ public class Properties {
             Color.GREEN, Color.RED, Color.BLACK,
             Color.BLACK, Color.BLACK, Color.BLACK, 
             Color.BLACK }, 
-        {}, //blue
+        { //blue
+            new Color(176, 202, 247), new Color(72, 182, 250), new Color(36, 116, 255),
+            Color.BLACK, Color.WHITE, new Color(21, 66, 171), 
+            Color.WHITE, Color.WHITE, new Color(69, 137, 255),
+            Color.WHITE
+        },
         {}, //green
         {}, //orange
         {}, //simple
@@ -54,6 +55,10 @@ public class Properties {
             case HACKER:
                 textBackgroundColor = Color.BLACK;
                 textColor = Color.GREEN;
+                break;
+            case BLUE:
+                textBackgroundColor = Color.WHITE;
+                textColor = new Color(0, 53, 138);
                 break;
         }
         MyGUI.updateTextAreas();

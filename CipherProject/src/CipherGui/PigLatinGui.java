@@ -1,5 +1,6 @@
 package CipherGui;
 
+import Templates.MenuBar;
 import Templates.MyGUI;
 import Templates.MyTextArea;
 import TextTools.Crypter;
@@ -29,9 +30,9 @@ public class PigLatinGui extends MyGUI{
     newTextArea = new MyTextArea(7, 25, false, true);
     frame.add(newTextArea);
     JScrollPane nscrollText = new JScrollPane(newTextArea);
-    encipherButton = new JButton(" Encrypt text ");
+    encipherButton = new JButton(" To Pig Latin ");
     encipherButton.addActionListener(new PigLatinListener());
-    decryptButton = new JButton (" Decrypt text ");
+    decryptButton = new JButton (" From Pig Latin ");
     decryptButton.addActionListener(new PigLatinListener());
     
     //Southpane: keyword, and encrypt/decrypt buttons
