@@ -61,7 +61,7 @@ public class SubstitutionCipherGui extends MyGUI {
         // **** tablepane ****
         //standard table + label
         standardTable = new FrequencyTable(standardFrequency, columnNames);
-        JScrollPane sPane = new JScrollPane(standardTable);
+        JScrollPane sPane = new JScrollPane(standardTable.createTable());
         JLabel sLabel = new JLabel("Standard Frequency of English Letters");
         JPanel standardPane = new JPanel();
         standardPane.setLayout(new BoxLayout(standardPane, BoxLayout.PAGE_AXIS));
@@ -69,7 +69,7 @@ public class SubstitutionCipherGui extends MyGUI {
         standardPane.add(sPane);
         //messageTable
         messageTable = new FrequencyTable(Crypter.getMessageFrequency(""), columnNames);
-        JScrollPane mPane = new JScrollPane(messageTable);
+        JScrollPane mPane = new JScrollPane(messageTable.createTable());
         JLabel mLabel = new JLabel("Frequency of Input Characters");
         JPanel messagePane = new JPanel();
         messagePane.setLayout(new BoxLayout(messagePane, BoxLayout.PAGE_AXIS));

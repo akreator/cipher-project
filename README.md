@@ -16,7 +16,7 @@ Pig Latin
 N/A
 
 *** PLANNED CIPHERS ***
-Morse code\n
+Morse code; Binary; 
 (maybe) Homophonic substiution cipher
 
 
@@ -29,6 +29,7 @@ Then, run the jar file found there.
 
 History
 -------
+11/20/15: Added box cipher
 11/19/15: Reorganized classes, added themes feature
 11/17/15: Added numbers to letters, reorganized classes, started work on customization
 11/12/15: Created README

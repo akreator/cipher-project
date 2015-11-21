@@ -14,7 +14,7 @@ public class Properties {
         "control", "nimbusBase", "nimbusFocus", 
         "text", "nimbusSelectedText", "nimbusSelectionBackground", 
         "Table.background", "TextField.background", "nimbusBlueGrey",
-        "nimbusLightBackground"
+        "nimbusLightBackground", "Table[Enabled+Selected].textForeground"
     };
     
     private static Color[][] themeColors = {
@@ -28,7 +28,7 @@ public class Properties {
             new Color(42, 46, 42), Color.BLACK, Color.GREEN, 
             Color.GREEN, Color.RED, Color.BLACK,
             Color.BLACK, Color.BLACK, Color.BLACK, 
-            Color.BLACK }, 
+            Color.BLACK, Color.RED }, 
         { //blue
             new Color(176, 202, 247), new Color(72, 182, 250), new Color(36, 116, 255),
             Color.BLACK, Color.WHITE, new Color(21, 66, 171), 
