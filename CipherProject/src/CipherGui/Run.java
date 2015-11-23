@@ -14,14 +14,14 @@ public class Run {
                     UIManager.setLookAndFeel(info.getClassName());
                     UIManager.put("TextField.font", new Font(Font.MONOSPACED, Font.PLAIN, 12));
                     UIManager.put("Table.showGrid", true);
-                    SwingUtilities.updateComponentTreeUI(null);
                     break;
                 }
             }
         } catch (Exception e) {
-            // If Nimbus is not available, you can set the GUI to another look and feel.
+            JOptionPane.showMessageDialog(null, "Sorry, but you do not have the Nimbus package.\n"
+                    + "Email akreator0@gmail.com with your operating system to let them know.", 
+                    "Package not available", JOptionPane.ERROR_MESSAGE);
         }
-        
         new PropertiesGui();
     }
 }

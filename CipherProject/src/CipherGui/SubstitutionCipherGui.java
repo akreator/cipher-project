@@ -7,14 +7,10 @@ import Templates.MyGUI;
 import Templates.MyTextArea;
 import TextTools.Crypter;
 import javax.swing.*;
-import java.awt.Toolkit;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.TextArea;
 import java.util.ArrayList;
 
 /**

@@ -19,6 +19,7 @@ public class PropertiesGui extends MyGUI {
         super(300, 500, "Properties");
         init();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setResizable(false);
         frame.setVisible(true);
     }
 

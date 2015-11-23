@@ -14,7 +14,7 @@ import javax.swing.event.CaretListener;
 
 public class MenuBar extends JMenuBar {
 
-    private JMenuItem[] switchItems = new JMenuItem[6], fileItems = new JMenuItem[4], formatItems = new JMenuItem[11];
+    private JMenuItem[] switchItems = new JMenuItem[6], fileItems = new JMenuItem[5], formatItems = new JMenuItem[11];
     private JFrame frame;
     private JTextArea textArea;
     private String beforeFormat = "Enter text here.";
@@ -35,12 +35,12 @@ public class MenuBar extends JMenuBar {
     private void init() {
         //fileMenu
         JMenu fileMenu = new JMenu("File");
-        String[] fileNames = {"Instructions", "About", "Save", "Load"};
+        String[] fileNames = {"Instructions", "About", "Save", "Load", "Quit"};
         for (int i = 0; i < fileItems.length; i++) {
             fileItems[i] = new JMenuItem(fileNames[i]);
             fileItems[i].addActionListener(new FileListener(i));
             fileMenu.add(fileItems[i]);
-            if (i == 1) {
+            if ( (i + 1) % 2 == 0) {
                 fileMenu.add(new JSeparator());
             }
         }
@@ -167,7 +167,7 @@ public class MenuBar extends JMenuBar {
                             "Credits", JOptionPane.PLAIN_MESSAGE);
                     break;
                 case 4:
-                    //new PropertiesGui(frame);
+                    frame.dispose();
                     break;
             }
         }

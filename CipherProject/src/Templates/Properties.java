@@ -22,8 +22,7 @@ public class Properties {
             new Color(214, 217, 223), new Color(51, 98, 140), new Color(115, 164, 209),
             Color.BLACK, Color.WHITE, new Color(57, 105, 138),
             Color.WHITE, Color.WHITE, new Color (169, 176, 190),
-            Color.WHITE
-        }, 
+            Color.WHITE, Color.WHITE }, 
         { //hacker colors
             new Color(42, 46, 42), Color.BLACK, Color.GREEN, 
             Color.GREEN, Color.RED, Color.BLACK,
@@ -33,11 +32,22 @@ public class Properties {
             new Color(176, 202, 247), new Color(72, 182, 250), new Color(36, 116, 255),
             Color.BLACK, Color.WHITE, new Color(21, 66, 171), 
             Color.WHITE, Color.WHITE, new Color(69, 137, 255),
-            Color.WHITE
-        },
-        {}, //green
-        {}, //orange
-        {}, //simple
+            Color.WHITE, Color.WHITE }, 
+        { //green
+            new Color(7, 77, 9), new Color(0, 5, 0), new Color(0, 104, 0),
+            Color.WHITE, new Color(7, 77, 9), Color.WHITE, 
+            new Color(7, 77, 9), new Color(0, 5, 0), new Color(0, 5, 0),
+            new Color(0, 104, 0), new Color(7, 77, 9) }, 
+        { //orange
+            new Color(255, 145, 0), new Color(255, 145, 0), new Color(255, 204, 0),
+            Color.BLACK, Color.WHITE, new Color(184, 116, 20),
+            new Color(255, 145, 0), Color.WHITE, new Color(252, 177, 91),
+            new Color(255, 175, 46), Color.WHITE }, 
+        { //simple
+           Color.WHITE, Color.GRAY, Color.BLACK,
+           Color.BLACK, Color.WHITE, Color.BLACK,
+           Color.WHITE, Color.WHITE, Color.GRAY,
+           Color.GRAY, Color.WHITE }, 
     };
 
     private Properties() {
@@ -59,6 +69,18 @@ public class Properties {
             case BLUE:
                 textBackgroundColor = Color.WHITE;
                 textColor = new Color(0, 53, 138);
+                break;
+            case GREEN:
+                textBackgroundColor = Color.WHITE;
+                textColor = new Color(7, 77, 9);
+                break; 
+            case ORANGE:
+                textBackgroundColor = Color.WHITE;
+                textColor = Color.BLACK;
+                break;
+            case SIMPLE:
+                textBackgroundColor = Color.WHITE;
+                textColor = Color.BLACK;
                 break;
         }
         MyGUI.updateTextAreas();
