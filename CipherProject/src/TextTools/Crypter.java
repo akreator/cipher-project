@@ -100,7 +100,7 @@ public class Crypter {
      */
     public static String vigenereCrypt(String plainText, String keyword, boolean encrypt) {
         StringBuffer text = new StringBuffer();
-        char[] keywordArray = keyword.toCharArray();
+        char[] keywordArray = TextFormatter.formatText(keyword, TextFormatter.ONLY_LETTERS).toCharArray();
         int shiftAmt = 0;
         int k = 0;
         for (int i = 0; i < plainText.length(); i++) {
@@ -225,7 +225,8 @@ public class Crypter {
      * currentWord.length()); } 
      */
     /**
-     * Shift the nth letters of the text by an 1 in either direction
+     * Shift the nth letters of the text by an 1 in either direction.  Does not
+     * count spaces.
      *
      * @param text: text to be analyzed
      * @param n: index to start at

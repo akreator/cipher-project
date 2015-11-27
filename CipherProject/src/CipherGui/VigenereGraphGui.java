@@ -62,7 +62,7 @@ public class VigenereGraphGui extends MyGUI {
         back = new JButton("Back");
         back.addActionListener(new VignereGuiListener());
         textArea = new MyTextArea(7, 60, false, false);
-        textArea.setText(TextFormatter.formatText(cipherText, TextFormatter.SPECIAL_FORMAT));
+        textArea.setText(TextFormatter.formatText(TextFormatter.formatText(cipherText, TextFormatter.ONLY_LETTERS), TextFormatter.SPECIAL_FORMAT));
         
         //initialize the JComboBox
         String[] graphNums = new String[patternLength + 1];
