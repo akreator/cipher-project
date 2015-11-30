@@ -1,10 +1,7 @@
 package CipherGui;
 
-import Templates.History;
-import Templates.MenuBar;
-import Templates.MyGUI;
-import Templates.MyTextArea;
-import TextTools.Calculations;
+import Templates.*;
+import TextTools.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -26,18 +23,13 @@ public class PatternFinderGui extends MyGUI {
     private JTextField patternField;
     private JLabel repLabel, distanceLabel;
     private int shortestDistance, repetitions;
-    private String pattern, cipherText;
+    private String pattern;
     private ArrayList<History> patternHist = new ArrayList();
     
-    public PatternFinderGui(String text) {
+    public PatternFinderGui() {
         super(950, 300, "Vignere Cipher: Deciphering Tool");
-        cipherText = text;
         init();
         frame.setVisible(true);
-    }
-    
-    public PatternFinderGui() {
-        this(MyGUI.getCipherText());
     }
     
     private void init() {
@@ -53,7 +45,6 @@ public class PatternFinderGui extends MyGUI {
         fieldPane.setPreferredSize(new Dimension(5, 5));
         fieldPane.add(patternField);
         originalTextArea = new MyTextArea(7, 30, true, false);
-        originalTextArea.setText(cipherText);
         repLabel = new JLabel("Pattern found x times.");
         distanceLabel = new JLabel("Shortest distance between repetitions: x");
         JLabel patternLabel = new JLabel("Pattern to look for:");
@@ -148,8 +139,8 @@ public class PatternFinderGui extends MyGUI {
     public void checkHistory() {
         //GUI
         JFrame histWindow = new JFrame("Pattern history");
-        TextArea histText = new TextArea("", 100, 75, TextArea.SCROLLBARS_VERTICAL_ONLY);
-        histText.setBackground(Color.WHITE);
+        MyTextArea histText = new MyTextArea(10, 5, false, true);
+        JScrollPane histPane = new JScrollPane(histText, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         histText.setFont(new Font("", Font.PLAIN, 14));
         
         //Add everything to panel
@@ -171,7 +162,7 @@ public class PatternFinderGui extends MyGUI {
         JPanel westPane = new JPanel();
         westPane.setPreferredSize(new Dimension(15, 0));
         
-        histWindow.add(histText, BorderLayout.CENTER);
+        histWindow.add(histPane, BorderLayout.CENTER);
         histWindow.add(northPane, BorderLayout.NORTH);
         histWindow.add(southPane, BorderLayout.SOUTH);
         histWindow.add(westPane, BorderLayout.WEST);
@@ -202,7 +193,7 @@ public class PatternFinderGui extends MyGUI {
                     acceptNum = j > 0;
                 }
                 if (acceptNum) {
-                    new VigenereGraphGui(originalTextArea.getText(), j);
+                    new VigenereGraphGui(j);
                     frame.setVisible(false);
                     frame.dispose();
                 }

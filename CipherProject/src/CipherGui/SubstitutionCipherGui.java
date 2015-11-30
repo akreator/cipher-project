@@ -6,6 +6,7 @@ import Templates.FrequencyTable;
 import Templates.MyGUI;
 import Templates.MyTextArea;
 import TextTools.Crypter;
+import TextTools.TextFormatter;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -33,7 +34,7 @@ public class SubstitutionCipherGui extends MyGUI {
     private Object[][] messageFrequency;
     private String[][] replacements;
     private JTable switchTable;
-    private JComboBox analyzeOptions;
+    private JComboBox analyzeOptions, defaultOptions;
 
     public SubstitutionCipherGui() {
         super(945, 595, "Substitution Cipher");
@@ -81,18 +82,19 @@ public class SubstitutionCipherGui extends MyGUI {
         //input table
         enter = new JButton("Enter");
         enter.addActionListener(new SubstitutionListener());
-        String[] subAlphabet = new String[26];
+        String[] defaultStrings = {
+            "Autofill Options...", "Alphabet Top Row", "Atbash", "Clear All", "Clear Bottom Row"
+        };
+        defaultOptions = new JComboBox(defaultStrings);
+        defaultOptions.addActionListener(new SubstitutionListener());
+        
+        String[][] filler = new String[2][26];
         for (int i = 0; i < 26; i++) {
-            subAlphabet[i] = "" + (char) (97 + i);
+            filler[0][i] = "";
+            filler[1][i] = "";
         }
         
-        Object[][] fillerOptions = {
-            subAlphabet,
-            {"z", "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n",
-                "m", "l", "k", "j", "i", "h", "g", "f", "e", "d", "c", "b", "a"}
-
-        };
-        switchTable = new JTable(fillerOptions, subAlphabet);
+        switchTable = new JTable(filler, filler[1]);
         switchTable.getTableHeader().setReorderingAllowed(false);
         switchTable.setPreferredScrollableViewportSize(new Dimension(switchTable.getWidth(),
                 switchTable.getRowHeight() * 2));
@@ -100,10 +102,13 @@ public class SubstitutionCipherGui extends MyGUI {
         switchTable.setAutoCreateRowSorter(true);
         //switchTable.setFillsViewportHeight(true);
         JScrollPane switchPane = new JScrollPane(switchTable);
+
+        //*** CENTERPANE ***
         JPanel centerPane = new JPanel();
         centerPane.setLayout(new BoxLayout(centerPane, BoxLayout.PAGE_AXIS));
         centerPane.add(tablePane);
         centerPane.add(Box.createRigidArea(new Dimension(0, 15)));
+        centerPane.add(defaultOptions);
         centerPane.add(switchPane);
         centerPane.add(Box.createRigidArea(new Dimension(0, 5)));
         centerPane.add(enter);
@@ -136,12 +141,47 @@ public class SubstitutionCipherGui extends MyGUI {
     }
 
     class SubstitutionListener implements ActionListener {
+        private Object[][] atbash = {
+            {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
+                "s", "t", "u", "v", "w", "x", "y", "z"},
+            {"z", "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n",
+                "m", "l", "k", "j", "i", "h", "g", "f", "e", "d", "c", "b", "a"}
+
+        };
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == analyzeOptions && !originalTextArea.getText().equals("") && originalTextArea.getText() != null) {
-                int include = analyzeOptions.getSelectedIndex();
-                switch (include) {
+            if (e.getSource() == defaultOptions) {
+                //  "Autofill Options", "Alphabet Top Row", "Atbash", "Clear All", "Clear Bottom Row"
+                switch (defaultOptions.getSelectedIndex()) {
+                     case 1:
+                        for (int c = 0; c < 26; c++) {
+                            switchTable.setValueAt(atbash[0][c], 0, c);
+                        }
+                        break;
+                    case 2:
+                        for (int r = 0; r < 2; r++) {
+                            for (int c = 0; c < 26; c++) {
+                                switchTable.setValueAt(atbash[r][c], r, c);
+                            }
+                        }
+                        break;
+                    case 3:
+                        for (int r = 0; r < 2; r++) {
+                            for (int c = 0; c < 26; c++) {
+                                switchTable.setValueAt("", r, c);
+                            }
+                        }
+                        break;
+                    case 4:
+                        for (int c = 0; c < 26; c++) {
+                            switchTable.setValueAt("", 1, c);
+                        }
+                        break;
+                }
+
+            } else if (e.getSource() == analyzeOptions && !originalTextArea.getText().equals("") && originalTextArea.getText() != null) {
+                switch (analyzeOptions.getSelectedIndex()) {
                     case 1:
                         messageTable.updateTable(Crypter.getMessageFrequency(
                                 originalTextArea.getText().replaceAll("[^a-zA-Z]", "")));

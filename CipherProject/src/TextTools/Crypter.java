@@ -226,7 +226,7 @@ public class Crypter {
      */
     /**
      * Shift the nth letters of the text by an 1 in either direction.  Does not
-     * count spaces.
+     * count spaces.  Counts all but spaces.
      *
      * @param text: text to be analyzed
      * @param n: index to start at
