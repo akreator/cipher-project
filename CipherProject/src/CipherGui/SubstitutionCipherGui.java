@@ -83,7 +83,7 @@ public class SubstitutionCipherGui extends MyGUI {
         enter = new JButton("Enter");
         enter.addActionListener(new SubstitutionListener());
         String[] defaultStrings = {
-            "Autofill Options...", "Alphabet Top Row", "Atbash", "Clear All", "Clear Bottom Row"
+            "Autofill Options...", "Alphabet Top Row", "Atbash", "A1Z26 (to numbers)", "A1Z26 (to letters)", "Clear All", "Clear Bottom Row"
         };
         defaultOptions = new JComboBox(defaultStrings);
         defaultOptions.addActionListener(new SubstitutionListener());
@@ -152,7 +152,7 @@ public class SubstitutionCipherGui extends MyGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == defaultOptions) {
-                //  "Autofill Options", "Alphabet Top Row", "Atbash", "Clear All", "Clear Bottom Row"
+                //  "Autofill Options", "Alphabet Top Row", "Atbash", "A1Z26 (to Numbers)", "A1Z26 (from Numbers)", "Clear All", "Clear Bottom Row"
                 switch (defaultOptions.getSelectedIndex()) {
                      case 1:
                         for (int c = 0; c < 26; c++) {
@@ -167,13 +167,25 @@ public class SubstitutionCipherGui extends MyGUI {
                         }
                         break;
                     case 3:
+                        for (int c = 0; c < 26; c++) {
+                            switchTable.setValueAt(atbash[1][c], 0, c);
+                            switchTable.setValueAt("-" + (26 - c) + "-", 1, c);
+                        }
+                        break;
+                    case 4:
+                        for (int c = 0; c < 26; c++) {
+                            switchTable.setValueAt(atbash[1][c], 1, c);
+                            switchTable.setValueAt("" + (26 - c), 0, c);
+                        }
+                        break;
+                    case 5:
                         for (int r = 0; r < 2; r++) {
                             for (int c = 0; c < 26; c++) {
                                 switchTable.setValueAt("", r, c);
                             }
                         }
                         break;
-                    case 4:
+                    case 6:
                         for (int c = 0; c < 26; c++) {
                             switchTable.setValueAt("", 1, c);
                         }

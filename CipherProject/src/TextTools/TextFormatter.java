@@ -39,7 +39,6 @@ public class TextFormatter {
     public static String numsToLetters(String text) {
         StringBuffer newText = new StringBuffer(text);
         int n = 0;
-        boolean isTwoDNum = false;
         while (n < newText.length()) {
             if (Character.isDigit(newText.charAt(n))) {
                 if (n < newText.length() - 1 && Character.isDigit(newText.charAt(n + 1)) && Integer.parseInt(newText.substring(n, n + 2)) < 26) {
@@ -47,7 +46,7 @@ public class TextFormatter {
                 } else {
                     newText.replace(n, n + 1, alphabet[Integer.parseInt(newText.substring(n, n + 1))]);
                 }
-            }
+            } 
             n++;
         }
         return newText.toString();
@@ -84,8 +83,8 @@ public class TextFormatter {
                 return text.replaceAll("[^a-zA-Z\\s\\d]", "");
             case ONLY_LETTERS:
                 return text.replaceAll("[^a-zA-Z]", "");
-            case NUMS_TO_LETTERS:
-                return numsToLetters(text);
+            //case NUMS_TO_LETTERS:
+               // return numsToLetters(text);
             case GROUP:
                 int groupNum = 0;
                 String input = JOptionPane.showInputDialog(null, "Enter the group length:", "Group Text", JOptionPane.PLAIN_MESSAGE);

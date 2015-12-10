@@ -1,8 +1,6 @@
 package TextTools;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import javax.swing.JTable;
 
 public class Crypter {
 
@@ -10,9 +8,11 @@ public class Crypter {
         0.1586208, 0.47971968000000004, 0.54836352, 0.01204416, 0.06077184, 0.316848, 0.18940032, 0.53128128, 0.59095104, 0.15185088,
         0.0074784, 0.47129664, 0.49806143999999997, 0.71288832, 0.21710975999999998, 0.07698816, 0.18585792, 0.011807999999999999,
         0.15539328, 0.0058252799999999995};
-    
+
     private static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
     private static String[] specialCases = {"qu", "wr", "ph", "kn", "th", "sh", "fr", "sw", "gl", "sm", "wy"};
+
+    public static final int VERTICAL = 0, DIAGONAL = 1, HORIZONTAL = 2;
 
     private Crypter() {
     }
@@ -151,12 +151,12 @@ public class Crypter {
                 break;
             }
         }
-        if(dashIndex == 0) {
+        if (dashIndex == 0) {
             return word;
         }
         int prefixEnd = 0;
         for (int i = dashIndex + 1; i < word.length(); i++) {
-            if(vwls.contains(word.charAt(i))) {
+            if (vwls.contains(word.charAt(i))) {
                 prefixEnd = i;
                 break;
             }
@@ -184,10 +184,11 @@ public class Crypter {
                 if (Character.isLetter(pigText.charAt(n)) || pigText.charAt(n) == '\'' || pigText.charAt(n) == '-') {
                     n++;
                     if (n > pigText.length() - 1) {
-                        if (encrypt)
+                        if (encrypt) {
                             pigText.replace(startIndex, n, wordToPigLatin(pigText.substring(startIndex, n), sp, vwls));
-                        else 
+                        } else {
                             pigText.replace(startIndex, n, wordFromPigLatin(pigText.substring(startIndex, n), sp, vwls));
+                        }
                         moreWords = false;
                         inAWord = false;
                     }
@@ -197,7 +198,7 @@ public class Crypter {
                         newWord = wordToPigLatin(pigText.substring(startIndex, n), sp, vwls);
                     } else {
                         newWord = wordFromPigLatin(pigText.substring(startIndex, n), sp, vwls);
-                    }    
+                    }
                     pigText.replace(startIndex, n, newWord);
                     n = startIndex + newWord.length();
                     inAWord = false;
@@ -222,11 +223,11 @@ public class Crypter {
      * if (Character.isLetter(text.charAt(n))) {
      * currentWord.append(text.charAt(n)); } else if (currentWord.length() >= 1)
      * { words.add(currentWord.toString()); currentWord.delete(0,
-     * currentWord.length()); } 
+     * currentWord.length()); }
      */
     /**
-     * Shift the nth letters of the text by an 1 in either direction.  Does not
-     * count spaces.  Counts all but spaces.
+     * Shift the nth letters of the text by an 1 in either direction. Does not
+     * count spaces. Counts all but spaces.
      *
      * @param text: text to be analyzed
      * @param n: index to start at
@@ -327,24 +328,141 @@ public class Crypter {
         return frequency;
     }
 
-    public static String createBox(int rows, int cols, String text) {
-        StringBuilder boxText = new StringBuilder();
-        text = text.replaceAll("\\s", "");
-        if (cols < text.length() && rows < text.length()) {
-            int rowNum = 0;
-            while(rowNum < rows && (rowNum + 1) * cols <= text.length()) {
-                boxText.append(TextFormatter.formatText(text.substring(cols * rowNum, cols * (rowNum + 1)), TextFormatter.SPECIAL_FORMAT));
-                boxText.append("\n");
-                rowNum++;
-            }
-            try {
-                boxText.append("\n");
-                boxText.append(TextFormatter.formatText(text.substring(rowNum * cols), TextFormatter.SPECIAL_FORMAT));
-            } catch (Exception e) {
-                //do nothing
-            }
-        } else {
-            return TextFormatter.formatText(text, TextFormatter.SPECIAL_FORMAT);
+    /**
+     * Create a box from the given string.  It accounts for if the given size needs more letters than
+     * the text can provide.  If the box size does not account for all the letters, the extra text is
+     * not included in the  box.
+     * @param str: text to analyze
+     * @param rows: rows the box should have
+     * @param cols: amount of columns that the box should have.
+     * @param orientation: how the text should be added to the box (horizontal, vertical, or diagonal)
+     * @param lToR: if the text should be added from left to right or right to left
+     * @param tToB: if the text should be added from the bottom to the top or the top to the bottom.
+     * @return 
+     */
+    public static char[][] createBox(String str, int rows, int cols, int orientation, boolean lToR, boolean tToB) {
+        StringBuffer text = new StringBuffer(str.toUpperCase().replaceAll("\\s", ""));
+        if (cols > text.length()) {
+            cols = text.length();
+            rows = 1;
+        } else if (rows > text.length()) {
+            rows = text.length();
+            cols = 1;
+        } else if (rows * cols > text.length()) {
+            rows = text.length() / cols;
+        }   
+        if (text.length() > rows * cols) {
+            text.replace(0, text.length(), text.substring(0, rows * cols));
+        }         
+        char[][] box = getBoxArray(rows, cols, orientation, text.toString(), lToR, tToB);
+        return box;
+    }
+
+    /**
+     * SPACES DO NOT NEED TO BE REMOVED BEFOREHAND
+     * prereq: text length == boxlength
+     */
+    private static char[][] getBoxArray(int rows, int cols, int orientation, String text, boolean lToR, boolean tToB) {
+        text = text.replaceAll("\\s", "").toUpperCase();
+        char[][] box = new char[rows][cols];
+        int startCol = 0, cChangeAmt = 1, startRow = 0, rChangeAmt = 1, n = 0;
+        if (!lToR) {
+            startCol = cols - 1;
+            cChangeAmt = -1;
+        }
+        if (!tToB) {
+            startRow = rows - 1;
+            rChangeAmt = -1;
+        }
+        switch (orientation) {
+            case DIAGONAL:
+                int currentCol = startCol, currentRow = startRow;
+                while (n < cols * rows) {
+                    int r = currentRow;
+                    int c = currentCol;
+                    while (r < rows && r >= 0 && c < cols && c >= 0) {
+                        box[r][c] = text.charAt(n);
+                        r += rChangeAmt;
+                        c -= cChangeAmt;
+                        n++;
+                    }
+                    if ((lToR && currentCol == cols - 1) || (!lToR && currentCol == 0)) {
+                        currentRow += rChangeAmt;
+                    } else {
+                        currentCol += cChangeAmt;
+                        currentRow = startRow;
+                    }
+                }
+                break;
+           case HORIZONTAL:
+                for (int r = startRow; r < rows && r >= 0; r += rChangeAmt) {
+                    for (int c = startCol; c < cols && c >= 0; c += cChangeAmt) {
+                        box[r][c] = text.charAt(n);
+                        n++;
+                    }
+                }
+                break;
+            case VERTICAL:
+                for (int c = startCol; c < cols && c >= 0; c += cChangeAmt) {
+                    for (int r = startRow; r < rows && r >= 0; r += rChangeAmt) {
+                        box[r][c] = text.charAt(n);
+                        n++;
+                    }
+                }
+                break;
+        }
+        return box;
+    }
+    
+    public static String readBoxArray(char[][] box, int orientation, boolean lToR, boolean tToB) {
+        int rows = box.length;
+        int cols = box[0].length;
+        StringBuffer boxText = new StringBuffer(rows * cols);
+        int startCol = 0, cChangeAmt = 1, startRow = 0, rChangeAmt = 1, n = 0;
+        if (!lToR) {
+            startCol = cols - 1;
+            cChangeAmt = -1;
+        }
+        if (!tToB) {
+            startRow = rows - 1;
+            rChangeAmt = -1;
+        }
+        switch (orientation) {
+            case DIAGONAL:
+                int currentCol = startCol, currentRow = startRow;
+                while (n < cols * rows) {
+                    int r = currentRow;
+                    int c = currentCol;
+                    while (r < rows && r >= 0 && c < cols && c >= 0) {
+                        boxText.append(box[r][c]);
+                        r += rChangeAmt;
+                        c -= cChangeAmt;
+                        n++;
+                    }
+                    if ((lToR && currentCol == cols - 1) || (!lToR && currentCol == 0)) {
+                        currentRow += rChangeAmt;
+                    } else {
+                        currentCol += cChangeAmt;
+                        currentRow = startRow;
+                    }
+                }
+                break;
+           case HORIZONTAL:
+                for (int r = startRow; r < rows && r >= 0; r += rChangeAmt) {
+                    for (int c = startCol; c < cols && c >= 0; c += cChangeAmt) {
+                        boxText.append(box[r][c]);
+                        n++;
+                    }
+                }
+                break;
+            case VERTICAL:
+                for (int c = startCol; c < cols && c >= 0; c += cChangeAmt) {
+                    for (int r = startRow; r < rows && r >= 0; r += rChangeAmt) {
+                        boxText.append(box[r][c]);
+                        n++;
+                    }
+                }
+                break;
         }
         return boxText.toString();
     }

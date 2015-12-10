@@ -14,7 +14,7 @@ import javax.swing.event.CaretListener;
 
 public class MenuBar extends JMenuBar {
 
-    private JMenuItem[] switchItems = new JMenuItem[6], fileItems = new JMenuItem[5], formatItems = new JMenuItem[11];
+    private JMenuItem[] switchItems = new JMenuItem[6], fileItems = new JMenuItem[5], formatItems = new JMenuItem[9];
     private JFrame frame;
     private JTextArea textArea;
     private String beforeFormat = "Enter text here.";
@@ -73,12 +73,12 @@ public class MenuBar extends JMenuBar {
         JMenu formatMenu = new JMenu("Edit");
         String[] formatNames = {"Spaces", "Punctuation", "Numbers", "Upper", "Lower", 
             "Autoformat", "Undo Formatting", "All non-text",
-            "Numbers to Letters", "Group", "Font Size"
+            "Group", //"Font Size"
         };
         int[] formatNums = {
             TextFormatter.NO_SPACES, TextFormatter.NO_PUNCTUATION, TextFormatter.NO_NUMBERS, TextFormatter.UPPERCASE, 
             TextFormatter.LOWERCASE, TextFormatter.SPECIAL_FORMAT, 100, TextFormatter.ONLY_LETTERS, 
-            TextFormatter.NUMS_TO_LETTERS, TextFormatter.GROUP, TextFormatter.CHANGE_TEXT_SIZE
+            TextFormatter.GROUP, //TextFormatter.CHANGE_TEXT_SIZE
         };
         for (int i = 0; i < formatItems.length; i++) {
             formatItems[i] = new JMenuItem(formatNames[i]);
@@ -95,8 +95,8 @@ public class MenuBar extends JMenuBar {
         formatMenu.add(removeMenu);
         formatMenu.add(caseMenu);
         formatMenu.add(formatItems[5]);
+       // formatMenu.add(formatItems[8]);
         formatMenu.add(formatItems[8]);
-        formatMenu.add(formatItems[9]);
      //   formatMenu.add(formatItems[10]);
         formatMenu.add(formatItems[6]);
         this.add(formatMenu);
