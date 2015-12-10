@@ -221,7 +221,7 @@ public class BoxCipherGui extends MyGUI {
                 if (rows != 0 && cols != 0) {
                     box = Crypter.createBox(originalTextArea.getText(), rows, cols, boxOrientation, leftToRight, topToBottom);
                     String extra = " ";
-                    if (box.length * box[0].length < originalTextArea.getText().length()) {
+                    if (box.length * box[0].length < originalTextArea.getText().replaceAll("\\s", "").length()) {
                         extra = originalTextArea.getText().replaceAll("\\s", "").substring(box.length * box[0].length);
                         extra = TextFormatter.formatText(extra, TextFormatter.SPECIAL_FORMAT);
                     }
@@ -239,7 +239,8 @@ public class BoxCipherGui extends MyGUI {
                 }
             } else if (e.getSource().equals(readText)) {
                 if (box.length > 0) 
-                    newTextArea.setText(Crypter.readBoxArray(box, readOrientation, readLeftToRight, readTopToBottom));
+                    newTextArea.setText(TextFormatter.formatText(Crypter.readBoxArray(box, readOrientation, readLeftToRight, readTopToBottom), 
+                            TextFormatter.SPECIAL_FORMAT));
                 else
                     newTextArea.setText("Create a box first.");
             } //end of if-statements

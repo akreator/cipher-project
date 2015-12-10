@@ -21,7 +21,7 @@ public class Properties {
         { //default colors
             new Color(214, 217, 223), new Color(51, 98, 140), new Color(115, 164, 209),
             Color.BLACK, Color.WHITE, new Color(57, 105, 138),
-            Color.WHITE, Color.WHITE, new Color (169, 176, 190),
+            Color.WHITE, Color.WHITE, new Color(169, 176, 190),
             Color.WHITE, Color.WHITE }, 
         { //hacker colors
             new Color(42, 46, 42), Color.BLACK, Color.GREEN, 
@@ -44,8 +44,8 @@ public class Properties {
             new Color(255, 145, 0), Color.WHITE, new Color(252, 177, 91),
             new Color(255, 175, 46), Color.WHITE }, 
         { //simple
-           Color.WHITE, Color.GRAY, Color.BLACK,
-           Color.BLACK, Color.WHITE, Color.BLACK,
+           Color.WHITE, Color.GRAY, Color.BLACK, 
+           Color.BLACK, Color.WHITE, Color.BLACK, 
            Color.WHITE, Color.WHITE, Color.GRAY,
            Color.GRAY, Color.WHITE }, 
     };
