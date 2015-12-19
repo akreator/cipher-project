@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class VigenereKnownGui extends MyGUI {
 
-    private JTextField keywordField;
+    private static JTextField keywordField = new JTextField("keyword", 20);;
     private JButton encipherButton, decryptButton;
 
     public VigenereKnownGui() {
@@ -28,7 +28,6 @@ public class VigenereKnownGui extends MyGUI {
         JScrollPane scrollText = new JScrollPane(originalTextArea);
         newTextArea = new MyTextArea(7, 25, false, true);
         JScrollPane nscrollText = new JScrollPane(newTextArea);
-        keywordField = new JTextField("keyword", 20);
         encipherButton = new JButton(" Encrypt text ");
         encipherButton.addActionListener(new VigenereListener());
         decryptButton = new JButton(" Decrypt text ");
@@ -63,7 +62,14 @@ public class VigenereKnownGui extends MyGUI {
         frame.add(northPane, BorderLayout.NORTH);
         frame.add(centerPane);
         frame.add(southPane, BorderLayout.SOUTH);
-
+    }
+    
+    public static String getKeyword() {
+        return keywordField.getText();
+    }
+    
+    public static void setKeyword(String kw) {
+        keywordField.setText(kw);
     }
 
     class VigenereListener implements ActionListener {

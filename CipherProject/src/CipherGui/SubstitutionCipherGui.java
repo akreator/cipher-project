@@ -32,7 +32,13 @@ public class SubstitutionCipherGui extends MyGUI {
     private FrequencyTable messageTable, standardTable;
     private String[] columnNames = {"Letters", "Frequency(%)"};
     private Object[][] messageFrequency;
-    private String[][] replacements;
+    private static String[][] replacements = {
+        {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""},
+        {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, 
+        {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""},
+        {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}
+
+    };
     private JTable switchTable;
     private JComboBox analyzeOptions, defaultOptions;
 
@@ -80,7 +86,7 @@ public class SubstitutionCipherGui extends MyGUI {
         tablePane.add(messagePane);
 
         //input table
-        enter = new JButton("Enter");
+        enter = new JButton("Save & Enter");
         enter.addActionListener(new SubstitutionListener());
         String[] defaultStrings = {
             "Autofill Options...", "Alphabet Top Row", "Atbash", "A1Z26 (to numbers)", "A1Z26 (to letters)", "Clear All", "Clear Bottom Row"
@@ -90,8 +96,9 @@ public class SubstitutionCipherGui extends MyGUI {
         
         String[][] filler = new String[2][26];
         for (int i = 0; i < 26; i++) {
-            filler[0][i] = "";
-            filler[1][i] = "";
+            filler[0][i] = replacements[i][1];
+            filler[1][i] = replacements[i][0];
+            System.out.println(filler[0][i] + ", " + filler[1][i]);
         }
         
         switchTable = new JTable(filler, filler[1]);
@@ -129,7 +136,6 @@ public class SubstitutionCipherGui extends MyGUI {
     }
 
     public void updateReplacements() {
-        replacements = new String[26][2];
         for (int i = 0; i < 26; i++) {
             if (switchTable.getValueAt(0, i) != null) {
                 //the top row is what to look for in the text; the bottom row is the characters replacement characters for that text
@@ -138,6 +144,19 @@ public class SubstitutionCipherGui extends MyGUI {
                 replacements[i][1] = (switchTable.getValueAt(0, i).toString().toLowerCase());
             }
         }
+    }
+    
+    /**
+     * Return replacements, synced from last update (!!)
+     * IF YOU MAKE CHANGES AND DON'T TEST THEM, THE CHANGES WILL NOT BE SAVED
+     * @return 
+     */
+    public static String[][] getReplacements() {
+        return replacements;
+    }
+    
+    public static void setReplacements(String[][] r) {
+        replacements = r;
     }
 
     class SubstitutionListener implements ActionListener {

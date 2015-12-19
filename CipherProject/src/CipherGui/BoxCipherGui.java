@@ -19,8 +19,8 @@ public class BoxCipherGui extends MyGUI {
     private JButton generateSides, createBox, readText;
     private JTextField row, col;
     private MyTextArea sideCombos, boxArea;
-    private boolean topToBottom = true, leftToRight = true, readTopToBottom = true, readLeftToRight = true;
-    private int boxOrientation = Crypter.HORIZONTAL, readOrientation = Crypter.HORIZONTAL;
+    private static boolean topToBottom = true, leftToRight = true, readTopToBottom = true, readLeftToRight = true;
+    private static int boxOrientation = Crypter.HORIZONTAL, readOrientation = Crypter.HORIZONTAL;
     private char[][] box = new char[0][0];
     
     public BoxCipherGui() {
@@ -77,12 +77,13 @@ public class BoxCipherGui extends MyGUI {
             { "1", "2" },
             { "3", "4" }
         };
-        String[] labels = { "Orientation:", "Horizontal direction:", "Vertical direction:" };        
+        String[] labels = { "Orientation:", "Horizontal direction:", "Vertical direction:" };   
+        int[] selections = { boxOrientation, truthToNum(leftToRight), truthToNum(topToBottom) };
         JPanel boxSettingsPane = new JPanel();
         boxSettingsPane.setLayout(new BoxLayout(boxSettingsPane, BoxLayout.LINE_AXIS));
         boxSettingsPane.add(sidePane);
         boxSettingsPane.add(rcPane);
-        boxSettingsPane.add(createSettingsPane(labels, names, actionCommands, false));
+        boxSettingsPane.add(createSettingsPane(labels, names, actionCommands, false, selections));
         
         //BoxPane
         JPanel bottomPane = new JPanel();
@@ -103,7 +104,8 @@ public class BoxCipherGui extends MyGUI {
             {"11", "12"},
             {"13", "14"}
         };
-        readingsPane.add(createSettingsPane(labels, names, rActionCommands, false));
+        int[] rSelections = { readOrientation, truthToNum(readLeftToRight), truthToNum(readTopToBottom)};
+        readingsPane.add(createSettingsPane(labels, names, rActionCommands, false, rSelections));
         readText = new JButton("Read text");
         readText.addActionListener(new BoxActionListener());
         readingsPane.add(readText);
@@ -139,13 +141,13 @@ public class BoxCipherGui extends MyGUI {
         frame.setJMenuBar(new MenuBar(frame, originalTextArea));
     }
     
-    private JPanel createJRadioButtonGroup(String[] names, String[] actionCommands) {
+    private JPanel createJRadioButtonGroup(String[] names, String[] actionCommands, int selected) {
         JPanel bP = new JPanel();
         bP.setLayout(new BoxLayout(bP, BoxLayout.PAGE_AXIS));
         ButtonGroup bg = new ButtonGroup();
         for (int i = 0; i < names.length; i++) {
             JRadioButton b = new JRadioButton(names[i]);
-            if(i == 0) 
+            if(i == selected) 
                 b.setSelected(true);
             b.addActionListener(new BoxActionListener());
             b.setActionCommand(actionCommands[i]);
@@ -155,7 +157,7 @@ public class BoxCipherGui extends MyGUI {
         return bP;
     }
     
-    private JPanel createSettingsPane(String[] labels, String[][] names, String[][] actionCommands, boolean vertical) {
+    private JPanel createSettingsPane(String[] labels, String[][] names, String[][] actionCommands, boolean vertical, int[] selections) {
         JPanel settingsPane = new JPanel();
         if (vertical)
             settingsPane.setLayout(new BoxLayout(settingsPane, BoxLayout.PAGE_AXIS));
@@ -165,11 +167,40 @@ public class BoxCipherGui extends MyGUI {
             JPanel pane = new JPanel();
             pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
             pane.add(new JLabel(labels[i]));
-            pane.add(createJRadioButtonGroup(names[i], actionCommands[i]));
+            pane.add(createJRadioButtonGroup(names[i], actionCommands[i], selections[i]));
             settingsPane.add(pane);
             settingsPane.add(Box.createRigidArea(new Dimension(10, 10)));
         }
         return settingsPane;
+    }
+    
+    public static boolean[] getSettings() {
+        boolean[] settings = { topToBottom, leftToRight, readTopToBottom, readLeftToRight};
+        return settings;
+    }
+    
+    public static int[] getOrientation() {
+        int[] orientations = { boxOrientation, readOrientation };
+        return orientations;
+    }
+    
+    public static void setOrientation(int[] n) {
+        boxOrientation = n[0];
+        readOrientation = n[1];
+    }
+    
+    public static void setSettings(boolean[] settings) {
+        topToBottom = settings[0];
+        leftToRight = settings[1];
+        readTopToBottom = settings[2];
+        readLeftToRight = settings[3];
+    }
+    
+    public int truthToNum(boolean truth) {
+        if (truth)
+            return 0;
+        else
+            return 1;
     }
 
     class BoxActionListener implements ActionListener {   

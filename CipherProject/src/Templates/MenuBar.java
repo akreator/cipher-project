@@ -1,6 +1,5 @@
 package Templates;
 
-
 import CipherGui.*;
 import TextTools.*;
 import java.awt.Color;
@@ -73,12 +72,12 @@ public class MenuBar extends JMenuBar {
         JMenu formatMenu = new JMenu("Edit");
         String[] formatNames = {"Spaces", "Punctuation", "Numbers", "Upper", "Lower", 
             "Autoformat", "Undo Formatting", "All non-text",
-            "Group", //"Font Size"
+            "Group", 
         };
         int[] formatNums = {
             TextFormatter.NO_SPACES, TextFormatter.NO_PUNCTUATION, TextFormatter.NO_NUMBERS, TextFormatter.UPPERCASE, 
             TextFormatter.LOWERCASE, TextFormatter.SPECIAL_FORMAT, 100, TextFormatter.ONLY_LETTERS, 
-            TextFormatter.GROUP, //TextFormatter.CHANGE_TEXT_SIZE
+            TextFormatter.GROUP
         };
         for (int i = 0; i < formatItems.length; i++) {
             formatItems[i] = new JMenuItem(formatNames[i]);
@@ -95,9 +94,7 @@ public class MenuBar extends JMenuBar {
         formatMenu.add(removeMenu);
         formatMenu.add(caseMenu);
         formatMenu.add(formatItems[5]);
-       // formatMenu.add(formatItems[8]);
         formatMenu.add(formatItems[8]);
-     //   formatMenu.add(formatItems[10]);
         formatMenu.add(formatItems[6]);
         this.add(formatMenu);
     }
@@ -136,24 +133,13 @@ public class MenuBar extends JMenuBar {
                 formatting = false;
             } else if (formatNum == 100) {
                 textArea.setText(beforeFormat);
-            } else if (formatNum == TextFormatter.CHANGE_TEXT_SIZE) {
-                int amt = 0;
-                String input = JOptionPane.showInputDialog(null, "New font size:",
-                        "Change font size", JOptionPane.PLAIN_MESSAGE);
-                try {
-                    amt = Integer.parseInt(input);
-                    MyTextArea.setFontSize(amt);
-                    MyGUI.updateTextAreas();
-                } catch (NumberFormatException n) {
-                    JOptionPane.showMessageDialog(null, "Sorry, that is not a valid number", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+            } 
         }
     }
 
     class FileListener implements ActionListener {
         int fileNum;
-        public FileListener(int n) {
+        public FileListener(int n) {            
             fileNum = n;
         }
         @Override
@@ -165,6 +151,12 @@ public class MenuBar extends JMenuBar {
                     JOptionPane.showMessageDialog(frame, "Designed and coded by Asch."
                             + "\nPlease send any feedback or questions to akreator0@gmail.com",
                             "Credits", JOptionPane.PLAIN_MESSAGE);
+                    break;
+                case 2:
+                    MyGUI.save();
+                    break;
+                case 3:
+                    MyGUI.load();
                     break;
                 case 4:
                     frame.dispose();

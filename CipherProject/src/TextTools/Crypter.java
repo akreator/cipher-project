@@ -12,7 +12,7 @@ public class Crypter {
     private static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
     private static String[] specialCases = {"qu", "wr", "ph", "kn", "th", "sh", "fr", "sw", "gl", "sm", "wy"};
 
-    public static final int VERTICAL = 0, DIAGONAL = 1, HORIZONTAL = 2;
+    public static final int HORIZONTAL = 0, VERTICAL = 1, DIAGONAL = 2;
 
     private Crypter() {
     }
@@ -220,12 +220,6 @@ public class Crypter {
     }
 
     /**
-     * if (Character.isLetter(text.charAt(n))) {
-     * currentWord.append(text.charAt(n)); } else if (currentWord.length() >= 1)
-     * { words.add(currentWord.toString()); currentWord.delete(0,
-     * currentWord.length()); }
-     */
-    /**
      * Shift the nth letters of the text by an 1 in either direction. Does not
      * count spaces. Counts all but spaces.
      *
@@ -328,6 +322,7 @@ public class Crypter {
         return frequency;
     }
 
+    //**OLD WAY TO ANALYZE
     /**
      * Create a box from the given string.  It accounts for if the given size needs more letters than
      * the text can provide.  If the box size does not account for all the letters, the extra text is
@@ -357,7 +352,7 @@ public class Crypter {
         char[][] box = getBoxArray(rows, cols, orientation, text.toString(), lToR, tToB);
         return box;
     }
-
+    
     /**
      * SPACES DO NOT NEED TO BE REMOVED BEFOREHAND
      * prereq: text length == boxlength
@@ -414,6 +409,15 @@ public class Crypter {
         return box;
     }
     
+    /**
+     * Traverse a 2D array with the specified modifications, and return a String
+     * of the array's contents.
+     * @param box the 2D array to be traversed
+     * @param orientation diagonal, vertical, horizontal
+     * @param lToR left to right
+     * @param tToB top to bottom
+     * @return String of array's contents in specified order
+     */
     public static String readBoxArray(char[][] box, int orientation, boolean lToR, boolean tToB) {
         int rows = box.length;
         int cols = box[0].length;
@@ -466,4 +470,5 @@ public class Crypter {
         }
         return boxText.toString();
     }
+       
 }

@@ -1,6 +1,5 @@
 package CipherGui;
 
-
 import Templates.MenuBar;
 import Templates.MyGUI;
 import Templates.MyTextArea;
@@ -26,7 +25,6 @@ public class VigenereGraphGui extends MyGUI {
     private JTextField patternField;
     
     private int gWidth, gHeight;
-
 
     public VigenereGraphGui(int n) {
         super(1200, 500, "Vignere Frequency Analysis");
@@ -60,7 +58,10 @@ public class VigenereGraphGui extends MyGUI {
         back = new JButton("Back");
         back.addActionListener(new VignereGuiListener());
         originalTextArea = new MyTextArea(7, 60, false, false);
-        originalTextArea.setText(TextFormatter.formatText(TextFormatter.formatText(originalTextArea.getText(), TextFormatter.ONLY_LETTERS), TextFormatter.SPECIAL_FORMAT));
+        originalTextArea.setText(TextFormatter.formatText(originalTextArea.getText(), TextFormatter.ONLY_LETTERS));
+        if (!originalTextArea.getText().isEmpty()) {
+            originalTextArea.setText(TextFormatter.formatText(originalTextArea.getText(), TextFormatter.SPECIAL_FORMAT));
+        }
         
         //initialize the JComboBox
         String[] graphNums = new String[patternLength + 1];
