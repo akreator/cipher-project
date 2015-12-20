@@ -157,6 +157,8 @@ public class MenuBar extends JMenuBar {
                     break;
                 case 3:
                     MyGUI.load();
+                    frame.dispose();
+                    new CaesarGui();
                     break;
                 case 4:
                     frame.dispose();

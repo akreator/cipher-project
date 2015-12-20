@@ -242,7 +242,7 @@ public class Crypter {
     }
 
     /**
-     * Returns the nth letters of the text.
+     * Returns the nth letters of the text.  Does not count spaces.
      *
      * @param text: text to analyze
      * @param n: starting index
@@ -250,6 +250,7 @@ public class Crypter {
      * @return : The nth letters of the text
      */
     public static String getNthLetters(String text, int n, int patternLength) {
+        text = text.replaceAll("\\s", "");
         char[] textArray = text.toCharArray();
         ArrayList<Character> newArray = new ArrayList();
         for (int i = n; i < textArray.length; i += patternLength) {

@@ -52,22 +52,22 @@ public abstract class MyGUI {
     }
     
     public static void save() {
-        String fileName = JOptionPane.showInputDialog(null, "Save as:", "Save", JOptionPane.PLAIN_MESSAGE);
-        File dir = new File("userData");
-        File file = new File(dir, fileName + ".txt");
-        System.out.println(file.getAbsolutePath());
+        JFileChooser fileChooser = new JFileChooser("userData");
+        fileChooser.showSaveDialog(null);
+        File file = fileChooser.getSelectedFile();
         int result = 0;
         PrintWriter output = null;
-        if (file.exists()) {
-            result = JOptionPane.showConfirmDialog(null, "A file with this name already exists.  Do you wish to overwrite it?", 
-                    "", JOptionPane.ERROR_MESSAGE);
-        } 
-        
         if (result == 0) {
+            if (file.exists()) {
+                result = JOptionPane.showConfirmDialog(null, "A file with this name already exists.  Do you wish to overwrite it?",
+                        "", JOptionPane.ERROR_MESSAGE);
+                if (result != 0)
+                    return;
+            }
             try {
-                output = new PrintWriter(fileName + ".txt");
+                output = new PrintWriter(file);
             } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null, "SOMETHING WENT WRONG ERROR 666");
+                JOptionPane.showMessageDialog(null, "There was an error loading the file.");
                 return;
             }
             if (originalTextArea != null) {
@@ -87,40 +87,43 @@ public abstract class MyGUI {
 
     public static void load() {
         JFileChooser fileChooser = new JFileChooser("..\\CipherProject\\userData");
-        fileChooser.showOpenDialog(null);
+        int result = fileChooser.showOpenDialog(null);
         File file = fileChooser.getSelectedFile();
         Scanner scan = null;
-        try {
-            scan = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "File not found.");
-        }
-       // try {
-            originalTextArea.setText(scan.nextLine() + "");
-            String[][] replacements = new String[26][2];
-            for (int i = 0; i < 26; i++) {
-                String first = scan.next();
-                replacements[i][0] = first.substring(1, first.length() - 1);
-                String second = scan.next();
-                replacements[i][1] = second.substring(0, second.length() - 1);
+        if (result == 0) {
+            try {
+                scan = new Scanner(file);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "An error has occured.");
+            }
+            try {
+                originalTextArea.setText(scan.nextLine() + "");
+                String[][] replacements = new String[26][2];
+                for (int i = 0; i < 26; i++) {
+                    String first = scan.next();
+                    replacements[i][0] = first.substring(1, first.length() - 1);
+                    String second = scan.next();
+                    replacements[i][1] = second.substring(0, second.length() - 1);
+                    scan.nextLine();
+                }
+                SubstitutionCipherGui.setReplacements(replacements);
+                boolean bSettings[] = new boolean[4];
+                for (int i = 0; i < 4; i++) {
+                    String b = TextFormatter.formatText(scan.next(), TextFormatter.ONLY_LETTERS);
+                    bSettings[i] = b.equals("true");
+                }
                 scan.nextLine();
+                BoxCipherGui.setSettings(bSettings);
+                int[] bOrientation = new int[2];
+                bOrientation[0] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
+                bOrientation[1] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
+                BoxCipherGui.setOrientation(bOrientation);
+                scan.nextLine();
+                VigenereKnownGui.setKeyword(scan.nextLine());
+                scan.close();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Sorry, this file does not have the correct format.");
             }
-            SubstitutionCipherGui.setReplacements(replacements);
-            boolean bSettings[] = new boolean[4];
-            for (int i = 0; i < 4; i++) {
-                String b = TextFormatter.formatText(scan.next(), TextFormatter.ONLY_LETTERS);
-                bSettings[i] = b.equals("true");
-            }
-            scan.nextLine();
-            BoxCipherGui.setSettings(bSettings);
-            int[] bOrientation = new int[2];
-            bOrientation[0] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
-            bOrientation[1] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
-            BoxCipherGui.setOrientation(bOrientation);
-            scan.nextLine();
-            VigenereKnownGui.setKeyword(scan.nextLine());
-        /*} catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Sorry, this file does not have the correct format.");
-        } */
+        } 
     }
 }
