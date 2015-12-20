@@ -5,7 +5,7 @@ package Templates;
  *
  * @author Audrey
  */
-public class History {
+public class History implements Comparable<History> {
     private String pattern;
     private int repetitions;
     private int shortestDistance;
@@ -33,5 +33,10 @@ public class History {
     public int getShortestDistance() {
         return shortestDistance;
     }
+
+    @Override
+    public int compareTo(History h) {
+        return repetitions - h.repetitions;
+    } 
     
 }

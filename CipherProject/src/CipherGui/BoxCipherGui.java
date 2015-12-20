@@ -5,7 +5,6 @@ import Templates.MyGUI;
 import Templates.MyTextArea;
 import TextTools.Calculations;
 import TextTools.Crypter;
-import static TextTools.Crypter.createBox;
 import TextTools.TextFormatter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -24,7 +23,7 @@ public class BoxCipherGui extends MyGUI {
     private char[][] box = new char[0][0];
     
     public BoxCipherGui() {
-        super(800, 570, "Transposition Cipher: Box");
+        super(800, 580, "Transposition Cipher: Box");
         init();
         frame.setVisible(true);
     }
@@ -44,7 +43,7 @@ public class BoxCipherGui extends MyGUI {
         JPanel sidePane = new JPanel();
         sidePane.setLayout(new BoxLayout(sidePane, BoxLayout.PAGE_AXIS));
         sidePane.add(new JLabel("Possible side lengths:\n  (rows, columns)"));
-        sideCombos = new MyTextArea(2, 3, false, true);
+        sideCombos = new MyTextArea(3, 3, false, true);
         JScrollPane sCPane = new JScrollPane(sideCombos);
         sidePane.add(sCPane);
         generateSides = new JButton("Generate possible side lengths");
@@ -92,7 +91,9 @@ public class BoxCipherGui extends MyGUI {
         boxPane.setLayout(new BoxLayout(boxPane, BoxLayout.PAGE_AXIS));
         boxPane.add(new JLabel("Box:"));
         boxArea = new MyTextArea(10, 15, false, true);
-        JScrollPane bPane = new JScrollPane(boxArea);
+        boxArea.setLineWrap(false);
+        JScrollPane bPane = new JScrollPane(boxArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         boxPane.add(bPane);
         bottomPane.add(boxPane);
         //readingsPane: contains settings for how the text is read, and the 
@@ -239,7 +240,7 @@ public class BoxCipherGui extends MyGUI {
                             sides.append(factors.get(factors.size() / 2) + ", " + factors.get(factors.size() / 2));
                         }
                 }
-                sideCombos.setText(sides.toString());
+                sideCombos.setText(sides.toString().trim());
             } else if (e.getSource().equals(createBox)) {
                 int rows = 0;
                 int cols = 0;

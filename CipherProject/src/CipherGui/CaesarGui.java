@@ -33,6 +33,10 @@ public class CaesarGui extends MyGUI {
         leftShift.addActionListener(new GraphGuiListener());
         enter = new JButton("Enter");
         enter.addActionListener(new GraphGuiListener());
+        
+        //prevent carrying over errors
+        newTextArea = new MyTextArea(5, 4, false, true);
+        newTextArea.setText("");
 
         JPanel bottom = new JPanel();
         bottom.add(leftShift);

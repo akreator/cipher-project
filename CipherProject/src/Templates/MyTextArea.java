@@ -1,18 +1,11 @@
  package Templates;
 
 
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.util.ArrayList;
-import javax.swing.JFrame;
 import javax.swing.JTextArea;
-import javax.swing.border.Border;
 
 public class MyTextArea extends JTextArea {
     private static int fontSize = 14;
-    public static ArrayList<MyTextArea> textAreas = new ArrayList<MyTextArea>();
     
     public MyTextArea(int r, int c, boolean editable, boolean dontCarryOverText) {
         super(MyGUI.getCipherText(), r, c);

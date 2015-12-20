@@ -24,9 +24,9 @@ public class VigenereKnownGui extends MyGUI {
     
     public void init() {
         //create items, add actionListeners
-        originalTextArea = new MyTextArea(7, 25, true, false);
+        originalTextArea = new MyTextArea(5, 25, true, false);
         JScrollPane scrollText = new JScrollPane(originalTextArea);
-        newTextArea = new MyTextArea(7, 25, false, true);
+        newTextArea = new MyTextArea(5, 25, false, true);
         JScrollPane nscrollText = new JScrollPane(newTextArea);
         encipherButton = new JButton(" Encrypt text ");
         encipherButton.addActionListener(new VigenereListener());

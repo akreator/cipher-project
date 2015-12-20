@@ -22,9 +22,9 @@ public class PigLatinGui extends MyGUI{
   
   private void init() {
     //create items, add actionListeners
-    originalTextArea = new MyTextArea(7, 25, true, false);
+    originalTextArea = new MyTextArea(5, 25, true, false);
     JScrollPane scrollText = new JScrollPane(originalTextArea);
-    newTextArea = new MyTextArea(7, 25, false, true);
+    newTextArea = new MyTextArea(5, 25, false, true);
     frame.add(newTextArea);
     JScrollPane nscrollText = new JScrollPane(newTextArea);
     encipherButton = new JButton(" To Pig Latin ");
@@ -66,9 +66,9 @@ public class PigLatinGui extends MyGUI{
     @Override
     public void actionPerformed(ActionEvent e) {
       if(e.getSource() == decryptButton)       
-        newTextArea.setText(Crypter.toPigLatin(originalTextArea.getText(), false));
+        newTextArea.setText(Crypter.pigLatin(originalTextArea.getText(), false));
       else if (e.getSource() == encipherButton)     
-        newTextArea.setText(Crypter.toPigLatin(originalTextArea.getText(), true));
+        newTextArea.setText(Crypter.pigLatin(originalTextArea.getText(), true));
     }
   }
 }

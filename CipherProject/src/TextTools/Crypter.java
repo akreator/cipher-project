@@ -1,6 +1,7 @@
 package TextTools;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Crypter {
 
@@ -128,6 +129,14 @@ public class Crypter {
         return newText;
     }
 
+    /**
+     * Translate one word to pig latin.  Word must have no punctuation or white
+     * space for it to make sense.
+     * @param word
+     * @param sp
+     * @param vwls
+     * @return 
+     */
     private static String wordToPigLatin(String word, ArrayList<String> sp, ArrayList<Character> vwls) {
         int prefixEnd = 0;
         if (word.equals("the")) {
@@ -143,6 +152,13 @@ public class Crypter {
         }
     }
 
+    /**
+     * Translate a word from pig latin to english
+     * @param word
+     * @param sp
+     * @param vwls
+     * @return 
+     */
     private static String wordFromPigLatin(String word, ArrayList<String> sp, ArrayList<Character> vwls) {
         int dashIndex = 0;
         for (int i = 0; i < word.length(); i++) {
@@ -164,8 +180,14 @@ public class Crypter {
         return word.substring(dashIndex + 1, prefixEnd) + word.substring(0, dashIndex);
     }
 
-    public static String toPigLatin(String text, boolean encrypt) {
-        ArrayList<Character> vwls = new ArrayList<Character>();
+    /**
+     * PIG LATIN ITCHES-BAY
+     * @param text text to mess with
+     * @param encrypt true: to pig latin, false: from pig latin
+     * @return 
+     */
+    public static String pigLatin(String text, boolean encrypt) {
+         ArrayList<Character> vwls = new ArrayList<Character>();
         ArrayList<String> sp = new ArrayList<String>();
         for (char v : vowels) {
             vwls.add(v);
@@ -175,6 +197,7 @@ public class Crypter {
         }
         text = text.trim().toLowerCase();
         StringBuffer pigText = new StringBuffer(text);
+        Scanner scan = new Scanner(text);
         boolean moreWords = true;
         boolean inAWord = true;
         int startIndex = 0;
