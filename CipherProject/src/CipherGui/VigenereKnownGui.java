@@ -17,16 +17,16 @@ public class VigenereKnownGui extends MyGUI {
     private JButton encipherButton, decryptButton;
 
     public VigenereKnownGui() {
-        super(900, 300, "Vignere Cipher");
+        super(750, 500, "Vignere Cipher");
         init();
         frame.setVisible(true);
     }
     
     public void init() {
         //create items, add actionListeners
-        originalTextArea = new MyTextArea(5, 25, true, false);
+        originalTextArea = new MyTextArea(5, 50, true, false);
         JScrollPane scrollText = new JScrollPane(originalTextArea);
-        newTextArea = new MyTextArea(5, 25, false, true);
+        newTextArea = new MyTextArea(5, 50, false, true);
         JScrollPane nscrollText = new JScrollPane(newTextArea);
         encipherButton = new JButton(" Encrypt text ");
         encipherButton.addActionListener(new VigenereListener());
@@ -54,7 +54,7 @@ public class VigenereKnownGui extends MyGUI {
 
         JPanel northPane = new JPanel();
         northPane.add(new JLabel("Original text:"));
-        northPane.add(Box.createRigidArea(new Dimension(400, 0)));
+        northPane.add(Box.createRigidArea(new Dimension(275, 0)));
         northPane.add(new JLabel("Changed text:"));
 
         //finally, add everything to the panel

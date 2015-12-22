@@ -1,11 +1,10 @@
 package CipherGui;
 
 import Templates.*;
-import TextTools.*;
+import TextTools.Crypter;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,138 +18,112 @@ import javax.swing.*;
  */
 public class PatternFinderGui extends MyGUI {
     private JButton enter, knownLength;
-    private JTextField lengthField;
     private ArrayList<History> patternHist = new ArrayList();
+    private MyTextArea patternArea;
+    private JComboBox possibleLengths;
     
     public PatternFinderGui() {
-        super(950, 300, "Vignere Cipher: Deciphering Tool");
+        super(700, 410, "Vignere Cipher: Deciphering Tool");
         init();
         frame.setVisible(true);
     }
     
     private void init() {
-        //create EVERY. SINGLE. LAST. THING.  JESUS.
-        enter = new JButton("Analyze Text");
-        knownLength = new JButton("Length determined");
-        enter.addActionListener(new PatternFinderListener());
-        knownLength.addActionListener(new PatternFinderListener());
-        lengthField = new JTextField("", 20);
-        JPanel fieldPane = new JPanel();
-        fieldPane.setPreferredSize(new Dimension(5, 5));
-        fieldPane.add(lengthField);
-        originalTextArea = new MyTextArea(5, 30, true, false);
         //fix carry over errors
         newTextArea = new MyTextArea(5, 4, false, true);
         newTextArea.setText("");
-        JLabel patternLabel = new JLabel("Length of pattern to look for:");
         
-        //pane holds the originalTextArea
-        JPanel pane = new JPanel();
-        pane.setLayout(new BoxLayout(pane, BoxLayout.LINE_AXIS));
-        pane.add(Box.createRigidArea(new Dimension(25, 0)));
-        JScrollPane scrollText = new JScrollPane(originalTextArea);
-        pane.add(scrollText);
-        pane.add(Box.createRigidArea(new Dimension(15, 0)));
-
-        JPanel bottomPane = new JPanel();
-
-        JPanel patternPane = new JPanel();
-        patternPane.setLayout(new BoxLayout(patternPane, BoxLayout.PAGE_AXIS));
-        patternPane.add(patternLabel);
-        patternPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        patternPane.add(lengthField);
-        patternPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        patternPane.add(enter);
+        //left side
+        JPanel leftPane = new JPanel();
+        leftPane.setLayout(new BoxLayout(leftPane, BoxLayout.PAGE_AXIS));
+        JLabel textLabel = new JLabel("Text:");
+        textLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        leftPane.add(textLabel);
+        originalTextArea = new MyTextArea(12, 24, true, false);
+        JScrollPane oPane = new JScrollPane(originalTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        leftPane.add(oPane);
         
-        JPanel buttonPane = new JPanel();
-        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));
-        buttonPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        buttonPane.add(knownLength);
-
-        bottomPane.add(patternPane);
-        bottomPane.add(Box.createRigidArea(new Dimension(25, 0)));
-        bottomPane.add(buttonPane);
-
-        JPanel northPane = new JPanel();
-        northPane.setPreferredSize(new Dimension(0, 15));
-        frame.add(northPane, BorderLayout.NORTH);
-        frame.add(pane);
-        frame.add(bottomPane, BorderLayout.SOUTH);
+        //pattern viewer
+        JPanel patterns = new JPanel();
+        patterns.setLayout(new BoxLayout(patterns, BoxLayout.PAGE_AXIS));
+        patterns.add(new JLabel("Patterns:"));
+        patternArea = new MyTextArea(4, 15, false, true);
+        JScrollPane pPane = new JScrollPane(patternArea);
+        pPane.setMaximumSize(new Dimension(400, 200));
+        patterns.add(pPane);
+        patterns.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        //pattern length
+        JPanel middlePane = new JPanel();
+        middlePane.setLayout(new BoxLayout(middlePane, BoxLayout.PAGE_AXIS));
+        JPanel pLengthPane = new JPanel();
+        pLengthPane.add(new JLabel("Pattern Length:"));
+        Integer[] options = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+        possibleLengths = new JComboBox(options);
+        pLengthPane.add(possibleLengths);
+        pLengthPane.setAlignmentY(Component.LEFT_ALIGNMENT);
+        pLengthPane.setMaximumSize(new Dimension(250, 50));
+        enter = new JButton("Search Text");
+        enter.addActionListener(new PatternFinderListener());
+        enter.setAlignmentX(Component.LEFT_ALIGNMENT);
+        pLengthPane.add(enter);
+        middlePane.add(pLengthPane);
+        middlePane.add(Box.createRigidArea(new Dimension(0, 25)));
+        knownLength = new JButton("Pattern Length Determined");
+        knownLength.addActionListener(new PatternFinderListener());
+        knownLength.setAlignmentX(Component.CENTER_ALIGNMENT);
+        middlePane.add(knownLength);
+        
+        //panel managing right side of window
+        JPanel rightPane = new JPanel();
+        rightPane.setLayout(new BoxLayout(rightPane, BoxLayout.PAGE_AXIS));
+        rightPane.add(patterns);
+        rightPane.add(middlePane);
+        rightPane.add(Box.createRigidArea(new Dimension(0, 25)));
+              
+        JPanel bigPane = new JPanel();
+        bigPane.setLayout(new BoxLayout(bigPane, BoxLayout.LINE_AXIS));
+        bigPane.add(leftPane);
+        bigPane.add(Box.createRigidArea(new Dimension(15, 0)));
+        bigPane.add(rightPane);
+        
+        frame.add(Box.createRigidArea(new Dimension(0, 15)), BorderLayout.SOUTH);
+        frame.add(Box.createRigidArea(new Dimension(0, 5)), BorderLayout.NORTH);
+        frame.add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.EAST);
+        frame.add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.WEST);
+        frame.add(bigPane);
         frame.setJMenuBar(new MenuBar(frame, originalTextArea));
-    }
-
-    public void autoFindPatterns(int length) {
-        ArrayList<String> patternsChecked = new ArrayList<String>();
-        String cText = originalTextArea.getText().toLowerCase().replaceAll("[^a-zA-Z]", "");
-        for (int startIndex = 0; startIndex < cText.length() - length; startIndex++) {
-            int previousIndex = startIndex;
-            int repetitions = 0, shortestDistance = Integer.MAX_VALUE;
-            String pattern = cText.substring(startIndex, startIndex + length);
-            if (!patternsChecked.contains(pattern) && cText.indexOf(pattern) != cText.lastIndexOf(pattern)) {
-                patternsChecked.add(pattern);
-                int i = cText.indexOf(pattern);
-                while (i != -1) {
-                    repetitions++;
-                    if (i - (previousIndex + length) >= 0) {
-                        shortestDistance = Math.min(shortestDistance, i - (previousIndex + length));
-                    }
-                    previousIndex = i;
-                    i = cText.indexOf(pattern, i + 1);
-                }
-                patternHist.add(new History(pattern, repetitions, shortestDistance));
-            }
-        }
     }
 
     public void checkHistory() {
         Arrays.sort(patternHist.toArray());
         //GUI
-        JFrame histWindow = new JFrame("Pattern history");
-        MyTextArea histText = new MyTextArea(10, 5, false, true);
-        JScrollPane histPane = new JScrollPane(histText, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        histText.setFont(new Font("", Font.PLAIN, 14));
+        StringBuffer histText = new StringBuffer();
         //Add everything to panel
         if (patternHist.size() == 0) { 
-            histText.insert("No patterns of that length found.", 0);
+            histText = new StringBuffer("No patterns of that length found.");
         }
         for (History h : patternHist) {
-            histText.insert("*** TRIAL #" + (patternHist.indexOf(h) + 1) + " ***\n", histText.getText().length());
-            histText.insert(h.getStats(), histText.getText().length());
+            histText.append("*** TRIAL #" + (patternHist.indexOf(h) + 1) + " ***\n");
+            histText.append(h.getStats());
         }
-        histText.setEditable(false);        
-        //GUI
-        JPanel northPane = new JPanel();
-        northPane.setPreferredSize(new Dimension(0, 15));
-        JPanel southPane = new JPanel();
-        southPane.setPreferredSize(new Dimension(0, 15));
-        JPanel eastPane = new JPanel();
-        eastPane.setPreferredSize(new Dimension(15, 0));
-        JPanel westPane = new JPanel();
-        westPane.setPreferredSize(new Dimension(15, 0));        
-        histWindow.add(histPane, BorderLayout.CENTER);
-        histWindow.add(northPane, BorderLayout.NORTH);
-        histWindow.add(southPane, BorderLayout.SOUTH);
-        histWindow.add(westPane, BorderLayout.WEST);
-        histWindow.add(eastPane, BorderLayout.EAST);
-        histWindow.setSize(450, 300);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        histWindow.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
-        histWindow.setVisible(true);
+        patternArea.setText(histText.toString());
     }
     
     class PatternFinderListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == enter) {
-                int n = 0;
-                try {
-                    n = Integer.parseInt("" + lengthField.getText());
-                    autoFindPatterns(n);
-                    checkHistory();
-                    patternHist.clear();
-                } catch (NumberFormatException m) {
-                    //do nothing
+                int n = possibleLengths.getSelectedIndex() + 2;
+                ArrayList<String> patterns = Crypter.autoFindPatterns(n, originalTextArea.getText().replaceAll("\\s", ""));
+                for (String p : patterns) {
+                    patternHist.add(new History(p.substring(0, p.indexOf(",")), 
+                            Integer.parseInt(p.substring(p.indexOf(",") + 1, p.lastIndexOf(","))), 
+                            Integer.parseInt(p.substring(p.lastIndexOf(",") + 1))));
                 }
+                checkHistory();
+                patternHist.clear();
             } else if (e.getSource() == knownLength) {
                 int j = 0;
                 boolean acceptNum = false;

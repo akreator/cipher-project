@@ -12,12 +12,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 public class CaesarGui extends MyGUI {
 
-    private JButton rightShift, leftShift, enter;
+    private JButton rightShift, leftShift;
     private GraphComp messageComp, standardComp;
-    private JLabel shiftLabel = new JLabel("Shift: " + 0);
 
     public CaesarGui() {
         super(945, 500, "Casesar Cipher");
@@ -31,8 +32,6 @@ public class CaesarGui extends MyGUI {
         rightShift.addActionListener(new GraphGuiListener());
         leftShift = new JButton("Shift left");
         leftShift.addActionListener(new GraphGuiListener());
-        enter = new JButton("Enter");
-        enter.addActionListener(new GraphGuiListener());
         
         //prevent carrying over errors
         newTextArea = new MyTextArea(5, 4, false, true);
@@ -44,15 +43,10 @@ public class CaesarGui extends MyGUI {
 
         //And now we jump to the north panel.  Because organization.
         originalTextArea = new MyTextArea(5, 75, true, false);
+        originalTextArea.addCaretListener(new CaesarTextListener());
         JScrollPane scrollText = new JScrollPane(originalTextArea);
         JPanel top = new JPanel();
         top.add(scrollText);
-        JPanel organizeTop = new JPanel();
-        organizeTop.setLayout(new BoxLayout(organizeTop, BoxLayout.PAGE_AXIS));
-        organizeTop.add(enter);
-        organizeTop.add(Box.createRigidArea(new Dimension(0, 15)));
-        organizeTop.add(shiftLabel);
-        top.add(organizeTop);
 
         //YOU THOUGHT THAT WAS BAD??
         //WELCOME TO THE SECOND LEVEL OF THE INFERNO: BOX LAYOUTS
@@ -70,6 +64,15 @@ public class CaesarGui extends MyGUI {
         frame.add(bottom, BorderLayout.SOUTH);
         frame.add(graphPane);
     }
+    
+    class CaesarTextListener implements CaretListener {
+        @Override
+        public void caretUpdate(CaretEvent e) {
+            String text = originalTextArea.getText();
+            messageComp.setMessage(text);
+            frame.repaint();
+        }        
+    }
 
     class GraphGuiListener implements ActionListener {
 
@@ -77,19 +80,10 @@ public class CaesarGui extends MyGUI {
             if (e.getSource() == leftShift) {
                 messageComp.shift(-1);
                 originalTextArea.setText(Crypter.shift(originalTextArea.getText(), -1));
-                shiftLabel.setText("Shift: " + messageComp.getShift());
                 frame.repaint();
-            }
-            if (e.getSource() == rightShift) {
+            }else if (e.getSource() == rightShift) {
                 messageComp.shift(1);
                 originalTextArea.setText(Crypter.shift(originalTextArea.getText(), 1));
-                shiftLabel.setText("Shift: " + messageComp.getShift());
-                frame.repaint();
-            }
-            if (e.getSource() == enter) {
-                String text = originalTextArea.getText();
-                messageComp.setMessage(text);
-                shiftLabel.setText("Shift: " + messageComp.getShift());
                 frame.repaint();
             }
         }//end of method

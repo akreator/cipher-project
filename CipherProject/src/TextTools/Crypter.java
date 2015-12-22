@@ -130,6 +130,40 @@ public class Crypter {
     }
 
     /**
+     * Searches text for patterns of a given length.  
+     * **INCLUDES SPACES!!!
+     * @param length
+     * @param text
+     * @return ArrayList of strings in format: pattern, repetitions, shortest distance
+     */
+    public static ArrayList<String> autoFindPatterns(int length, String text) {
+        ArrayList<String> stats = new ArrayList<String>();
+        ArrayList<String> patternsChecked = new ArrayList<String>();
+        String cText = text.toLowerCase();
+        for (int startIndex = 0; startIndex < cText.length() - length; startIndex++) {
+            int previousIndex = startIndex;
+            int repetitions = 0, shortestDistance = Integer.MAX_VALUE;
+            String pattern = cText.substring(startIndex, startIndex + length);
+            if (!patternsChecked.contains(pattern) && cText.indexOf(pattern) != cText.lastIndexOf(pattern)) {
+                patternsChecked.add(pattern);
+                int i = cText.indexOf(pattern);
+                while (i != -1) {
+                    repetitions++;
+                    if (i - (previousIndex + length) >= 0) {
+                        shortestDistance = Math.min(shortestDistance, i - (previousIndex + length));
+                    } else {
+                        shortestDistance = 0;
+                    }
+                    previousIndex = i;
+                    i = cText.indexOf(pattern, i + 1);
+                }
+                stats.add(pattern + "," + repetitions + "," + shortestDistance);
+            }
+        }
+        return stats;
+    }
+
+    /**
      * Translate one word to pig latin.  Word must have no punctuation or white
      * space for it to make sense.
      * @param word
