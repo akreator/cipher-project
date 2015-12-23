@@ -2,23 +2,28 @@ package CipherGui;
 
 import Templates.Properties;
 import Templates.MyGUI;
+import TextTools.Crypter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class PropertiesGui extends MyGUI {
+public class PropertiesGui {
 
-    private String[] language = {"English", "Latin", "French", "Spanish"};
     private JButton next;
     private JComboBox languageChoice;
     private static int selectedButton;
+    private JFrame frame;
 
     public PropertiesGui() {
-        super(300, 500, "Properties");
+        frame = new JFrame("Properties");
+        frame.setSize(300, 500);
         init();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
         frame.setResizable(false);
         frame.setVisible(true);
     }
@@ -27,7 +32,7 @@ public class PropertiesGui extends MyGUI {
         JPanel preferencesPane = new JPanel();
         preferencesPane.setLayout(new BoxLayout(preferencesPane, BoxLayout.PAGE_AXIS));
 
-        languageChoice = new JComboBox(language);
+        languageChoice = new JComboBox(Crypter.LANGUAGES);
         languageChoice.addActionListener(new PropertiesActionListener());
         JPanel languagePane = new JPanel();
         languagePane.add(new JLabel("Select a language:"));
@@ -67,7 +72,7 @@ public class PropertiesGui extends MyGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == languageChoice) {
-                Properties.setLanguage(language[languageChoice.getSelectedIndex()]);
+                Properties.setLanguage(languageChoice.getSelectedIndex());
             } else if (e.getSource().equals(next)) {
                 new CaesarGui();
                 frame.setVisible(false);

@@ -1,11 +1,12 @@
 package Templates;
 
+import TextTools.Crypter;
 import java.awt.Color;
 import javax.swing.*;
 
 public class Properties {
 
-    private static String language = "English";
+    private static int selectedLang = 0;
     private static Color textColor = Color.BLACK;
     private static Color textBackgroundColor = Color.WHITE;
     public static final int DEFAULT = 0, HACKER = 1, BLUE = 2, GREEN = 3, ORANGE = 4, SIMPLE = 5;
@@ -52,7 +53,7 @@ public class Properties {
 
     private Properties() {
     }
-
+    
     public static void setTheme(int theme) {
         for (int i = 0; i < themeColors[theme].length; i++) {
             UIManager.put(components[i], themeColors[theme][i]);
@@ -86,12 +87,16 @@ public class Properties {
         MyGUI.updateTextAreas();
     }
 
-    public static String getLanguage() {
-        return language;
+    public static int getLanguage() {
+        return selectedLang;
     }
 
-    public static void setLanguage(String language) {
-        Properties.language = language;
+    public static void setLanguage(int l) {
+        if (l >= Crypter.LANGUAGES.length || l < 0) {
+            selectedLang = 0;
+        } else {
+            selectedLang = l;
+        }
     }
 
     public static Color getTextAreaBG() {

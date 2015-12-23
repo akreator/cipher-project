@@ -36,6 +36,11 @@ public class TextFormatter {
         return new String(newText);
     }
 
+    /**
+     * Turns numbers to letters (a = 0, z = 25)
+     * @param text
+     * @return 
+     */
     public static String numsToLetters(String text) {
         StringBuffer newText = new StringBuffer(text);
         int n = 0;
@@ -83,8 +88,8 @@ public class TextFormatter {
                 return text.replaceAll("[^a-zA-Z\\s\\d]", "");
             case ONLY_LETTERS:
                 return text.replaceAll("[^a-zA-Z]", "");
-            //case NUMS_TO_LETTERS:
-               // return numsToLetters(text);
+            case NUMS_TO_LETTERS:
+                return numsToLetters(text);
             case GROUP:
                 int groupNum = 0;
                 String input = JOptionPane.showInputDialog(null, "Enter the group length:", "Group Text", JOptionPane.PLAIN_MESSAGE);

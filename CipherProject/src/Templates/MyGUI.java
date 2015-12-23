@@ -12,12 +12,13 @@ import java.util.Arrays;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-public abstract class MyGUI {
+public abstract class MyGUI extends JFrame {
     private static String cipherText;
     protected static MyTextArea originalTextArea, newTextArea;
     protected JFrame frame;
 
     public MyGUI(int width, int height, String title) {
+        super(title);
         if (newTextArea != null && !newTextArea.getText().equals("")) {
             cipherText = newTextArea.getText();
         } else if (originalTextArea != null && !originalTextArea.getText().equals("")){
@@ -25,11 +26,10 @@ public abstract class MyGUI {
         } else {
             cipherText = "Enter text here.";
         }
-        frame = new JFrame(title);
-        frame.setSize(width, height);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(width, height);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
+        setLocation(dim.width / 2 - getSize().width / 2, dim.height / 2 - getSize().height / 2);
     }
 
     public static void updateTextAreas() {
@@ -80,6 +80,7 @@ public abstract class MyGUI {
             }
             output.println(Arrays.toString(BoxCipherGui.getSettings()));
             output.println(Arrays.toString(BoxCipherGui.getOrientation()));
+            output.println(Arrays.toString(BoxCipherGui.getBoxSize()));
             output.println(VigenereKnownGui.getKeyword());
             output.close();
         }
@@ -112,12 +113,17 @@ public abstract class MyGUI {
                     String b = TextFormatter.formatText(scan.next(), TextFormatter.ONLY_LETTERS);
                     bSettings[i] = b.equals("true");
                 }
-                scan.nextLine();
                 BoxCipherGui.setSettings(bSettings);
+                scan.nextLine();
                 int[] bOrientation = new int[2];
                 bOrientation[0] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
                 bOrientation[1] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
                 BoxCipherGui.setOrientation(bOrientation);
+                scan.nextLine();
+                int[] bSize = new int[2];
+                bSize[0] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
+                bSize[1] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
+                BoxCipherGui.setBoxSize(bSize);
                 scan.nextLine();
                 VigenereKnownGui.setKeyword(scan.nextLine());
                 scan.close();
@@ -126,4 +132,14 @@ public abstract class MyGUI {
             }
         } 
     }
+    
+    public static void quit(){
+        System.exit(0);
+    }
+    
+    public JFrame getFrame() {
+        return frame;
+    }
+    
+    public abstract void refresh();
 }

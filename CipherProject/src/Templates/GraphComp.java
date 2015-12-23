@@ -1,4 +1,4 @@
-package CipherGui;
+package Templates;
 
 import TextTools.*;
 import java.awt.Graphics;
@@ -83,6 +83,7 @@ public class GraphComp extends JComponent {
      * @param g: Graphics component that the graph is drawn on.
    *
      */
+    @Override
     public void paintComponent(Graphics g) {
         g2 = (Graphics2D) g;
 
@@ -262,5 +263,14 @@ public class GraphComp extends JComponent {
     public int getShift() {
         return shiftNum;
     }
-
+    
+    public void setTitle(String title) {
+        graphTitle = title;
+        repaint();
+    }
+    
+    public void setFrequency(double[] frequency) {
+        letFrequency = frequency;
+        repaint();
+    }
 }

@@ -19,15 +19,15 @@ public class VigenereKnownGui extends MyGUI {
     public VigenereKnownGui() {
         super(750, 500, "Vignere Cipher");
         init();
-        frame.setVisible(true);
+        setVisible(true);
     }
     
-    public void init() {
+    private void init() {
         //create items, add actionListeners
         originalTextArea = new MyTextArea(5, 50, true, false);
-        JScrollPane scrollText = new JScrollPane(originalTextArea);
+        JScrollPane scrollText = new JScrollPane(originalTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         newTextArea = new MyTextArea(5, 50, false, true);
-        JScrollPane nscrollText = new JScrollPane(newTextArea);
+        JScrollPane nscrollText = new JScrollPane(newTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         encipherButton = new JButton(" Encrypt text ");
         encipherButton.addActionListener(new VigenereListener());
         decryptButton = new JButton(" Decrypt text ");
@@ -58,10 +58,10 @@ public class VigenereKnownGui extends MyGUI {
         northPane.add(new JLabel("Changed text:"));
 
         //finally, add everything to the panel
-        frame.setJMenuBar(new MenuBar(frame, originalTextArea));
-        frame.add(northPane, BorderLayout.NORTH);
-        frame.add(centerPane);
-        frame.add(southPane, BorderLayout.SOUTH);
+        setJMenuBar(new MenuBar(originalTextArea));
+        add(northPane, BorderLayout.NORTH);
+        add(centerPane);
+        add(southPane, BorderLayout.SOUTH);
     }
     
     public static String getKeyword() {
@@ -70,6 +70,11 @@ public class VigenereKnownGui extends MyGUI {
     
     public static void setKeyword(String kw) {
         keywordField.setText(kw);
+    }
+    
+    @Override
+    public void refresh() {
+        repaint();
     }
 
     class VigenereListener implements ActionListener {

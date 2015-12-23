@@ -5,8 +5,8 @@ import Templates.MenuBar;
 import Templates.FrequencyTable;
 import Templates.MyGUI;
 import Templates.MyTextArea;
+import Templates.Properties;
 import TextTools.Crypter;
-import TextTools.TextFormatter;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -20,18 +20,9 @@ import java.util.ArrayList;
  */
 public class SubstitutionCipherGui extends MyGUI {
 
-    private Object[][] standardFrequency = {
-        {"e", 12.702}, {"t", 9.056}, {"a", 8.167}, {"o", 7.507}, {"i", 6.966},
-        {"n", 6.749}, {"s", 6.327}, {"h", 6.094}, {"r", 5.987}, {"d", 4.253},
-        {"l", 4.025}, {"c", 2.782}, {"u", 2.758}, {"m", 2.406}, {"w", 2.361},
-        {"f", 2.228}, {"g", 2.015}, {"y", 1.974}, {"p", 1.929}, {"b", 1.492},
-        {"v", 0.978}, {"k", 0.772}, {"j", 0.153}, {"x", 0.150}, {"q", 0.095},
-        {"z", 0.74}
-    };
     private JButton enter;
     private FrequencyTable messageTable, standardTable;
     private String[] columnNames = {"Letters", "Frequency(%)"};
-    private Object[][] messageFrequency;
     private static String[][] replacements = {
         {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""},
         {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, {"", ""}, 
@@ -45,7 +36,7 @@ public class SubstitutionCipherGui extends MyGUI {
     public SubstitutionCipherGui() {
         super(945, 595, "Substitution Cipher");
         init();
-        frame.setVisible(true);
+        setVisible(true);
     }
 
     private void init() {
@@ -63,7 +54,7 @@ public class SubstitutionCipherGui extends MyGUI {
 
         // **** tablepane ****
         //standard table + label
-        standardTable = new FrequencyTable(standardFrequency, columnNames);
+        standardTable = new FrequencyTable(Crypter.getStandardFrequency(Properties.getLanguage()), columnNames);
         JScrollPane sPane = new JScrollPane(standardTable.createTable());
         JLabel sLabel = new JLabel("Standard Frequency of English Letters");
         JPanel standardPane = new JPanel();
@@ -98,7 +89,6 @@ public class SubstitutionCipherGui extends MyGUI {
         for (int i = 0; i < 26; i++) {
             filler[0][i] = replacements[i][1];
             filler[1][i] = replacements[i][0];
-            System.out.println(filler[0][i] + ", " + filler[1][i]);
         }
         
         switchTable = new JTable(filler, filler[1]);
@@ -122,17 +112,17 @@ public class SubstitutionCipherGui extends MyGUI {
 
         //southpane
         newTextArea = new MyTextArea(6, 70, false, true);
-        frame.add(newTextArea);
+        add(newTextArea);
         JScrollPane newScroll = new JScrollPane(newTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         JPanel southPane = new JPanel();
         southPane.add(newScroll);
 
-        frame.add(northPane, BorderLayout.NORTH);
-        frame.add(centerPane, BorderLayout.CENTER);
-        frame.add(southPane, BorderLayout.SOUTH);
-        frame.add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.WEST);
-        frame.add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.EAST);
-        frame.setJMenuBar(new MenuBar(frame, originalTextArea));
+        add(northPane, BorderLayout.NORTH);
+        add(centerPane, BorderLayout.CENTER);
+        add(southPane, BorderLayout.SOUTH);
+        add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.WEST);
+        add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.EAST);
+        setJMenuBar(new MenuBar(originalTextArea));
     }
 
     public void updateReplacements() {
@@ -157,6 +147,15 @@ public class SubstitutionCipherGui extends MyGUI {
     
     public static void setReplacements(String[][] r) {
         replacements = r;
+    }
+    
+    @Override
+    public void refresh() {
+        for (int i = 0; i < 26; i++) {
+            switchTable.setValueAt(replacements[i][0], 1, i);
+            switchTable.setValueAt(replacements[i][1], 0, i);
+        }
+        standardTable.updateTable(Crypter.getStandardFrequency(Properties.getLanguage()));        
     }
 
     class SubstitutionListener implements ActionListener {
@@ -231,11 +230,11 @@ public class SubstitutionCipherGui extends MyGUI {
                             array.add(r[1]);
                         messageTable.updateTable(Crypter.getSpecificMessageFrequency(originalTextArea.getText(), array));
                 }
-                frame.repaint();
+                repaint();
             } else if (e.getSource() == enter && !originalTextArea.getText().equals("") && originalTextArea.getText() != null) {
                 updateReplacements();
                 newTextArea.setText(Crypter.substitute(originalTextArea.getText(), replacements));
-                frame.repaint();
+                repaint();
             }
         }
     }

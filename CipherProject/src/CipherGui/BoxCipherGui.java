@@ -16,8 +16,10 @@ import javax.swing.*;
 public class BoxCipherGui extends MyGUI {
 
     private JButton generateSides, createBox, readText;
-    private JTextField row, col;
+    private static JTextField row = new JTextField(""), 
+                              col = new JTextField("");
     private MyTextArea sideCombos, boxArea;
+    private ArrayList<JRadioButton[]> boxButtons, readButtons;
     private static boolean topToBottom = true, leftToRight = true, readTopToBottom = true, readLeftToRight = true;
     private static int boxOrientation = Crypter.HORIZONTAL, readOrientation = Crypter.HORIZONTAL;
     private char[][] box = new char[0][0];
@@ -25,7 +27,7 @@ public class BoxCipherGui extends MyGUI {
     public BoxCipherGui() {
         super(800, 580, "Transposition Cipher: Box");
         init();
-        frame.setVisible(true);
+        setVisible(true);
     }
 
     public void init() {
@@ -78,11 +80,15 @@ public class BoxCipherGui extends MyGUI {
         };
         String[] labels = { "Orientation:", "Horizontal direction:", "Vertical direction:" };   
         int[] selections = { boxOrientation, truthToNum(leftToRight), truthToNum(topToBottom) };
+        boxButtons = new ArrayList<JRadioButton[]>();
+        for (int i = 0; i < names.length; i++) {
+            boxButtons.add(createJRadioButtonGroup(names[i], actionCommands[i], selections[i]));
+        }
         JPanel boxSettingsPane = new JPanel();
         boxSettingsPane.setLayout(new BoxLayout(boxSettingsPane, BoxLayout.LINE_AXIS));
         boxSettingsPane.add(sidePane);
         boxSettingsPane.add(rcPane);
-        boxSettingsPane.add(createSettingsPane(labels, names, actionCommands, false, selections));
+        boxSettingsPane.add(createSettingsPane(labels, false, boxButtons));
         
         //BoxPane
         JPanel bottomPane = new JPanel();
@@ -106,7 +112,11 @@ public class BoxCipherGui extends MyGUI {
             {"13", "14"}
         };
         int[] rSelections = { readOrientation, truthToNum(readLeftToRight), truthToNum(readTopToBottom)};
-        readingsPane.add(createSettingsPane(labels, names, rActionCommands, false, rSelections));
+        readButtons = new ArrayList<JRadioButton[]>();
+        for (int i = 0; i < labels.length; i++) {
+            readButtons.add(createJRadioButtonGroup(names[i], rActionCommands[i], rSelections[i]));
+        }
+        readingsPane.add(createSettingsPane(labels, false, readButtons));
         readText = new JButton("Read text");
         readText.addActionListener(new BoxActionListener());
         readingsPane.add(readText);
@@ -134,49 +144,67 @@ public class BoxCipherGui extends MyGUI {
         middlePane.add(Box.createRigidArea(new Dimension(0, 20)));
         middlePane.add(bottomPane);
 
-        frame.add(middlePane);
-        frame.add(Box.createRigidArea(new Dimension(0, 15)), BorderLayout.SOUTH);
-        frame.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.NORTH);
-        frame.add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.WEST);
-        frame.add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.EAST);
-        frame.setJMenuBar(new MenuBar(frame, originalTextArea));
+        add(middlePane);
+        add(Box.createRigidArea(new Dimension(0, 15)), BorderLayout.SOUTH);
+        add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.NORTH);
+        add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.WEST);
+        add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.EAST);
+        setJMenuBar(new MenuBar(originalTextArea));
     }
     
-    private JPanel createJRadioButtonGroup(String[] names, String[] actionCommands, int selected) {
-        JPanel bP = new JPanel();
-        bP.setLayout(new BoxLayout(bP, BoxLayout.PAGE_AXIS));
+    private JRadioButton[] createJRadioButtonGroup(String[] names, String[] actionCommands, int selected) {
+        JRadioButton[] buttons = new JRadioButton[names.length];
         ButtonGroup bg = new ButtonGroup();
         for (int i = 0; i < names.length; i++) {
             JRadioButton b = new JRadioButton(names[i]);
+            buttons[i] = b;
             if(i == selected) 
                 b.setSelected(true);
             b.addActionListener(new BoxActionListener());
             b.setActionCommand(actionCommands[i]);
             bg.add(b);
-            bP.add(b);
         }
-        return bP;
+        return buttons;
     }
     
-    private JPanel createSettingsPane(String[] labels, String[][] names, String[][] actionCommands, boolean vertical, int[] selections) {
+    
+    private JPanel createSettingsPane(String[] labels, boolean vertical, ArrayList<JRadioButton[]> buttons) {
         JPanel settingsPane = new JPanel();
         if (vertical)
             settingsPane.setLayout(new BoxLayout(settingsPane, BoxLayout.PAGE_AXIS));
         else 
             settingsPane.setLayout(new BoxLayout(settingsPane, BoxLayout.LINE_AXIS));
-        for (int i = 0; i < names.length; i++) {
+        for (int i = 0; i < labels.length; i++) {
             JPanel pane = new JPanel();
             pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
             pane.add(new JLabel(labels[i]));
-            pane.add(createJRadioButtonGroup(names[i], actionCommands[i], selections[i]));
+            //create pane with buttons
+            JPanel bPane = new JPanel();
+            bPane.setLayout(new BoxLayout(bPane, BoxLayout.PAGE_AXIS));
+            for (int j = 0; j < buttons.get(i).length; j++) {
+                bPane.add(buttons.get(i)[j]);
+            }
+            pane.add(bPane); //add it to overall pane
             settingsPane.add(pane);
             settingsPane.add(Box.createRigidArea(new Dimension(10, 10)));
         }
         return settingsPane;
     }
     
+    public static void setBoxSize(int[] size) {
+        row.setText("" + size[0]);
+        col.setText("" + size[1]);
+    }
+    
+    public static int[] getBoxSize() {
+        int rows = Integer.parseInt(row.getText() + "0");
+        int cols = Integer.parseInt(col.getText() + "0");
+        int[] size = { rows, cols };
+        return size;
+    }
+    
     public static boolean[] getSettings() {
-        boolean[] settings = { topToBottom, leftToRight, readTopToBottom, readLeftToRight};
+        boolean[] settings = { topToBottom, leftToRight, readTopToBottom, readLeftToRight };
         return settings;
     }
     
@@ -202,6 +230,24 @@ public class BoxCipherGui extends MyGUI {
             return 0;
         else
             return 1;
+    }
+    
+    @Override
+    public void refresh() {
+        int[] rSelections = { readOrientation, truthToNum(readLeftToRight), truthToNum(readTopToBottom)};
+        int[] bSelections = { boxOrientation, truthToNum(leftToRight), truthToNum(topToBottom) };
+        for (int i = 0; i < rSelections.length; i++) {
+            for (int j = 0; j < readButtons.get(i).length; j++) {
+                if (j == rSelections[i])
+                    readButtons.get(i)[j].setSelected(true);
+            }
+        }
+        for (int i = 0; i < bSelections.length; i++) {
+            for (int j = 0; j < boxButtons.get(i).length; j++) {
+                if (j == bSelections[i])
+                    boxButtons.get(i)[j].setSelected(true);
+            }
+        }
     }
 
     class BoxActionListener implements ActionListener {   

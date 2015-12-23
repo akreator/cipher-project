@@ -1,15 +1,14 @@
 package CipherGui;
 
+import Templates.GraphComp;
 import Templates.MenuBar;
 import Templates.MyGUI;
 import Templates.MyTextArea;
+import Templates.Properties;
 import TextTools.Crypter;
 import javax.swing.*;
-import java.awt.Toolkit;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.event.CaretEvent;
@@ -23,7 +22,7 @@ public class CaesarGui extends MyGUI {
     public CaesarGui() {
         super(945, 500, "Casesar Cipher");
         init();
-        frame.setVisible(true);
+        setVisible(true);
     }
 
     private void init() {
@@ -50,7 +49,9 @@ public class CaesarGui extends MyGUI {
 
         //YOU THOUGHT THAT WAS BAD??
         //WELCOME TO THE SECOND LEVEL OF THE INFERNO: BOX LAYOUTS
-        standardComp = new GraphComp(40, 50, 395, 200, "Standard English Letter Frequency", Crypter.standardRelativeFrequency);
+        standardComp = new GraphComp(40, 50, 395, 200, "Standard " + 
+                Crypter.LANGUAGES[Properties.getLanguage()] + " Letter Frequency", 
+                Crypter.getRelativeFrequency(Properties.getLanguage()));
         messageComp = new GraphComp(15, 50, 395, 200, "Letter Frequency of Text", "");
         JPanel graphPane = new JPanel();
         graphPane.setLayout(new BoxLayout(graphPane, BoxLayout.LINE_AXIS));
@@ -59,10 +60,17 @@ public class CaesarGui extends MyGUI {
         graphPane.add(messageComp);
 
         //Congrats, you survived.  A+.
-        frame.setJMenuBar(new MenuBar(frame, originalTextArea));
-        frame.add(top, BorderLayout.NORTH);
-        frame.add(bottom, BorderLayout.SOUTH);
-        frame.add(graphPane);
+        setJMenuBar(new MenuBar(originalTextArea));
+        add(top, BorderLayout.NORTH);
+        add(bottom, BorderLayout.SOUTH);
+        add(graphPane);
+    }
+    
+    @Override
+    public void refresh() {
+        standardComp.setTitle("Standard " + Crypter.LANGUAGES[Properties.getLanguage()] + " Letter Frequency");
+        standardComp.setFrequency(Crypter.getRelativeFrequency(Properties.getLanguage()));
+        repaint();
     }
     
     class CaesarTextListener implements CaretListener {
@@ -70,7 +78,7 @@ public class CaesarGui extends MyGUI {
         public void caretUpdate(CaretEvent e) {
             String text = originalTextArea.getText();
             messageComp.setMessage(text);
-            frame.repaint();
+            repaint();
         }        
     }
 
@@ -80,11 +88,11 @@ public class CaesarGui extends MyGUI {
             if (e.getSource() == leftShift) {
                 messageComp.shift(-1);
                 originalTextArea.setText(Crypter.shift(originalTextArea.getText(), -1));
-                frame.repaint();
+                repaint();
             }else if (e.getSource() == rightShift) {
                 messageComp.shift(1);
                 originalTextArea.setText(Crypter.shift(originalTextArea.getText(), 1));
-                frame.repaint();
+                repaint();
             }
         }//end of method
     }//end of class

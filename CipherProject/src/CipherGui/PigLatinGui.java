@@ -6,60 +6,68 @@ import Templates.MyTextArea;
 import TextTools.Crypter;
 import javax.swing.*;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PigLatinGui extends MyGUI{
+public class PigLatinGui extends MyGUI {
   
   private JButton encipherButton, decryptButton;  
   
   public PigLatinGui () {
-      super(900, 300, "Pig Latin");
+      super(850, 400, "Pig Latin");
       init();
-      frame.setVisible(true);
+      setVisible(true);
   }
   
   private void init() {
     //create items, add actionListeners
     originalTextArea = new MyTextArea(5, 25, true, false);
-    JScrollPane scrollText = new JScrollPane(originalTextArea);
+    JScrollPane scrollText = new JScrollPane(originalTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     newTextArea = new MyTextArea(5, 25, false, true);
-    frame.add(newTextArea);
-    JScrollPane nscrollText = new JScrollPane(newTextArea);
+    add(newTextArea);
+    JScrollPane nscrollText = new JScrollPane(newTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     encipherButton = new JButton(" To Pig Latin ");
     encipherButton.addActionListener(new PigLatinListener());
+    encipherButton.setAlignmentX(Component.CENTER_ALIGNMENT);
     decryptButton = new JButton (" From Pig Latin ");
     decryptButton.addActionListener(new PigLatinListener());
+    decryptButton.setAlignmentX(Component.CENTER_ALIGNMENT);
     
-    //Southpane: keyword, and encrypt/decrypt buttons
-    JPanel southPane = new JPanel();
+    //middlePane: encrypt/decrypt buttons
     JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));
     buttonPane.add(encipherButton);
     buttonPane.add(Box.createRigidArea(new Dimension(0, 10)));
     buttonPane.add(decryptButton);
-    southPane.add(buttonPane);
     
     //centerpane
     JPanel centerPane = new JPanel();
     centerPane.setLayout(new BoxLayout(centerPane, BoxLayout.LINE_AXIS));
     centerPane.add(Box.createRigidArea(new Dimension(20, 0)));
     centerPane.add(scrollText);
-    centerPane.add(Box.createRigidArea(new Dimension(30, 0)));
+    centerPane.add(Box.createRigidArea(new Dimension(5, 0)));
+    centerPane.add(buttonPane);
+    centerPane.add(Box.createRigidArea(new Dimension(5, 0)));
     centerPane.add(nscrollText);
     centerPane.add(Box.createRigidArea(new Dimension(20, 0)));
     
     JPanel northPane = new JPanel();
     northPane.add(new JLabel("Original text:"));
-    northPane.add(Box.createRigidArea(new Dimension(400, 0)));
+    northPane.add(Box.createRigidArea(new Dimension(350, 0)));
     northPane.add(new JLabel("Changed text:"));
     
     //finally, add everything to the panel
-    frame.add(northPane, BorderLayout.NORTH);
-    frame.add(centerPane);
-    frame.add(southPane, BorderLayout.SOUTH);
-    frame.setJMenuBar(new MenuBar(frame, originalTextArea));
+    add(northPane, BorderLayout.NORTH);
+    add(centerPane);
+    add(Box.createRigidArea(new Dimension(0, 15)), BorderLayout.SOUTH);
+    setJMenuBar(new MenuBar(originalTextArea));
+  }
+  
+  @Override
+  public void refresh() {
+      //do nothing
   }
   
   class PigLatinListener implements ActionListener {

@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Crypter {
-
-    public static final double[] standardRelativeFrequency = {0.64290624, 0.11745023999999998, 0.21899904, 0.33479616, 0.99990144, 0.17538816000000002,
-        0.1586208, 0.47971968000000004, 0.54836352, 0.01204416, 0.06077184, 0.316848, 0.18940032, 0.53128128, 0.59095104, 0.15185088,
-        0.0074784, 0.47129664, 0.49806143999999997, 0.71288832, 0.21710975999999998, 0.07698816, 0.18585792, 0.011807999999999999,
-        0.15539328, 0.0058252799999999995};
-
+    public static final String[] LANGUAGES = {"English", "Latin", "French", "Spanish"};
+    public static final int ENGLISH = 0, LATIN = 1, FRENCH = 2, SPANISH = 3;
     private static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
     private static String[] specialCases = {"qu", "wr", "ph", "kn", "th", "sh", "fr", "sw", "gl", "sm", "wy"};
 
@@ -17,10 +13,82 @@ public class Crypter {
 
     private Crypter() {
     }
+    
+    /**
+     * Return standard frequency of letters for a given language.  
+     * Values can be relative to one another or total to 100%.
+     * @param language
+     * @return 
+     */
+    public static Object[][] getStandardFrequency(int language) {
+        Object[][] standardFrequency = new Object[26][2];
+        switch (language) {
+            case LATIN:
+                Object[][] latinFrequency = {                
+                    {"i", 11.44}, {"e", 11.38}, {"a", 8.89}, {"u", 8.46}, {"t", 8.00},
+                     {"s", 7.60}, {"r", 6.67}, {"n", 6.28}, {"o", 5.40},{"m", 4.025},
+                     {"c", 3.99}, {"l", 3.15}, {"p", 3.03}, {"d", 2.77}, {"b", 1.58},
+                     {"q", 1.51}, {"g", 1.21}, {"v", 0.96}, {"f", 0.93}, {"h", 0.69},
+                     {"x", 0.60}, {"y", 0.07}, {"z", 0.01}
+                };
+                standardFrequency = latinFrequency;
+                break;
+            case FRENCH:
+                break;
+            case SPANISH:
+                break;
+            default:
+                //default = english
+                Object[][] englishFrequency = {                
+                    {"e", 12.702}, {"t", 9.056}, {"a", 8.167}, {"o", 7.507}, {"i", 6.966},
+                     {"n", 6.749}, {"s", 6.327}, {"h", 6.094}, {"r", 5.987}, {"d", 4.253},
+                     {"l", 4.025}, {"c", 2.782}, {"u", 2.758}, {"m", 2.406}, {"w", 2.361},
+                     {"f", 2.228}, {"g", 2.015}, {"y", 1.974}, {"p", 1.929}, {"b", 1.492},
+                     {"v", 0.978}, {"k", 0.772}, {"j", 0.153}, {"x", 0.150}, {"q", 0.095},
+                     {"z", 0.74}
+                };
+                standardFrequency = englishFrequency;
+                break;
+        }
+        return standardFrequency;
+    }
+    
+    public static double[] getRelativeFrequency(int language) {
+        double[] standardFrequency = new double[26];
+        switch (language) {
+            case LATIN:
+                double[] latinFrequency = {
+                    0.777098, 0.138112, 0.348776, 0.242133, 0.994755, 0.081294, 
+                    0.105769, 0.060315, 1.000000, 0.000000, 0.000000, 0.275350, 
+                    0.470280, 0.548951, 0.472028, 0.264860, 0.131993, 0.583042, 
+                    0.664336, 0.699301, 0.739510, 0.083916, 0.000000, 0.052448, 
+                    0.006119, 0.000874
+                };
+                standardFrequency = latinFrequency;
+                break;
+            case FRENCH:
+                break;
+            case SPANISH:
+                break;
+            default:
+                //default = english
+                double[] englishFrequency = {
+                    0.64290624, 0.11745023999999998, 0.21899904, 0.33479616, 0.99990144, 
+                    0.17538816000000002, 0.1586208, 0.47971968000000004, 0.54836352, 0.01204416, 
+                    0.06077184, 0.316848, 0.18940032, 0.53128128, 0.59095104, 
+                    0.15185088, 0.0074784, 0.47129664, 0.49806143999999997, 0.71288832, 
+                    0.21710975999999998, 0.07698816, 0.18585792, 0.011807999999999999, 0.15539328, 
+                    0.0058252799999999995
+                };
+                standardFrequency = englishFrequency;
+                break;
+        }
+        return standardFrequency;
+    }
 
     /**
      * Method for shifting characters in a given text by a certain amount.
-     *
+     * Only applies to characters that  are letters.
      * @param text: text to be converted
      * @param shiftAmt: the amount that the letters should be shifted
      * @return : changed text
@@ -93,6 +161,7 @@ public class Crypter {
 
     /**
      * Encrypt or decrypt text using a Vigenere cipher.
+     * Only works with letters; removes all non-letters from text before analyzing
      *
      * @param plainText: text to be encrypted/decrypted
      * @param keyword: keyword to use in encryption
@@ -278,7 +347,9 @@ public class Crypter {
 
     /**
      * Shift the nth letters of the text by an 1 in either direction. Does not
-     * count spaces. Counts all but spaces.
+     * count spaces, but includes punctuation and numbers.  
+     * 
+     * (Only removes spaces)
      *
      * @param text: text to be analyzed
      * @param n: index to start at
@@ -299,7 +370,8 @@ public class Crypter {
     }
 
     /**
-     * Returns the nth letters of the text.  Does not count spaces.
+     * Returns the nth letters of the text.  Does not count spaces, but includes
+     * punctuation and numbers.
      *
      * @param text: text to analyze
      * @param n: starting index
@@ -380,7 +452,6 @@ public class Crypter {
         return frequency;
     }
 
-    //**OLD WAY TO ANALYZE
     /**
      * Create a box from the given string.  It accounts for if the given size needs more letters than
      * the text can provide.  If the box size does not account for all the letters, the extra text is

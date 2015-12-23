@@ -25,7 +25,7 @@ public class PatternFinderGui extends MyGUI {
     public PatternFinderGui() {
         super(700, 410, "Vignere Cipher: Deciphering Tool");
         init();
-        frame.setVisible(true);
+        setVisible(true);
     }
     
     private void init() {
@@ -88,12 +88,17 @@ public class PatternFinderGui extends MyGUI {
         bigPane.add(Box.createRigidArea(new Dimension(15, 0)));
         bigPane.add(rightPane);
         
-        frame.add(Box.createRigidArea(new Dimension(0, 15)), BorderLayout.SOUTH);
-        frame.add(Box.createRigidArea(new Dimension(0, 5)), BorderLayout.NORTH);
-        frame.add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.EAST);
-        frame.add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.WEST);
-        frame.add(bigPane);
-        frame.setJMenuBar(new MenuBar(frame, originalTextArea));
+        add(Box.createRigidArea(new Dimension(0, 15)), BorderLayout.SOUTH);
+        add(Box.createRigidArea(new Dimension(0, 5)), BorderLayout.NORTH);
+        add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.EAST);
+        add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.WEST);
+        add(bigPane);
+        setJMenuBar(new MenuBar(originalTextArea));
+    }
+    
+    @Override
+    public void refresh() {
+        //do nothing
     }
 
     public void checkHistory() {
@@ -137,8 +142,8 @@ public class PatternFinderGui extends MyGUI {
                 }
                 if (acceptNum) {
                     new VigenereGraphGui(j);
-                    frame.setVisible(false);
-                    frame.dispose();
+                    setVisible(false);
+                    dispose();
                 }
             }
         }

@@ -5,6 +5,7 @@ import TextTools.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -13,19 +14,17 @@ import javax.swing.event.CaretListener;
 
 public class MenuBar extends JMenuBar {
 
-    private JMenuItem[] switchItems = new JMenuItem[6], fileItems = new JMenuItem[5], formatItems = new JMenuItem[9];
-    private JFrame frame;
+    private JMenuItem[] switchItems = new JMenuItem[6], fileItems = new JMenuItem[5], formatItems = new JMenuItem[9],
+            languageItems = new JMenuItem[4];
     private JTextArea textArea;
     private String beforeFormat = "Enter text here.";
     private boolean formatting = false;
 
-    public MenuBar(JFrame jframe) {
-        frame = jframe;
+    public MenuBar() {
         init();
     }
 
-    public MenuBar(JFrame jframe, MyTextArea ta) {
-        frame = jframe;
+    public MenuBar(MyTextArea ta) {
         textArea = ta;
         init();
         initFormat();
@@ -64,6 +63,16 @@ public class MenuBar extends JMenuBar {
         switchCipherMenu.add(switchItems[4]);
         switchCipherMenu.add(switchItems[5]);
         this.add(switchCipherMenu);
+        
+        JMenu languageMenu = new JMenu("Language");
+        String[] languageNames = Crypter.LANGUAGES;
+        for (int i = 0; i < languageItems.length; i++) {
+            languageItems[i] = new JMenuItem(languageNames[i]);
+            languageItems[i].setActionCommand("" + i);
+            languageItems[i].addActionListener(new LanguageListener());
+            languageMenu.add(languageItems[i]);
+        }
+        this.add(languageMenu);
     }
 
     private void initFormat() {
@@ -72,7 +81,7 @@ public class MenuBar extends JMenuBar {
         JMenu formatMenu = new JMenu("Edit");
         String[] formatNames = {"Spaces", "Punctuation", "Numbers", "Upper", "Lower", 
             "Autoformat", "Undo Formatting", "All non-text",
-            "Group", 
+            "Group"
         };
         int[] formatNums = {
             TextFormatter.NO_SPACES, TextFormatter.NO_PUNCTUATION, TextFormatter.NO_NUMBERS, TextFormatter.UPPERCASE, 
@@ -97,6 +106,17 @@ public class MenuBar extends JMenuBar {
         formatMenu.add(formatItems[8]);
         formatMenu.add(formatItems[6]);
         this.add(formatMenu);
+    }
+    
+    public void manageFrame(boolean reload) {
+        Window w = SwingUtilities.getWindowAncestor(this);
+        if (w instanceof MyGUI) {
+            MyGUI frame = (MyGUI) w;
+            if (reload)
+                frame.refresh();
+            else
+                frame.dispose();
+        }
     }
     
     @Override
@@ -136,6 +156,28 @@ public class MenuBar extends JMenuBar {
             } 
         }
     }
+    
+    class LanguageListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int n = Integer.parseInt(e.getActionCommand());
+            switch (n) {
+                case 1:
+                    Properties.setLanguage(Crypter.LATIN);
+                    break;
+                case 2:
+                    Properties.setLanguage(Crypter.FRENCH);
+                    break;
+                case 3:
+                    Properties.setLanguage(Crypter.SPANISH);
+                    break;
+                default:
+                    Properties.setLanguage(Crypter.ENGLISH);
+                    break;
+            }  
+            manageFrame(true);
+        }
+    }
 
     class FileListener implements ActionListener {
         int fileNum;
@@ -148,7 +190,7 @@ public class MenuBar extends JMenuBar {
                 case 0:
                     break;
                 case 1:
-                    JOptionPane.showMessageDialog(frame, "Designed and coded by Asch."
+                    JOptionPane.showMessageDialog(null, "Designed and coded by Asch."
                             + "\nPlease send any feedback or questions to akreator0@gmail.com",
                             "Credits", JOptionPane.PLAIN_MESSAGE);
                     break;
@@ -157,11 +199,10 @@ public class MenuBar extends JMenuBar {
                     break;
                 case 3:
                     MyGUI.load();
-                    frame.dispose();
-                    new CaesarGui();
+                    manageFrame(true);
                     break;
                 case 4:
-                    frame.dispose();
+                    MyGUI.quit();
                     break;
             }
         }
@@ -194,8 +235,7 @@ public class MenuBar extends JMenuBar {
                     new BoxCipherGui();
                     break;
             }
-            frame.setVisible(false);
-            frame.dispose();
+            manageFrame(false);
         }
     }
 }
