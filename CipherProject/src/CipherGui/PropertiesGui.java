@@ -4,6 +4,7 @@ import Templates.Properties;
 import Templates.MyGUI;
 import TextTools.Crypter;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -40,7 +41,9 @@ public class PropertiesGui {
         preferencesPane.add(languagePane);
         preferencesPane.add(new JSeparator());
 
-        preferencesPane.add(new JLabel("Change theme to:"));
+        JLabel themeLabel = new JLabel("Change theme to:");
+        themeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        preferencesPane.add(themeLabel);
         JPanel optionPane = new JPanel();
         optionPane.setLayout(new BoxLayout(optionPane, BoxLayout.LINE_AXIS));
         ButtonGroup componentSelection = new ButtonGroup();

@@ -16,8 +16,10 @@ import javax.swing.event.CaretListener;
 
 public class CaesarGui extends MyGUI {
 
-    private JButton rightShift, leftShift;
+    private JButton rightShift, leftShift, reset;
     private GraphComp messageComp, standardComp;
+    private JLabel shiftLabel;
+    private int shiftAmt = 0;
 
     public CaesarGui() {
         super(945, 500, "Casesar Cipher");
@@ -26,11 +28,14 @@ public class CaesarGui extends MyGUI {
     }
 
     private void init() {
-        //WELCOME TO BUTTON HELL
+        //WELCOME TO BUTTON HELL 
+        //what's funny is that when I first started this 2 buttons WAS button hell
         rightShift = new JButton("Shift right");
         rightShift.addActionListener(new GraphGuiListener());
         leftShift = new JButton("Shift left");
         leftShift.addActionListener(new GraphGuiListener());
+        reset = new JButton("Reset Shift Count");
+        reset.addActionListener(new GraphGuiListener());
         
         //prevent carrying over errors
         newTextArea = new MyTextArea(5, 4, false, true);
@@ -44,22 +49,31 @@ public class CaesarGui extends MyGUI {
         originalTextArea = new MyTextArea(5, 75, true, false);
         originalTextArea.addCaretListener(new CaesarTextListener());
         JScrollPane scrollText = new JScrollPane(originalTextArea);
+        shiftLabel = new JLabel("Shift Amount: " + shiftAmt);
+        JPanel shiftPane = new JPanel();
+        shiftPane.setLayout(new BoxLayout(shiftPane, BoxLayout.PAGE_AXIS));
+        shiftPane.add(shiftLabel);
+        shiftPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        shiftPane.add(reset);
         JPanel top = new JPanel();
         top.add(scrollText);
+        top.add(Box.createRigidArea(new Dimension(10, 0)));
+        top.add(shiftPane);
+        
 
         //YOU THOUGHT THAT WAS BAD??
         //WELCOME TO THE SECOND LEVEL OF THE INFERNO: BOX LAYOUTS
         standardComp = new GraphComp(40, 50, 395, 200, "Standard " + 
                 Crypter.LANGUAGES[Properties.getLanguage()] + " Letter Frequency", 
                 Crypter.getRelativeFrequency(Properties.getLanguage()));
-        messageComp = new GraphComp(15, 50, 395, 200, "Letter Frequency of Text", "");
+        messageComp = new GraphComp(15, 50, 395, 200, "Letter Frequency of Text", originalTextArea.getText());
         JPanel graphPane = new JPanel();
         graphPane.setLayout(new BoxLayout(graphPane, BoxLayout.LINE_AXIS));
         graphPane.add(standardComp);
         graphPane.add(Box.createRigidArea(new Dimension(5, 0)));
         graphPane.add(messageComp);
 
-        //Congrats, you survived.  A+.
+        //Congrats, you survived.  A+. ((it gets so much worse later on i'm so sorry))
         setJMenuBar(new MenuBar(originalTextArea));
         add(top, BorderLayout.NORTH);
         add(bottom, BorderLayout.SOUTH);
@@ -74,12 +88,16 @@ public class CaesarGui extends MyGUI {
     }
     
     class CaesarTextListener implements CaretListener {
+
         @Override
         public void caretUpdate(CaretEvent e) {
-            String text = originalTextArea.getText();
-            messageComp.setMessage(text);
+            messageComp.setMessage(originalTextArea.getText());
             repaint();
         }        
+    }
+    
+    public void updateShiftLabel() {
+        shiftLabel.setText("Shift Amount: " + shiftAmt);
     }
 
     class GraphGuiListener implements ActionListener {
@@ -88,11 +106,18 @@ public class CaesarGui extends MyGUI {
             if (e.getSource() == leftShift) {
                 messageComp.shift(-1);
                 originalTextArea.setText(Crypter.shift(originalTextArea.getText(), -1));
+                shiftAmt--;
+                updateShiftLabel();
                 repaint();
-            }else if (e.getSource() == rightShift) {
+            } else if (e.getSource() == rightShift) {
                 messageComp.shift(1);
                 originalTextArea.setText(Crypter.shift(originalTextArea.getText(), 1));
+                shiftAmt++;
+                updateShiftLabel();
                 repaint();
+            } else if (e.getSource() == reset) {
+                shiftAmt = 0;
+                updateShiftLabel();
             }
         }//end of method
     }//end of class
