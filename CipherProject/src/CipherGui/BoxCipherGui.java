@@ -16,8 +16,8 @@ import javax.swing.*;
 public class BoxCipherGui extends MyGUI {
 
     private JButton generateSides, createBox, readText;
-    private static JTextField row = new JTextField(""), 
-                              col = new JTextField("");
+    private static JTextField row = new JTextField(3), 
+                              col = new JTextField(3);
     private MyTextArea sideCombos, boxArea;
     private ArrayList<JRadioButton[]> boxButtons, readButtons;
     private static boolean topToBottom = true, leftToRight = true, readTopToBottom = true, readLeftToRight = true;
@@ -59,12 +59,10 @@ public class BoxCipherGui extends MyGUI {
         //rows and columns
         JPanel rowPane = new JPanel();
         rowPane.add(new JLabel("Rows:"));
-        row = new JTextField(3);
         rowPane.add(row);
         rcPane.add(rowPane);
         JPanel colPane = new JPanel();
         colPane.add(new JLabel("Columns:"));
-        col = new JTextField(3);
         colPane.add(col);
         rcPane.add(colPane);        
         //directions
@@ -192,13 +190,13 @@ public class BoxCipherGui extends MyGUI {
     }
     
     public static void setBoxSize(int[] size) {
-        row.setText("" + size[0]);
-        col.setText("" + size[1]);
+        row.setText(size[0] + "");
+        col.setText(size[1] + "");
     }
     
     public static int[] getBoxSize() {
-        int rows = Integer.parseInt(row.getText() + "0");
-        int cols = Integer.parseInt(col.getText() + "0");
+        int rows = Integer.parseInt("0" + row.getText());
+        int cols = Integer.parseInt("0" + col.getText());
         int[] size = { rows, cols };
         return size;
     }

@@ -77,6 +77,7 @@ public class CaesarGui extends MyGUI {
         setJMenuBar(new MenuBar(originalTextArea));
         add(top, BorderLayout.NORTH);
         add(bottom, BorderLayout.SOUTH);
+        add(Box.createRigidArea(new Dimension(15, 0)), BorderLayout.WEST);
         add(graphPane);
     }
     

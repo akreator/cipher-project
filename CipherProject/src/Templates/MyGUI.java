@@ -52,10 +52,9 @@ public abstract class MyGUI extends JFrame {
     }
     
     public static void save() {
-        JFileChooser fileChooser = new JFileChooser("userData");
-        fileChooser.showSaveDialog(null);
+        JFileChooser fileChooser = new JFileChooser("C:\\Users\\" + System.getProperty("user.name") + "\\Documents");
+        int result = fileChooser.showSaveDialog(null);
         File file = fileChooser.getSelectedFile();
-        int result = 0;
         PrintWriter output = null;
         if (result == 0) {
             if (file.exists()) {
@@ -82,12 +81,13 @@ public abstract class MyGUI extends JFrame {
             output.println(Arrays.toString(BoxCipherGui.getOrientation()));
             output.println(Arrays.toString(BoxCipherGui.getBoxSize()));
             output.println(VigenereKnownGui.getKeyword());
+            output.println(VigenereGraphGui.getKeyword());
             output.close();
         }
     }
 
     public static void load() {
-        JFileChooser fileChooser = new JFileChooser("..\\CipherProject\\userData");
+        JFileChooser fileChooser = new JFileChooser("C:\\Users\\" + System.getProperty("user.name") + "\\Documents");
         int result = fileChooser.showOpenDialog(null);
         File file = fileChooser.getSelectedFile();
         Scanner scan = null;
@@ -126,9 +126,11 @@ public abstract class MyGUI extends JFrame {
                 BoxCipherGui.setBoxSize(bSize);
                 scan.nextLine();
                 VigenereKnownGui.setKeyword(scan.nextLine());
+                VigenereGraphGui.setKeyword(scan.nextLine());
                 scan.close();
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Sorry, this file does not have the correct format.");
+                JOptionPane.showMessageDialog(null, "Sorry, this file does not have the correct format.\n"
+                        + "Not all settings were loaded.");
             }
         } 
     }

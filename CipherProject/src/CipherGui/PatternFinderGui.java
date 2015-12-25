@@ -7,8 +7,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import javax.swing.*;
 
 
@@ -18,7 +17,6 @@ import javax.swing.*;
  */
 public class PatternFinderGui extends MyGUI {
     private JButton enter, knownLength;
-    private ArrayList<History> patternHist = new ArrayList();
     private MyTextArea patternArea;
     private JComboBox possibleLengths;
     
@@ -41,9 +39,9 @@ public class PatternFinderGui extends MyGUI {
         leftPane.add(textLabel);
         originalTextArea = new MyTextArea(12, 24, true, false);
         JScrollPane oPane = new JScrollPane(originalTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         leftPane.add(oPane);
-        
+
         //pattern viewer
         JPanel patterns = new JPanel();
         patterns.setLayout(new BoxLayout(patterns, BoxLayout.PAGE_AXIS));
@@ -101,19 +99,19 @@ public class PatternFinderGui extends MyGUI {
         //do nothing
     }
 
-    public void checkHistory() {
-        Arrays.sort(patternHist.toArray());
-        //GUI
+    public void checkHistory(ArrayList<History> patternHist) {
+        Collections.sort(patternHist);
         StringBuffer histText = new StringBuffer();
-        //Add everything to panel
-        if (patternHist.size() == 0) { 
+        if (patternHist.isEmpty()) { 
             histText = new StringBuffer("No patterns of that length found.");
         }
         for (History h : patternHist) {
-            histText.append("*** TRIAL #" + (patternHist.indexOf(h) + 1) + " ***\n");
+            histText.append("---------------\n");
             histText.append(h.getStats());
+            histText.append("---------------\n\n");
         }
         patternArea.setText(histText.toString());
+        patternArea.setCaretPosition(0);
     }
     
     class PatternFinderListener implements ActionListener {
@@ -122,13 +120,13 @@ public class PatternFinderGui extends MyGUI {
             if (e.getSource() == enter) {
                 int n = possibleLengths.getSelectedIndex() + 2;
                 ArrayList<String> patterns = Crypter.autoFindPatterns(n, originalTextArea.getText().replaceAll("\\s", ""));
+                ArrayList<History> patternHist = new ArrayList<History>(patterns.size());
                 for (String p : patterns) {
                     patternHist.add(new History(p.substring(0, p.indexOf(",")), 
                             Integer.parseInt(p.substring(p.indexOf(",") + 1, p.lastIndexOf(","))), 
                             Integer.parseInt(p.substring(p.lastIndexOf(",") + 1))));
                 }
-                checkHistory();
-                patternHist.clear();
+                checkHistory(patternHist);
             } else if (e.getSource() == knownLength) {
                 int j = 0;
                 boolean acceptNum = false;

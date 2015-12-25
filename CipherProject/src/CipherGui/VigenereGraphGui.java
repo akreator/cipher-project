@@ -21,10 +21,12 @@ public class VigenereGraphGui extends MyGUI {
     
     //Vignere stuff
     private String originalText;
-    private int patternLength, currentGraph;
+    private int patternLength;
+    private int currentGraph;
     private JComboBox selectedGraph;
     private GraphComp[] graphs;
-    private JTextField patternField;
+    private static JTextField patternField = new JTextField("");
+    private static String loadedKeyword = "";
     
     private int gWidth, gHeight, perLine = 2;
 
@@ -39,7 +41,7 @@ public class VigenereGraphGui extends MyGUI {
         patternLength = n;
         graphs = new GraphComp[patternLength];
         char[] patternArray = new char[patternLength];
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < patternLength; i++) {
             patternArray[i] = 'a';
         }
         patternField = new JTextField(new String(patternArray));
@@ -49,9 +51,22 @@ public class VigenereGraphGui extends MyGUI {
         init();
         setVisible(true);
     }
+    
+    public VigenereGraphGui() {
+        super(1000, 500, "Vignere Frequency Analysis");
+        originalText = MyGUI.getCipherText();
+        patternLength = loadedKeyword.length();
+        graphs = new GraphComp[patternLength];
+        patternField = new JTextField(loadedKeyword);
+        patternField.setEditable(false);
+        gWidth = getWidth() / 5;
+        gHeight = 100;
+        init();
+        setVisible(true);
+    }
 
     
-    public void init() {
+    private void init() {
         //initialize EVERYTHING.  BECAUSE WHY NOT.
         rightShift = new JButton("Shift right");
         rightShift.addActionListener(new VignereGuiListener());
@@ -183,14 +198,24 @@ public class VigenereGraphGui extends MyGUI {
         sFrame.setVisible(true);
     }
     
+    public static void setKeyword(String keyword) {
+        loadedKeyword = keyword;
+    }
+    
+    public static String getKeyword() {
+        return patternField.getText();
+    }
     
     @Override
     public void refresh() {
-        sFrame.dispose();
+        newTextArea.setText(originalTextArea.getText());
+        dispose();
+        new VigenereGraphGui();
     }
 
     class VignereGuiListener implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == selectedGraph) {
                 currentGraph = selectedGraph.getSelectedIndex() - 1;

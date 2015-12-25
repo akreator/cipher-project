@@ -19,7 +19,7 @@ public class History implements Comparable<History> {
     public String getStats() {
         return "Pattern: " + pattern + "\nRepetitions: " + repetitions 
                 + "\nShortest distance between repetitons: " + shortestDistance
-                + "\n\n";
+                + "\n";
     }
     
     public String getPattern() {
@@ -33,10 +33,24 @@ public class History implements Comparable<History> {
     public int getShortestDistance() {
         return shortestDistance;
     }
+    @Override
+    public String toString() {
+        return pattern + "," + repetitions + "," + shortestDistance;
+    }
 
     @Override
+    /***
+     * sorted most to least useful
+     * (more useful given negative value)
+     */
     public int compareTo(History h) {
-        return repetitions - h.repetitions;
+        int diff = h.repetitions - repetitions; //most to least repetitons
+        if (diff == 0) {
+            diff = shortestDistance - h.shortestDistance; //shortest distance
+            if (diff == 0) 
+                diff = h.pattern.compareTo(pattern); //alphabetically
+        }
+        return diff;
     } 
     
 }

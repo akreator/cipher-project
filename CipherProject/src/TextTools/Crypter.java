@@ -220,12 +220,12 @@ public class Crypter {
                     repetitions++;
                     if (i - (previousIndex + length) >= 0) {
                         shortestDistance = Math.min(shortestDistance, i - (previousIndex + length));
-                    } else {
-                        shortestDistance = 0;
                     }
                     previousIndex = i;
                     i = cText.indexOf(pattern, i + 1);
                 }
+                if (shortestDistance == Integer.MAX_VALUE)
+                    shortestDistance = 0;
                 stats.add(pattern + "," + repetitions + "," + shortestDistance);
             }
         }
