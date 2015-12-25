@@ -2,7 +2,7 @@
 
 Cipher Project - Senior Year, 2015
 ----------------------------------
-This is a project I designed to help users encode and decode simple historical ciphers.
+This is a project I designed and created to help users encode and decode historical ciphers.
 The TextTools package can be used on its own to encode/decode/format any text - it accepts and returns strings, for the most part - but the overall project has a GUI, based out of the CipherGui package.  Which you should check out.  Because I spent a lot of time on that.
 
 *** CURRENT CIPHERS ***
@@ -10,47 +10,39 @@ The TextTools package can be used on its own to encode/decode/format any text - 
  - Substitution (Atbash and A1Z26 programmed in)
  - Vignere
  - Pig Latin
- - Box Cipher (transposition)
+ - Box (Horizontal, vertical, and diagonal transposition)
 
 *** IN-PROGRESS CIPHERS ***
- - N/A
-
-*** PLANNED CIPHERS ***
  - Morse code
  - Binary
- - (maybe) Homophonic substiution cipher
 
+*** PLANNED CIPHERS ***
+ - Enigma Machine Simulator
+ - (maybe) Homophonic substiution cipher
 
 Installation
 ------------
 All you need is Java.  If you don't have Java, download it from: https://www.java.com/en/download/
-To use the cipher project, download the project, and then navigate to the "dist" folder.  
-Then, run the jar file found there.  You may recieve a security warning, but the file is safe as far as I know.  You can check out the code, yourself.
+To use the cipher project, download the project and navigate to the "dist" folder.  Then, run the jar file found there.  
+You may recieve a security warning, but the program is safe as far as I know.  You can check out the code, yourself.
 
+FAQ
+---
+Q: What class did you do this for?
+A: None.  I coded this on my own, for fun.
 
-History (General, pre-GitHub)
------------------------------
- - 12/10/15: Box Cipher upgraded
- - 11/20/15: Added box cipher
- - 11/19/15: Reorganized classes, added themes feature
- - 11/17/15: Added numbers to letters, reorganized classes, started work on customization
- - 11/12/15: Created README
- - 11/11/15: Uploaded to GitHub 
- - 11/04/15: Added grouping to formatting, fixed alphabet error
- - 10/30/15: Bug fixes
- - 10/29/15: Added text formatting, updated menu bar
- - 10/26/15: Updated substitution - 2 rows
- - 10/18/15: Bug fixes
- - 10/14/15: Added Substitution Cipher
- - 10/12/15: Added Vignere Cipher - unknown keyword - graphs
- - 10/11/15: Added Vignere Cipher - unknown keyword - pattern finder
- - 10/01/15: Added Vignere Cipher - known keyword, menu bar
- - 09/25/15: Caesar cipher
+Q: But doesn't that make you a ... nerd!?
+A: Yes.
 
+Q: I know this really cool cipher that you should include in the Cipher Project!
+A: That's awesome!  E-mail me and we can talk.
+
+Q: Are you ever going to make an app?
+A: I hope so.  Since I'm doing an independent study in web development next semester, I'm going to make a website for the Cipher Project first.  I'll start working on an app this summer.
 
 Authors
 -------
-Asch (akreator)
+Asch/Audrey (akreator)
 
 Contact
 -------
