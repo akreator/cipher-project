@@ -1,11 +1,8 @@
-package CipherGui;
+package ciphergui;
 
-import Templates.MenuBar;
-import Templates.MyGUI;
-import Templates.MyTextArea;
-import TextTools.Crypter;
+import other.*;
+import texttools.Crypter;
 import javax.swing.*;
-import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;

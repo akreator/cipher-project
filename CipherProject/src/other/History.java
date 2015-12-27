@@ -1,5 +1,4 @@
-package Templates;
-
+package other;
 
 /**
  *

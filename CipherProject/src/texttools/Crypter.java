@@ -1,13 +1,22 @@
-package TextTools;
+package texttools;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Crypter {
     public static final String[] LANGUAGES = {"English", "Latin", "French", "Spanish"};
     public static final int ENGLISH = 0, LATIN = 1, FRENCH = 2, SPANISH = 3;
-    private static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
-    private static String[] specialCases = {"qu", "wr", "ph", "kn", "th", "sh", "fr", "sw", "gl", "sm", "wy"};
+    private static final char[] vowels = {'a', 'e', 'i', 'o', 'u'};
+    private static final String[] specialCases = {"qu", "wr", "ph", "kn", "th", "sh", "fr", "sw", "gl", "sm", "wy"};
+    private static final String[] binaryArray = {" ", "!", "\"", "#", "$", "%","&", "'", 
+        "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6",
+        "7", "8", "9", ":", ";", "<", "=", ">", "?", "@", "A", "B", "C", "D",
+        "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", 
+        "T", "U", "V", "W", "X", "Y", "Z", "[", "\\", "]", "^", "_", "'", "a", 
+        "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", 
+        "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~", ""};
 
     public static final int HORIZONTAL = 0, VERTICAL = 1, DIAGONAL = 2;
 
@@ -126,39 +135,31 @@ public class Crypter {
      * @return : text with characters replaced according to replacements
      */
     public static String substitute(String str, String[][] replacements) {
-        if (str.equals("") || str.isEmpty()) {
-            return "";
-        }
         StringBuffer text = new StringBuffer("");
         str = str.toLowerCase();
+        Map<String, String> map = new HashMap<>();
+        int max = 0;
+        for (String[] replacement : replacements) {
+            map.put(replacement[0], replacement[1]);
+            max = Math.max(replacement[0].length(), max);
+        }
         for (int i = 0; i < str.length(); i++) {
             boolean found = false;
-            int n = 0;
-            while (!found) {
-                if (!replacements[n][1].isEmpty() && !replacements[n][1].equals("")
-                        && !replacements[n][0].isEmpty() && !replacements[n][0].equals("")
-                        && i + replacements[n][1].length() <= str.length()) {
-                    if (str.substring(i, i + replacements[n][1].length()).equals(replacements[n][1])) {
-                        text.append(replacements[n][0].toUpperCase());
-                        i += replacements[n][1].length() - 1;
-                        found = true;
-                    } else if (n < replacements.length - 1) {
-                        n++;
-                    } else {
-                        text.append(str.substring(i, i + 1));
-                        found = true;
-                    }
-                } else if (n < replacements.length - 1) {
-                    n++;
-                } else {
-                    text.append(str.substring(i, i + 1));
+            for (int n = max; n > 0; n--) {
+                if (i + n < str.length() && map.containsKey(str.substring(i, i + n))) {
+                    text.append(map.get(str.substring(i, i + n)).toUpperCase());
+                    i += map.get(str.substring(i, i + n)).length() - 1;
                     found = true;
+                    break;
                 }
             }
+            if (!found)
+                text.append(str.substring(i, i + 1));
         }
         return new String(text);
     }
-
+    
+    
     /**
      * Encrypt or decrypt text using a Vigenere cipher.
      * Only works with letters; removes all non-letters from text before analyzing
@@ -598,6 +599,56 @@ public class Crypter {
                 break;
         }
         return boxText.toString();
+    }
+    
+    /***
+     * Translate normal text to binary code
+     * @param text normal text
+     * @return binary code
+     */
+    public static String toBinary(String text) {
+        StringBuffer newText = new StringBuffer();
+        StringBuffer binaryNum = new StringBuffer(8);
+        int value = 0;
+        for (int i = 0; i < text.length(); i++) {
+            binaryNum.replace(0, 8, "");
+            value = text.charAt(i);
+            for (int j = 8; j > 0; j--) {
+                binaryNum.append(value % 2);
+                value /= 2;
+            }
+            newText.append(binaryNum.reverse()).append(" ");
+        }
+        return newText.toString();
+    }
+    
+    /***
+     * Translate binary code to standard text/digits/punctuation
+     * @param text binary code
+     * @return normal text
+     */
+    public static String fromBinary(String text) {
+        text = text.replaceAll("[^01]", "");
+        StringBuffer newText = new StringBuffer();
+        String binaryNum = "";
+        int index = 0;
+        for (int i = 0; i <= text.length() - 8; i += 8) {
+            binaryNum = text.substring(i, i + 8);
+            index = 0;
+            for (int j = 7; j > 0; j--) {
+                if (binaryNum.charAt(j) == '1') index += (int) Math.pow(2, 7 - j);
+            }
+            if (index >= 32)
+                newText.append(binaryArray[index - 32]);
+            else if (index == 9)
+                newText.append("\t");
+            else if (index == 10 || index == 13)
+                newText.append("\n");
+            else
+                newText.append("?");
+            
+        }
+        return newText.toString();
     }
        
 }

@@ -1,6 +1,6 @@
-package CipherGui;
+package other;
 
-import java.awt.Color;
+import ciphergui.PropertiesGui;
 import java.awt.Font;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -17,7 +17,7 @@ public class Run {
                     break;
                 }
             }
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             JOptionPane.showMessageDialog(null, "Sorry, but you do not have the Nimbus package.\n"
                     + "Email akreator0@gmail.com with your operating system to let them know.", 
                     "Package not available", JOptionPane.ERROR_MESSAGE);

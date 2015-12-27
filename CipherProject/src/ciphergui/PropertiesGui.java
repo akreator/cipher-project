@@ -1,8 +1,7 @@
-package CipherGui;
+package ciphergui;
 
-import Templates.Properties;
-import Templates.MyGUI;
-import TextTools.Crypter;
+import other.Properties;
+import texttools.Crypter;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;

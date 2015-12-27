@@ -1,6 +1,7 @@
- package Templates;
+ package other;
 
 
+import ciphergui.MyGUI;
 import java.awt.Font;
 import javax.swing.JTextArea;
 
@@ -10,13 +11,13 @@ public class MyTextArea extends JTextArea {
     public MyTextArea(int r, int c, boolean editable, boolean dontCarryOverText) {
         super(MyGUI.getCipherText(), r, c);
         if (dontCarryOverText)
-            this.setText("");
-        this.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontSize));
-        this.setBackground(Properties.getTextAreaBG());
-        this.setForeground(Properties.getTextAreaFG());
-        this.setLineWrap(true);
-        this.setWrapStyleWord(true);
-        this.setEditable(editable);
+            setText("");
+        setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontSize));
+        setBackground(Properties.getTextAreaBG());
+        setForeground(Properties.getTextAreaFG());
+        setLineWrap(true);
+        setWrapStyleWord(true);
+        setEditable(editable);
     }
 
     public static void setFontSize(int fS) {
@@ -25,5 +26,11 @@ public class MyTextArea extends JTextArea {
     
     public static int getFontSize() {
         return fontSize;
+    }
+    
+    @Override
+    public final void setText(String str) {
+        super.setText(str);
+        setCaretPosition(0);
     }
 }

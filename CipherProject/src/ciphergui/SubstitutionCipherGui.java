@@ -1,12 +1,7 @@
-package CipherGui;
+package ciphergui;
 
-
-import Templates.MenuBar;
-import Templates.FrequencyTable;
-import Templates.MyGUI;
-import Templates.MyTextArea;
-import Templates.Properties;
-import TextTools.Crypter;
+import other.*;
+import texttools.Crypter;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -87,8 +82,8 @@ public class SubstitutionCipherGui extends MyGUI {
         
         String[][] filler = new String[2][26];
         for (int i = 0; i < 26; i++) {
-            filler[0][i] = replacements[i][1];
-            filler[1][i] = replacements[i][0];
+            filler[0][i] = replacements[i][0];
+            filler[1][i] = replacements[i][1];
         }
         
         switchTable = new JTable(filler, filler[1]);
@@ -127,12 +122,10 @@ public class SubstitutionCipherGui extends MyGUI {
 
     public void updateReplacements() {
         for (int i = 0; i < 26; i++) {
-            if (switchTable.getValueAt(0, i) != null) {
-                //the top row is what to look for in the text; the bottom row is the characters replacement characters for that text
-                //top = replacements[][1]; bottom = replacements[][0]
-                replacements[i][0] = (switchTable.getValueAt(1, i).toString().toLowerCase());
-                replacements[i][1] = (switchTable.getValueAt(0, i).toString().toLowerCase());
-            }
+            //the top row is what to look for in the text; the bottom row is the characters replacement characters for that text
+            //top = replacements[][0]; bottom = replacements[][1]
+            replacements[i][0] = (switchTable.getValueAt(0, i).toString().toLowerCase());
+            replacements[i][1] = (switchTable.getValueAt(1, i).toString().toLowerCase());
         }
     }
     
@@ -152,14 +145,14 @@ public class SubstitutionCipherGui extends MyGUI {
     @Override
     public void refresh() {
         for (int i = 0; i < 26; i++) {
-            switchTable.setValueAt(replacements[i][0], 1, i);
-            switchTable.setValueAt(replacements[i][1], 0, i);
+            switchTable.setValueAt(replacements[i][0], 0, i);
+            switchTable.setValueAt(replacements[i][1], 1, i);
         }
         standardTable.updateTable(Crypter.getStandardFrequency(Properties.getLanguage()));        
     }
 
     class SubstitutionListener implements ActionListener {
-        private Object[][] atbash = {
+        private String[][] atbash = {
             {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
                 "s", "t", "u", "v", "w", "x", "y", "z"},
             {"z", "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n",
@@ -231,7 +224,7 @@ public class SubstitutionCipherGui extends MyGUI {
                         messageTable.updateTable(Crypter.getSpecificMessageFrequency(originalTextArea.getText(), array));
                 }
                 repaint();
-            } else if (e.getSource() == enter && !originalTextArea.getText().equals("") && originalTextArea.getText() != null) {
+            } else if (e.getSource() == enter && originalTextArea.getText() != null && !originalTextArea.getText().equals("")) {
                 updateReplacements();
                 newTextArea.setText(Crypter.substitute(originalTextArea.getText(), replacements));
                 repaint();

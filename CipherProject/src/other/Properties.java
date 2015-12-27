@@ -1,6 +1,7 @@
-package Templates;
+package other;
 
-import TextTools.Crypter;
+import ciphergui.MyGUI;
+import texttools.Crypter;
 import java.awt.Color;
 import javax.swing.*;
 

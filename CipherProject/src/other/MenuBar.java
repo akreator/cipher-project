@@ -1,7 +1,7 @@
-package Templates;
+package other;
 
-import CipherGui.*;
-import TextTools.*;
+import texttools.*;
+import ciphergui.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,7 +14,7 @@ import javax.swing.event.CaretListener;
 
 public class MenuBar extends JMenuBar {
 
-    private JMenuItem[] switchItems = new JMenuItem[6], fileItems = new JMenuItem[5], formatItems = new JMenuItem[9],
+    private JMenuItem[] switchItems = new JMenuItem[7], fileItems = new JMenuItem[5], formatItems = new JMenuItem[9],
             languageItems = new JMenuItem[4];
     private JTextArea textArea;
     private String beforeFormat = "Enter text here.";
@@ -47,7 +47,8 @@ public class MenuBar extends JMenuBar {
         //switch cipher menu
         JMenu switchCipherMenu = new JMenu("Switch Cipher");
         String[] switchNames = {
-            "Caesar Cipher", "Substitution Cipher", "Known Keyword", "Unknown Keyword", "Pig Latin", "Box Cipher"
+            "Caesar Cipher", "Substitution Cipher", "Known Keyword", "Unknown Keyword", 
+            "Pig Latin", "Box Cipher", "Binary Code"
         };
         for (int i = 0; i < switchItems.length; i++) {
             switchItems[i] = new JMenuItem(switchNames[i]);
@@ -62,6 +63,7 @@ public class MenuBar extends JMenuBar {
         switchCipherMenu.add(vignereCipherMenu);
         switchCipherMenu.add(switchItems[4]);
         switchCipherMenu.add(switchItems[5]);
+        switchCipherMenu.add(switchItems[6]);
         this.add(switchCipherMenu);
         
         JMenu languageMenu = new JMenu("Language");
@@ -234,6 +236,8 @@ public class MenuBar extends JMenuBar {
                 case 5:
                     new BoxCipherGui();
                     break;
+                case 6:
+                    new BinaryGui();
             }
             manageFrame(false);
         }

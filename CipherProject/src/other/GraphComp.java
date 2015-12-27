@@ -1,15 +1,11 @@
-package Templates;
+package other;
 
-import TextTools.*;
+import texttools.TextFormatter;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
 import java.awt.Rectangle;
 import java.awt.Dimension;
-import java.awt.Color;
 import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**

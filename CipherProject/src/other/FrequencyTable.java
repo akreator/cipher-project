@@ -1,4 +1,4 @@
-package Templates;
+package other;
 
 import java.awt.Dimension;
 import javax.swing.JTable;
@@ -18,7 +18,6 @@ public class FrequencyTable {
     public FrequencyTable(Object[][] frequency, String[] names) {
         messageFrequency = frequency;
         columnNames = names;
-        createTable();
     }
     
     public JTable createTable() {

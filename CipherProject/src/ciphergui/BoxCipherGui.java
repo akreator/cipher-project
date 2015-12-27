@@ -1,11 +1,8 @@
-package CipherGui;
+package ciphergui;
 
-import Templates.MenuBar;
-import Templates.MyGUI;
-import Templates.MyTextArea;
-import TextTools.Calculations;
-import TextTools.Crypter;
-import TextTools.TextFormatter;
+import other.MenuBar;
+import other.MyTextArea;
+import texttools.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -30,7 +27,7 @@ public class BoxCipherGui extends MyGUI {
         setVisible(true);
     }
 
-    public void init() {
+    private void init() {
         //OVERALL TOP:
         //INCLUDES ORIGINALTEXT, POSSIBLE SIDE COMBOS, AND BOX SETTINGS
         JPanel topPane = new JPanel();

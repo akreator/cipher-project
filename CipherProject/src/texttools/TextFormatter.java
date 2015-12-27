@@ -1,4 +1,4 @@
-package TextTools;
+package texttools;
 
 import javax.swing.JOptionPane;
 

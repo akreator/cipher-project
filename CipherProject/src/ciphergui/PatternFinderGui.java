@@ -1,7 +1,7 @@
-package CipherGui;
+package ciphergui;
 
-import Templates.*;
-import TextTools.Crypter;
+import other.*;
+import texttools.Crypter;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -120,7 +120,7 @@ public class PatternFinderGui extends MyGUI {
             if (e.getSource() == enter) {
                 int n = possibleLengths.getSelectedIndex() + 2;
                 ArrayList<String> patterns = Crypter.autoFindPatterns(n, originalTextArea.getText().replaceAll("\\s", ""));
-                ArrayList<History> patternHist = new ArrayList<History>(patterns.size());
+                ArrayList<History> patternHist = new ArrayList<>(patterns.size());
                 for (String p : patterns) {
                     patternHist.add(new History(p.substring(0, p.indexOf(",")), 
                             Integer.parseInt(p.substring(p.indexOf(",") + 1, p.lastIndexOf(","))), 

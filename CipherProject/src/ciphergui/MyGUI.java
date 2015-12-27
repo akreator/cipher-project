@@ -1,7 +1,7 @@
-package Templates;
+package ciphergui;
 
-import CipherGui.*;
-import TextTools.TextFormatter;
+import other.*;
+import texttools.TextFormatter;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;

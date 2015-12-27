@@ -1,11 +1,7 @@
-package CipherGui;
+package ciphergui;
 
-import Templates.GraphComp;
-import Templates.MenuBar;
-import Templates.MyGUI;
-import Templates.MyTextArea;
-import Templates.Properties;
-import TextTools.*;
+import other.*;
+import texttools.*;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
