@@ -65,7 +65,12 @@ public class MenuBar extends JMenuBar {
         switchCipherMenu.add(switchItems[5]);
         switchCipherMenu.add(switchItems[6]);
         this.add(switchCipherMenu);
+    }
+
+    private void initFormat() {
+        textArea.addCaretListener(new TextListener());
         
+        //language menu
         JMenu languageMenu = new JMenu("Language");
         String[] languageNames = Crypter.LANGUAGES;
         for (int i = 0; i < languageItems.length; i++) {
@@ -75,10 +80,9 @@ public class MenuBar extends JMenuBar {
             languageMenu.add(languageItems[i]);
         }
         this.add(languageMenu);
-    }
-
-    private void initFormat() {
-        textArea.addCaretListener(new TextListener());
+        
+        
+        
         //format menu
         JMenu formatMenu = new JMenu("Edit");
         String[] formatNames = {"Spaces", "Punctuation", "Numbers", "Upper", "Lower", 
@@ -200,8 +204,8 @@ public class MenuBar extends JMenuBar {
                     MyGUI.save();
                     break;
                 case 3:
-                    MyGUI.load();
-                    manageFrame(true);
+                    if (MyGUI.load())
+                        manageFrame(true);
                     break;
                 case 4:
                     MyGUI.quit();
@@ -238,8 +242,9 @@ public class MenuBar extends JMenuBar {
                     break;
                 case 6:
                     BinaryGui bg = new BinaryGui();
+                    break;
             }
             manageFrame(false);
-        }
+        } //end of method
     }
 }

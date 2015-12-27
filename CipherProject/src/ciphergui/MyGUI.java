@@ -82,13 +82,17 @@ public abstract class MyGUI extends JFrame {
             output.println(Arrays.toString(BoxCipherGui.getOrientation()));
             output.println(Arrays.toString(BoxCipherGui.getBoxSize()));
             output.println(VigenereKnownGui.getKeyword());
-            output.println(VigenereGraphGui.getKeyword());
             output.println(Properties.getLanguage());
             output.close();
         }
     }
 
-    public static void load() {
+    /***
+     * Load a file.  Returns true if successful load (ANY settings were retrieved)
+     * Returns false if load failed completely or canceled.
+     * @return 
+     */
+    public static boolean load() {
         JFileChooser fileChooser = new JFileChooser("C:\\Users\\" + System.getProperty("user.name") + "\\Documents");
         int result = fileChooser.showOpenDialog(null);
         File file = fileChooser.getSelectedFile();
@@ -125,17 +129,20 @@ public abstract class MyGUI extends JFrame {
                     BoxCipherGui.setBoxSize(bSize);
                     scan.nextLine();
                     VigenereKnownGui.setKeyword(scan.nextLine());
-                    VigenereGraphGui.setKeyword(scan.nextLine());
                     Properties.setLanguage(Integer.parseInt("0" + scan.nextLine()));
                     scan.close();
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Sorry, this file does not have the correct format.\n"
                             + "Not all settings were loaded.");
+                    return true;
                 }
             } catch (FileNotFoundException | HeadlessException e) {
                 JOptionPane.showMessageDialog(null, "The file was not able to be loaded.");
+                return false;
             }
+            return true;
         }
+        return false;
     }
     
     public static void quit(){

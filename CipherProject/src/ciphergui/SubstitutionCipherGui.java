@@ -28,6 +28,7 @@ public class SubstitutionCipherGui extends MyGUI {
     };
     private JTable switchTable;
     private JComboBox analyzeOptions, defaultOptions;
+    private JLabel standardLabel;
 
     public SubstitutionCipherGui() {
         super(945, 595, "Substitution Cipher");
@@ -52,10 +53,11 @@ public class SubstitutionCipherGui extends MyGUI {
         //standard table + label
         standardTable = new FrequencyTable(Crypter.getStandardFrequency(Properties.getLanguage()), columnNames);
         JScrollPane sPane = new JScrollPane(standardTable.createTable());
-        JLabel sLabel = new JLabel("Standard Frequency of English Letters");
+        standardLabel = new JLabel("Standard Frequency of " + 
+                Crypter.LANGUAGES[Properties.getLanguage()] + " Letters");
         JPanel standardPane = new JPanel();
         standardPane.setLayout(new BoxLayout(standardPane, BoxLayout.PAGE_AXIS));
-        standardPane.add(sLabel);
+        standardPane.add(standardLabel);
         standardPane.add(sPane);
         //messageTable
         messageTable = new FrequencyTable(Crypter.getMessageFrequency(""), columnNames);
@@ -151,7 +153,9 @@ public class SubstitutionCipherGui extends MyGUI {
             switchTable.setValueAt(replacements[i][0], 0, i);
             switchTable.setValueAt(replacements[i][1], 1, i);
         }
-        standardTable.updateTable(Crypter.getStandardFrequency(Properties.getLanguage()));        
+        standardTable.updateTable(Crypter.getStandardFrequency(Properties.getLanguage())); 
+        standardLabel.setText("Standard Frequency of " + 
+                Crypter.LANGUAGES[Properties.getLanguage()] + " Letters");
     }
 
     class SubstitutionListener implements ActionListener {

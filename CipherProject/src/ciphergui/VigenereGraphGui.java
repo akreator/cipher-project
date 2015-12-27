@@ -22,7 +22,6 @@ public class VigenereGraphGui extends MyGUI {
     private JComboBox selectedGraph;
     private GraphComp[] graphs;
     private static JTextField patternField = new JTextField("");
-    private static String loadedKeyword = "";
     
     private int gWidth, gHeight, perLine = 2;
 
@@ -33,7 +32,7 @@ public class VigenereGraphGui extends MyGUI {
      */
     public VigenereGraphGui(int n) {
         super(1000, 500, "Vignere Frequency Analysis");
-        originalText = MyGUI.getCipherText();
+        originalText = originalTextArea.getText();
         patternLength = n;
         graphs = new GraphComp[patternLength];
         char[] patternArray = new char[patternLength];
@@ -48,21 +47,10 @@ public class VigenereGraphGui extends MyGUI {
         setVisible(true);
     }
     
-    public VigenereGraphGui() {
-        super(1000, 500, "Vignere Frequency Analysis");
-        originalText = MyGUI.getCipherText();
-        patternLength = loadedKeyword.length();
-        graphs = new GraphComp[patternLength];
-        patternField = new JTextField(loadedKeyword);
-        patternField.setEditable(false);
-        gWidth = getWidth() / 5;
-        gHeight = 100;
-        init();
-        setVisible(true);
-    }
-
-    
     private void init() {
+        //avoid carry-over errors
+        newTextArea.setText("");
+        
         //initialize EVERYTHING.  BECAUSE WHY NOT.
         rightShift = new JButton("Shift right");
         rightShift.addActionListener(new VignereGuiListener());
@@ -162,10 +150,6 @@ public class VigenereGraphGui extends MyGUI {
         fillerPaneY.setPreferredSize(new Dimension(0, 15));
         JPanel fillerPaneX = new JPanel();
         fillerPaneX.setPreferredSize(new Dimension(15, 0));
-
-        //to make sure that shifts aren't saved (isn't added to frame)
-        newTextArea = new MyTextArea(0, 0, false, false);
-        newTextArea.setText(originalText);
         
         //Congrats, you survived.  A+.
         add(Box.createRigidArea(new Dimension(0, 5)), BorderLayout.NORTH);
@@ -194,19 +178,11 @@ public class VigenereGraphGui extends MyGUI {
         sFrame.setVisible(true);
     }
     
-    public static void setKeyword(String keyword) {
-        loadedKeyword = keyword;
-    }
-    
-    public static String getKeyword() {
-        return patternField.getText();
-    }
-    
     @Override
     public void refresh() {
         newTextArea.setText(originalTextArea.getText());
+        PatternFinderGui pfg = new PatternFinderGui();
         dispose();
-        VigenereGraphGui vg = new VigenereGraphGui();
     }
 
     class VignereGuiListener implements ActionListener {
@@ -228,9 +204,10 @@ public class VigenereGraphGui extends MyGUI {
             } else if (e.getSource() == checkStandard) {
                 createStandardGraph();
             } else if (e.getSource() == back) {
-                PatternFinderGui pf = new PatternFinderGui();
+                newTextArea.setText(originalText);
                 sFrame.dispose();
                 dispose();
+                PatternFinderGui pf = new PatternFinderGui();
             }
         }//end of method
     }//end of class
