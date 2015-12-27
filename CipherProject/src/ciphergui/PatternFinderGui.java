@@ -139,7 +139,7 @@ public class PatternFinderGui extends MyGUI {
                     acceptNum = j > 0;
                 }
                 if (acceptNum) {
-                    new VigenereGraphGui(j);
+                    VigenereGraphGui vigenereGraphGui = new VigenereGraphGui(j);
                     setVisible(false);
                     dispose();
                 }

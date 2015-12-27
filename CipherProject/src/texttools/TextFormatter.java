@@ -10,7 +10,7 @@ public class TextFormatter {
             NO_CHANGE = 7, NUMS_TO_LETTERS = 8, GROUP = 9,
             CHANGE_TEXT_SIZE = 101;
 
-    public static final String[] alphabet = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
+    public static final String[] ALPHABET = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
         "s", "t", "u", "v", "w", "x", "y", "z"};
 
     private TextFormatter() {
@@ -47,9 +47,9 @@ public class TextFormatter {
         while (n < newText.length()) {
             if (Character.isDigit(newText.charAt(n))) {
                 if (n < newText.length() - 1 && Character.isDigit(newText.charAt(n + 1)) && Integer.parseInt(newText.substring(n, n + 2)) < 26) {
-                    newText.replace(n, n + 2, alphabet[Integer.parseInt(newText.substring(n, n + 2))]);
+                    newText.replace(n, n + 2, ALPHABET[Integer.parseInt(newText.substring(n, n + 2))]);
                 } else {
-                    newText.replace(n, n + 1, alphabet[Integer.parseInt(newText.substring(n, n + 1))]);
+                    newText.replace(n, n + 1, ALPHABET[Integer.parseInt(newText.substring(n, n + 1))]);
                 }
             } 
             n++;

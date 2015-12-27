@@ -35,7 +35,7 @@ public class PropertiesGui {
         languageChoice = new JComboBox(Crypter.LANGUAGES);
         languageChoice.addActionListener(new PropertiesActionListener());
         JPanel languagePane = new JPanel();
-        languagePane.add(new JLabel("Select a language:"));
+        languagePane.add(new JLabel("Language of text:"));
         languagePane.add(languageChoice);
         preferencesPane.add(languagePane);
         preferencesPane.add(new JSeparator());
@@ -76,7 +76,7 @@ public class PropertiesGui {
             if (e.getSource() == languageChoice) {
                 Properties.setLanguage(languageChoice.getSelectedIndex());
             } else if (e.getSource().equals(next)) {
-                new CaesarGui();
+                CaesarGui caesarGui = new CaesarGui();
                 frame.setVisible(false);
                 frame.dispose();
             } else {

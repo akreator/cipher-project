@@ -1,6 +1,7 @@
 package texttools;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -43,8 +44,27 @@ public class Crypter {
                 standardFrequency = latinFrequency;
                 break;
             case FRENCH:
+                Object[][] frenchFrequency = {                
+                    {"e", 15.10}, {"a", 8.13}, {"s", 7.91}, {"t", 7.11}, {"i", 6.94},
+                     {"r", 6.43}, {"n", 6.42}, {"u", 6.05}, {"l", 5.68}, {"o", 5.27},
+                     {"d", 3.55}, {"m", 3.23}, {"c", 3.15}, {"p", 3.03}, {"é", 2.13},
+                     {"v", 1.83}, {"h", 1.08}, {"g", 0.97}, {"f", 0.96}, {"b", 0.93},
+                     {"q", 0.89}, {"j", 0.71}, {"à", 0.54}, {"x", 0.42}, {"è", 0.35},
+                     {"ê", 0.24}, {"z", 0.21}, {"y", 0.19}, {"k", 0.16}, {"w", 0.04}
+                };
+                standardFrequency = frenchFrequency;
                 break;
             case SPANISH:
+                Object[][] spanishFrequency = {                
+                    {"e", 13.72}, {"a", 11.72}, {"o", 8.44}, {"s", 7.20}, {"n", 6.83},
+                     {"r", 6.41},  {"i", 5.28}, {"l", 5.24}, {"d", 4.67}, {"t", 4.60},
+                     {"u", 4.55}, {"c", 3.87}, {"m", 3.08}, {"p", 2.89}, {"b", 1.49},
+                     {"h", 1.18}, {"q", 1.11}, {"y", 1.09}, {"v", 1.05}, {"g", 1.00},
+                     {"ó", 0.76}, {"í", 0.70}, {"f", 0.69}, {"j", 0.52}, {"z", 0.47},
+                     {"á", 0.44}, {"é", 0.36}, {"ñ", 0.17}, {"x", 0.14}, {"ú", 0.12},
+                     {"k", 0.11}, {"w", 0.04}, {"ü", 0.02}
+                };
+                standardFrequency = spanishFrequency;
                 break;
             default:
                 //default = english
@@ -76,18 +96,32 @@ public class Crypter {
                 standardFrequency = latinFrequency;
                 break;
             case FRENCH:
+                double[] frenchFrequency = {
+                    0.538411, 0.061589, 0.208609, 0.235099, 1.000000, 0.063576, 
+                    0.064238, 0.071523, 0.459603, 0.047020, 0.010596, 0.376159, 
+                    0.213907, 0.425166, 0.349007, 0.200662, 0.058940, 0.425828, 
+                    0.523841, 0.470861, 0.400662, 0.121192, 0.002649, 0.027815, 
+                    0.012583, 0.013907
+                };
+                standardFrequency = frenchFrequency;
                 break;
             case SPANISH:
+                double[] spanishFrequency = {
+                    0.854227, 0.108601, 0.282070, 0.340379, 1.000000, 0.050292, 
+                    0.072886, 0.086006, 0.384840, 0.037901, 0.008017, 0.381924, 
+                    0.224490, 0.497813, 0.615160, 0.210641, 0.080904, 0.467201, 
+                    0.524781, 0.335277, 0.331633, 0.076531, 0.002915, 0.010204, 
+                    0.079446, 0.034257
+                };
+                standardFrequency = spanishFrequency;
                 break;
-            default:
-                //default = english
+            default: //default is english
                 double[] englishFrequency = {
-                    0.64290624, 0.11745023999999998, 0.21899904, 0.33479616, 0.99990144, 
-                    0.17538816000000002, 0.1586208, 0.47971968000000004, 0.54836352, 0.01204416, 
-                    0.06077184, 0.316848, 0.18940032, 0.53128128, 0.59095104, 
-                    0.15185088, 0.0074784, 0.47129664, 0.49806143999999997, 0.71288832, 
-                    0.21710975999999998, 0.07698816, 0.18585792, 0.011807999999999999, 0.15539328, 
-                    0.0058252799999999995
+                    0.642906, 0.117450, 0.218999, 0.334796, 0.999901, 0.175388, 
+                    0.158621, 0.479720, 0.548364, 0.012044, 0.060772, 0.316848, 
+                    0.189400, 0.531281, 0.590951, 0.151851, 0.007478, 0.471297, 
+                    0.498061, 0.712888, 0.217110, 0.076988, 0.185858, 0.011808, 
+                    0.155393, 0.005825
                 };
                 standardFrequency = englishFrequency;
                 break;
@@ -105,7 +139,7 @@ public class Crypter {
     public static String shift(String text, int shiftAmt) {
         char[] plainTextArray = text.toCharArray();
         for (int i = 0; i < plainTextArray.length; i++) {
-            if (Character.isLetter(plainTextArray[i])) {
+            if (Character.isLetter(plainTextArray[i]) && (int) plainTextArray[i] < 123) {
                 char temp = plainTextArray[i];
                 plainTextArray[i] = (char) (shiftAmt + (int) plainTextArray[i]);
 
@@ -143,18 +177,21 @@ public class Crypter {
             map.put(replacement[0], replacement[1]);
             max = Math.max(replacement[0].length(), max);
         }
-        for (int i = 0; i < str.length(); i++) {
+        int i = 0;
+        while (i < str.length()) {
             boolean found = false;
             for (int n = max; n > 0; n--) {
-                if (i + n < str.length() && map.containsKey(str.substring(i, i + n))) {
+                if (i + n <= str.length() && map.containsKey(str.substring(i, i + n))) {
                     text.append(map.get(str.substring(i, i + n)).toUpperCase());
-                    i += map.get(str.substring(i, i + n)).length() - 1;
+                    i += n;
                     found = true;
                     break;
                 }
             }
-            if (!found)
+            if (!found) {
                 text.append(str.substring(i, i + 1));
+                i++;
+            }
         }
         return new String(text);
     }
@@ -172,10 +209,9 @@ public class Crypter {
     public static String vigenereCrypt(String plainText, String keyword, boolean encrypt) {
         StringBuffer text = new StringBuffer();
         char[] keywordArray = TextFormatter.formatText(keyword, TextFormatter.ONLY_LETTERS).toCharArray();
-        int shiftAmt = 0;
         int k = 0;
         for (int i = 0; i < plainText.length(); i++) {
-            shiftAmt = 0;
+            int shiftAmt = 0;
             if (Character.isLetter(plainText.charAt(i))) {
                 if (Character.isLowerCase(keywordArray[k])) {
                     shiftAmt = (int) keywordArray[k] - 97;
@@ -207,8 +243,8 @@ public class Crypter {
      * @return ArrayList of strings in format: pattern, repetitions, shortest distance
      */
     public static ArrayList<String> autoFindPatterns(int length, String text) {
-        ArrayList<String> stats = new ArrayList<String>();
-        ArrayList<String> patternsChecked = new ArrayList<String>();
+        ArrayList<String> stats = new ArrayList<>();
+        ArrayList<String> patternsChecked = new ArrayList<>();
         String cText = text.toLowerCase();
         for (int startIndex = 0; startIndex < cText.length() - length; startIndex++) {
             int previousIndex = startIndex;
@@ -291,14 +327,12 @@ public class Crypter {
      * @return 
      */
     public static String pigLatin(String text, boolean encrypt) {
-         ArrayList<Character> vwls = new ArrayList<Character>();
-        ArrayList<String> sp = new ArrayList<String>();
+        ArrayList<Character> vwls = new ArrayList<>();
+        ArrayList<String> sp = new ArrayList<>();
         for (char v : vowels) {
             vwls.add(v);
         }
-        for (String str : specialCases) {
-            sp.add(str);
-        }
+        sp.addAll(Arrays.asList(specialCases));
         text = text.trim().toLowerCase();
         StringBuffer pigText = new StringBuffer(text);
         Scanner scan = new Scanner(text);
@@ -320,7 +354,7 @@ public class Crypter {
                         inAWord = false;
                     }
                 } else {
-                    String newWord = "";
+                    String newWord;
                     if (encrypt) {
                         newWord = wordToPigLatin(pigText.substring(startIndex, n), sp, vwls);
                     } else {
@@ -430,7 +464,7 @@ public class Crypter {
      */
     public static Object[][] getSpecificMessageFrequency(String text, ArrayList<String> lookFor) {
         text = text.toLowerCase().replaceAll("\\s", "");
-        ArrayList<Integer> amts = new ArrayList<Integer>();
+        ArrayList<Integer> amts = new ArrayList<>();
         for (int i = 0; i < lookFor.size(); i++) {
             StringBuffer strb = new StringBuffer(text);
             int count = 0;
@@ -630,8 +664,8 @@ public class Crypter {
     public static String fromBinary(String text) {
         text = text.replaceAll("[^01]", "");
         StringBuffer newText = new StringBuffer();
-        String binaryNum = "";
-        int index = 0;
+        String binaryNum;
+        int index;
         for (int i = 0; i <= text.length() - 8; i += 8) {
             binaryNum = text.substring(i, i + 8);
             index = 0;

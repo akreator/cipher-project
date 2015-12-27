@@ -12,14 +12,14 @@ public class Properties {
     private static Color textBackgroundColor = Color.WHITE;
     public static final int DEFAULT = 0, HACKER = 1, BLUE = 2, GREEN = 3, ORANGE = 4, SIMPLE = 5;
     public static final String[] themeNames = {"Default", "Hacker", "Blue", "Green", "Orange", "Monochrome"};
-    private static String[] components = {
+    private static final String[] components = {
         "control", "nimbusBase", "nimbusFocus", 
         "text", "nimbusSelectedText", "nimbusSelectionBackground", 
         "Table.background", "TextField.background", "nimbusBlueGrey",
         "nimbusLightBackground", "Table[Enabled+Selected].textForeground"
     };
     
-    private static Color[][] themeColors = {
+    private static final Color[][] themeColors = {
         { //default colors
             new Color(214, 217, 223), new Color(51, 98, 140), new Color(115, 164, 209),
             Color.BLACK, Color.WHITE, new Color(57, 105, 138),
@@ -37,7 +37,7 @@ public class Properties {
             Color.WHITE, Color.WHITE }, 
         { //green
             new Color(7, 77, 9), new Color(0, 5, 0), new Color(0, 104, 0),
-            Color.WHITE, new Color(7, 77, 9), Color.WHITE, 
+            Color.WHITE, Color.WHITE, new Color(7, 77, 9), 
             new Color(7, 77, 9), new Color(0, 5, 0), new Color(0, 5, 0),
             new Color(0, 104, 0), new Color(7, 77, 9) }, 
         { //orange

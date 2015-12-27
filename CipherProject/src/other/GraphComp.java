@@ -23,12 +23,7 @@ public class GraphComp extends JComponent {
     private Graphics2D g2;
 
     private String graphTitle;
-    private int xGraph;
-    private int yGraph;
-    private int graphWidth;
-    private int graphHeight;
-
-    private int shiftNum;
+    private int xGraph, yGraph, graphWidth, graphHeight,shiftNum;
 
     private GraphComp(int x, int y, int width, int height, String title) {
         xGraph = x;
@@ -82,10 +77,8 @@ public class GraphComp extends JComponent {
     @Override
     public void paintComponent(Graphics g) {
         g2 = (Graphics2D) g;
-
         g2.drawString(graphTitle, 5, graphHeight / 10);
-
-        drawGraph(xGraph, yGraph, graphWidth, graphHeight, letFrequency);
+        drawGraph();
     }
 
     /**
@@ -93,23 +86,24 @@ public class GraphComp extends JComponent {
      * graphWidth. Each bar in the graph depends on the frequency of the letter.
      *
      * @param x: x-coordinate of the top left corner of the graph
-     * @param y: y-coordinate of the top left corner of the graph
-     * @param gHeight: height of the graph
-     * @param gWidth: width of the graph
-   *
+     * @param yGraph: y-coordinate of the top left corner of the graph
+     * @param graphHeight: height of the graph
+     * @param graphWidth: width of the graph
+     * @param frequency: array of frequencies (for letters in alphabetical order)
+     *
      */
-    public void drawGraph(int x, int y, int gWidth, int gHeight, double[] frequency) {
-        int rWidth = gWidth / 39;
-        int rSpacing = gWidth / 26;
+    private void drawGraph() {
+        int rWidth = graphWidth / 39;
+        int rSpacing = graphWidth / 26;
 
-        g2.drawLine(x, y, x, y + gHeight);
-        g2.drawLine(x, y + gHeight, x + (rSpacing - rWidth) + gWidth, y + gHeight);
+        g2.drawLine(xGraph, yGraph, xGraph, yGraph + graphHeight);
+        g2.drawLine(xGraph, yGraph + graphHeight, xGraph + (rSpacing - rWidth) + graphWidth, yGraph + graphHeight);
 
         for (int i = 0; i < 26; i++) {
-            int rHeight = (int) (gHeight * frequency[i]);
-            Rectangle rect = new Rectangle(x + (rSpacing - rWidth) + rSpacing * i, y + (gHeight - rHeight), rWidth, rHeight);
+            int rHeight = (int) (graphHeight * letFrequency[i]);
+            Rectangle rect = new Rectangle(xGraph + (rSpacing - rWidth) + rSpacing * i, yGraph + (graphHeight - rHeight), rWidth, rHeight);
             g2.draw(rect);
-            g2.drawString("" + TextFormatter.alphabet[i], x + (rSpacing - rWidth) + rSpacing * i + rWidth / 4, y + gHeight + 10);
+            g2.drawString("" + TextFormatter.ALPHABET[i], xGraph + (rSpacing - rWidth) + rSpacing * i + rWidth / 4, yGraph + graphHeight + 10);
         }
 
     }

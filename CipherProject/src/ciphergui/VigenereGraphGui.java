@@ -178,7 +178,7 @@ public class VigenereGraphGui extends MyGUI {
     public void createStandardGraph() {
         sFrame.setTitle("Standard Fequency of " + Crypter.LANGUAGES[Properties.getLanguage()] + " Letters");
         sFrame.setSize(350, 200);
-        sFrame.setDefaultCloseOperation(sFrame.DISPOSE_ON_CLOSE);
+        sFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         GraphComp standardComp = new GraphComp(0, 10, 300, 100, 
                 "Standard Fequency of " + Crypter.LANGUAGES[Properties.getLanguage()] + " Letters", 
@@ -206,7 +206,7 @@ public class VigenereGraphGui extends MyGUI {
     public void refresh() {
         newTextArea.setText(originalTextArea.getText());
         dispose();
-        new VigenereGraphGui();
+        VigenereGraphGui vg = new VigenereGraphGui();
     }
 
     class VignereGuiListener implements ActionListener {
@@ -228,7 +228,7 @@ public class VigenereGraphGui extends MyGUI {
             } else if (e.getSource() == checkStandard) {
                 createStandardGraph();
             } else if (e.getSource() == back) {
-                new PatternFinderGui();
+                PatternFinderGui pf = new PatternFinderGui();
                 sFrame.dispose();
                 dispose();
             }

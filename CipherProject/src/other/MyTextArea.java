@@ -1,6 +1,5 @@
  package other;
 
-
 import ciphergui.MyGUI;
 import java.awt.Font;
 import javax.swing.JTextArea;

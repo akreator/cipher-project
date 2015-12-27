@@ -4,6 +4,7 @@ import other.*;
 import texttools.Crypter;
 import javax.swing.*;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -72,10 +73,12 @@ public class SubstitutionCipherGui extends MyGUI {
         tablePane.add(messagePane);
 
         //input table
-        enter = new JButton("Save & Enter");
+        enter = new JButton("Remember Replacements & Enter");
+        enter.setAlignmentX(Component.CENTER_ALIGNMENT);
         enter.addActionListener(new SubstitutionListener());
         String[] defaultStrings = {
-            "Autofill Options...", "Alphabet Top Row", "Atbash", "A1Z26 (to numbers)", "A1Z26 (to letters)", "Clear All", "Clear Bottom Row"
+            "Autofill Options...", "Alphabet Top Row", "Atbash", "A1Z26 (to numbers)", 
+            "A1Z26 (to letters)", "Non-accented text", "Clear All", "Clear Bottom Row"
         };
         defaultOptions = new JComboBox(defaultStrings);
         defaultOptions.addActionListener(new SubstitutionListener());
@@ -152,18 +155,25 @@ public class SubstitutionCipherGui extends MyGUI {
     }
 
     class SubstitutionListener implements ActionListener {
-        private String[][] atbash = {
+        private final String[][] atbash = {
             {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
                 "s", "t", "u", "v", "w", "x", "y", "z"},
             {"z", "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n",
                 "m", "l", "k", "j", "i", "h", "g", "f", "e", "d", "c", "b", "a"}
-
+        };
+        
+        private final String[][] accentLetters = {
+            { "ù", "û", "ü", "ú", "ÿ", "á", "à", "â", "å", "ä", "é", "è", "ê", "ë", "ï", "î", "ì", "í",
+                "ô", "ö", "ò", "ó", "ñ", "ç", "æ", "œ" },
+            { "u", "u", "u", "u", "y", "a", "a", "a", "a", "a", "e", "e", "e", "e", "i", "i", "i", "i", 
+                "o", "o", "o", "o", "n", "c", "ae", "oe" }
         };
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == defaultOptions) {
-                //  "Autofill Options", "Alphabet Top Row", "Atbash", "A1Z26 (to Numbers)", "A1Z26 (from Numbers)", "Clear All", "Clear Bottom Row"
+                //  "Autofill Options", "Alphabet Top Row", "Atbash", "A1Z26 (to Numbers)", 
+                //"A1Z26 (from Numbers)", "Non-accented text", "Clear All", "Clear Bottom Row"
                 switch (defaultOptions.getSelectedIndex()) {
                      case 1:
                         for (int c = 0; c < 26; c++) {
@@ -191,12 +201,19 @@ public class SubstitutionCipherGui extends MyGUI {
                         break;
                     case 5:
                         for (int r = 0; r < 2; r++) {
+                            for (int c = 0; c < accentLetters[0].length; c++) {
+                                switchTable.setValueAt(accentLetters[r][c], r, c);
+                            }
+                        }
+                        break;
+                    case 6:
+                        for (int r = 0; r < 2; r++) {
                             for (int c = 0; c < 26; c++) {
                                 switchTable.setValueAt("", r, c);
                             }
                         }
                         break;
-                    case 6:
+                    case 7:
                         for (int c = 0; c < 26; c++) {
                             switchTable.setValueAt("", 1, c);
                         }
@@ -205,22 +222,22 @@ public class SubstitutionCipherGui extends MyGUI {
 
             } else if (e.getSource() == analyzeOptions && !originalTextArea.getText().equals("") && originalTextArea.getText() != null) {
                 switch (analyzeOptions.getSelectedIndex()) {
-                    case 1:
+                    case 1: //analyze letters only
                         messageTable.updateTable(Crypter.getMessageFrequency(
                                 originalTextArea.getText().replaceAll("[^a-zA-Z]", "")));
                         break;
-                    case 2:
+                    case 2: //analyze letters and numbers
                         messageTable.updateTable(Crypter.getMessageFrequency(
                                 originalTextArea.getText().replaceAll("[^a-zA-Z0-9]", "")));
                         break;
-                    case 3:
+                    case 3: //analyze all characters
                         messageTable.updateTable(Crypter.getMessageFrequency(originalTextArea.getText()));
                         break;
-                    case 4:
+                    case 4: //analyze top row only
                         updateReplacements();
-                        ArrayList<String> array = new ArrayList<String>();
+                        ArrayList<String> array = new ArrayList<>();
                         for ( String[] r : replacements) 
-                            array.add(r[1]);
+                            array.add(r[0]);
                         messageTable.updateTable(Crypter.getSpecificMessageFrequency(originalTextArea.getText(), array));
                 }
                 repaint();

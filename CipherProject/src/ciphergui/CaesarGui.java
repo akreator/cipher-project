@@ -99,6 +99,7 @@ public class CaesarGui extends MyGUI {
 
     class GraphGuiListener implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == leftShift) {
                 messageComp.shift(-1);

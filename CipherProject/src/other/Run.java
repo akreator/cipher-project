@@ -22,6 +22,6 @@ public class Run {
                     + "Email akreator0@gmail.com with your operating system to let them know.", 
                     "Package not available", JOptionPane.ERROR_MESSAGE);
         }
-        new PropertiesGui();
+        PropertiesGui pg = new PropertiesGui();
     }
 }

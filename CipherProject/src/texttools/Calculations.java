@@ -13,15 +13,15 @@ public class Calculations {
         int commonFactor = 1;
         boolean aFactsSmaller = Math.min(aFacts.size(), bFacts.size()) == aFacts.size();
         if (aFactsSmaller) {
-            for (int k = 0; k < aFacts.size(); k++) {
-                if (bFacts.contains(aFacts.get(k))) {
-                    commonFactor = aFacts.get(k);
+            for (Integer aFact : aFacts) {
+                if (bFacts.contains(aFact)) {
+                    commonFactor = aFact;
                 }
             }
         } else {
-            for (int k = 0; k < bFacts.size(); k++) {
-                if (aFacts.contains(bFacts.get(k))) {
-                    commonFactor = bFacts.get(k);
+            for (Integer bFact : bFacts) {
+                if (aFacts.contains(bFact)) {
+                    commonFactor = bFact;
                 }
             }
         }

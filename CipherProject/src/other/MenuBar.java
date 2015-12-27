@@ -219,25 +219,25 @@ public class MenuBar extends JMenuBar {
         public void actionPerformed(ActionEvent e) {
             switch (switchNum) {
                 case 0:
-                    new CaesarGui();
+                    CaesarGui cg = new CaesarGui();
                     break;
                 case 1:
-                    new SubstitutionCipherGui();
+                    SubstitutionCipherGui scg = new SubstitutionCipherGui();
                     break;
                 case 2:
-                    new VigenereKnownGui();
+                    VigenereKnownGui vkg = new VigenereKnownGui();
                     break;
                 case 3:
-                    new PatternFinderGui();
+                    PatternFinderGui pfg = new PatternFinderGui();
                     break;
                 case 4:
-                    new PigLatinGui();
+                    PigLatinGui plg = new PigLatinGui();
                     break;
                 case 5:
-                    new BoxCipherGui();
+                    BoxCipherGui bcg = new BoxCipherGui();
                     break;
                 case 6:
-                    new BinaryGui();
+                    BinaryGui bg = new BinaryGui();
             }
             manageFrame(false);
         }

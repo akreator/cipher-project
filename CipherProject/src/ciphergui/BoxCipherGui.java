@@ -75,7 +75,7 @@ public class BoxCipherGui extends MyGUI {
         };
         String[] labels = { "Orientation:", "Horizontal direction:", "Vertical direction:" };   
         int[] selections = { boxOrientation, truthToNum(leftToRight), truthToNum(topToBottom) };
-        boxButtons = new ArrayList<JRadioButton[]>();
+        boxButtons = new ArrayList<>();
         for (int i = 0; i < names.length; i++) {
             boxButtons.add(createJRadioButtonGroup(names[i], actionCommands[i], selections[i]));
         }
@@ -107,7 +107,7 @@ public class BoxCipherGui extends MyGUI {
             {"13", "14"}
         };
         int[] rSelections = { readOrientation, truthToNum(readLeftToRight), truthToNum(readTopToBottom)};
-        readButtons = new ArrayList<JRadioButton[]>();
+        readButtons = new ArrayList<>();
         for (int i = 0; i < labels.length; i++) {
             readButtons.add(createJRadioButtonGroup(names[i], rActionCommands[i], rSelections[i]));
         }
@@ -176,9 +176,8 @@ public class BoxCipherGui extends MyGUI {
             //create pane with buttons
             JPanel bPane = new JPanel();
             bPane.setLayout(new BoxLayout(bPane, BoxLayout.PAGE_AXIS));
-            for (int j = 0; j < buttons.get(i).length; j++) {
-                bPane.add(buttons.get(i)[j]);
-            }
+            for (JRadioButton b : buttons.get(i))
+                bPane.add(b);
             pane.add(bPane); //add it to overall pane
             settingsPane.add(pane);
             settingsPane.add(Box.createRigidArea(new Dimension(10, 10)));
@@ -275,10 +274,10 @@ public class BoxCipherGui extends MyGUI {
                 } else {
                         factors.add(0, 1);
                         for (int i = 0; i < factors.size() / 2; i++) {
-                            sides.append(factors.get(i) + ", " + factors.get(factors.size() - 1 - i) + "\n");
+                            sides.append(factors.get(i)).append(", ").append(factors.get(factors.size() - 1 - i)).append("\n");
                         }
                         if (factors.size() % 2 != 0) {
-                            sides.append(factors.get(factors.size() / 2) + ", " + factors.get(factors.size() / 2));
+                            sides.append(factors.get(factors.size() / 2)).append(", ").append(factors.get(factors.size() / 2));
                         }
                 }
                 sideCombos.setText(sides.toString().trim());
