@@ -65,6 +65,8 @@ public class TextFormatter {
      * @return : the formatted text
      */
     public static String formatText(String text, int type) {
+        if(text.isEmpty() || text.equals(""))
+            return "";
         switch (type) {
             case SPECIAL_FORMAT:
                 char[] original = text.toUpperCase().replaceAll("\\s", "").toCharArray();

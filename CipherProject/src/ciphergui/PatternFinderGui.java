@@ -128,20 +128,16 @@ public class PatternFinderGui extends MyGUI {
                 }
                 checkHistory(patternHist);
             } else if (e.getSource() == knownLength) {
-                int j = 0;
-                boolean acceptNum = false;
-                while (!acceptNum) {
-                    String s = JOptionPane.showInputDialog(frame, "How long is the keyword? Enter a number.", "Enter keyword length", JOptionPane.PLAIN_MESSAGE);
-                    if (s == null) 
-                        break;
-                    else if (!s.equals("")) 
-                        j = Integer.parseInt("0" + s.replaceAll("\\D", ""));
-                    acceptNum = j > 0;
-                }
-                if (acceptNum) {
-                    VigenereGraphGui vigenereGraphGui = new VigenereGraphGui(j);
-                    setVisible(false);
-                    dispose();
+                String s = JOptionPane.showInputDialog(frame, "How long is the keyword? Enter a number.", "Enter keyword length", JOptionPane.PLAIN_MESSAGE);
+                try {
+                    int j = Integer.parseInt(s);
+                    if (j > 0) {
+                        VigenereGraphGui vgg = new VigenereGraphGui(j);
+                        setVisible(false);
+                        dispose();
+                    }
+                } catch (NumberFormatException n) {
+                    //do nothing
                 }
             }
         }

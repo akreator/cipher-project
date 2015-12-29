@@ -310,11 +310,11 @@ public class BoxCipherGui extends MyGUI {
                     sideCombos.setText("Please enter a valid row and column number.");
                 }
             } else if (e.getSource().equals(readText)) {
-                if (box.length > 0) 
-                    newTextArea.setText(TextFormatter.formatText(Crypter.readBoxArray(box, readOrientation, readLeftToRight, readTopToBottom), 
-                            TextFormatter.SPECIAL_FORMAT));
-                else
+                if (boxArea.getText().replaceAll("\\s", "").equals(""))
                     newTextArea.setText("Create a box first.");
+                else
+                    newTextArea.setText(TextFormatter.formatText(Crypter.readBoxArray(box, readOrientation, readLeftToRight, readTopToBottom),
+                            TextFormatter.SPECIAL_FORMAT));
             } //end of if-statements
         } //end of method
     } //end of inner class

@@ -4,6 +4,7 @@ import other.*;
 import texttools.*;
 import javax.swing.*;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,7 @@ public class VigenereGraphGui extends MyGUI {
     private int currentGraph;
     private JComboBox selectedGraph;
     private GraphComp[] graphs;
-    private static JTextField patternField = new JTextField("");
+    private MyTextArea patternArea;
     
     private int gWidth, gHeight, perLine = 2;
 
@@ -39,8 +40,14 @@ public class VigenereGraphGui extends MyGUI {
         for (int i = 0; i < patternLength; i++) {
             patternArray[i] = 'a';
         }
-        patternField = new JTextField(new String(patternArray));
-        patternField.setEditable(false);
+        int cols = 15, rows = 1;
+        if (patternLength > 15) {
+            rows = patternLength / 15;
+            if (patternLength % 15 != 0)
+                rows++;
+        } 
+        patternArea = new MyTextArea(rows, cols, false, true);
+        patternArea.setText(new String(patternArray));
         gWidth = getWidth() / 5;
         gHeight = 100;
         init();
@@ -61,7 +68,7 @@ public class VigenereGraphGui extends MyGUI {
         back = new JButton("Back");
         back.addActionListener(new VignereGuiListener());
         originalTextArea = new MyTextArea(20, 50, false, false);
-        originalTextArea.setText(TextFormatter.formatText(originalTextArea.getText(), TextFormatter.ONLY_LETTERS));
+        originalTextArea.setText(TextFormatter.formatText(originalText, TextFormatter.ONLY_LETTERS));
         if (!originalTextArea.getText().isEmpty()) {
             originalTextArea.setText(TextFormatter.formatText(originalTextArea.getText(), TextFormatter.SPECIAL_FORMAT));
         }
@@ -91,7 +98,8 @@ public class VigenereGraphGui extends MyGUI {
         
         //keyword and button to show standard
         JPanel patternPane = new JPanel();
-        patternPane.add(patternField);
+        patternPane.add(patternArea);
+        patternPane.setAlignmentX(Component.LEFT_ALIGNMENT);
         JPanel standardPane = new JPanel();
         standardPane.setLayout(new BoxLayout(standardPane, BoxLayout.PAGE_AXIS));
         standardPane.add(patternPane);
@@ -194,12 +202,12 @@ public class VigenereGraphGui extends MyGUI {
             } else if (e.getSource() == leftShift && selectedGraph.getSelectedIndex() != 0) {
                 graphs[currentGraph].shift(-1);
                 originalTextArea.setText(TextFormatter.formatText(Crypter.shiftNthLetters(originalTextArea.getText(), currentGraph, patternLength, false), TextFormatter.SPECIAL_FORMAT));
-                patternField.setText(Crypter.shiftNthLetters(patternField.getText(), currentGraph, patternLength, true));
+                patternArea.setText(Crypter.shiftNthLetters(patternArea.getText(), currentGraph, patternLength, true));
                 repaint();
             } else if (e.getSource() == rightShift && selectedGraph.getSelectedIndex() != 0) {
                 graphs[currentGraph].shift(1);
                 originalTextArea.setText(TextFormatter.formatText(Crypter.shiftNthLetters(originalTextArea.getText(), currentGraph, patternLength, true), TextFormatter.SPECIAL_FORMAT));
-                patternField.setText(Crypter.shiftNthLetters(patternField.getText(), currentGraph, patternLength, false));
+                patternArea.setText(Crypter.shiftNthLetters(patternArea.getText(), currentGraph, patternLength, false));
                 repaint();
             } else if (e.getSource() == checkStandard) {
                 createStandardGraph();

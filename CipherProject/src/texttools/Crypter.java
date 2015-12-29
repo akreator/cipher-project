@@ -9,8 +9,7 @@ import java.util.Scanner;
 public class Crypter {
     public static final String[] LANGUAGES = {"English", "Latin", "French", "Spanish"};
     public static final int ENGLISH = 0, LATIN = 1, FRENCH = 2, SPANISH = 3;
-    private static final char[] vowels = {'a', 'e', 'i', 'o', 'u'};
-    private static final String[] specialCases = {"qu", "wr", "ph", "kn", "th", "sh", "fr", "sw", "gl", "sm", "wy"};
+    private static final String[] vowels = {"a", "e", "i", "o", "u"};
     private static final String[] binaryArray = {" ", "!", "\"", "#", "$", "%","&", "'", 
         "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6",
         "7", "8", "9", ":", ";", "<", "=", ">", "?", "@", "A", "B", "C", "D",
@@ -181,7 +180,7 @@ public class Crypter {
         while (i < str.length()) {
             boolean found = false;
             for (int n = max; n > 0; n--) {
-                if (i + n <= str.length() && map.containsKey(str.substring(i, i + n))) {
+                if (i + n <= str.length() && map.containsKey(str.substring(i, i + n)) && !map.get(str.substring(i, i + n)).equals("")) {
                     text.append(map.get(str.substring(i, i + n)).toUpperCase());
                     i += n;
                     found = true;
@@ -209,6 +208,8 @@ public class Crypter {
     public static String vigenereCrypt(String plainText, String keyword, boolean encrypt) {
         StringBuffer text = new StringBuffer();
         char[] keywordArray = TextFormatter.formatText(keyword, TextFormatter.ONLY_LETTERS).toCharArray();
+        if (keywordArray.length == 0)
+            return plainText;
         int k = 0;
         for (int i = 0; i < plainText.length(); i++) {
             int shiftAmt = 0;
@@ -277,19 +278,21 @@ public class Crypter {
      * @param vwls
      * @return 
      */
-    private static String wordToPigLatin(String word, ArrayList<String> sp, ArrayList<Character> vwls) {
+    private static String wordToPigLatin(String word, ArrayList<String> vwls) {
         int prefixEnd = 0;
-        if (word.equals("the")) {
-            return word + "-ay";
-        } else {
-            for (int i = 0; i < word.length(); i++) {
-                if (vwls.contains(word.charAt(i))) {
-                    prefixEnd = i;
-                    break;
-                }
-            }
-            return word.substring(prefixEnd) + "-" + word.substring(0, prefixEnd) + "ay";
-        }
+        if (word.length() >= 2) {
+            if (word.substring(0, 2).equals("qu")) {
+                prefixEnd = 2;
+            } else {
+                for (int i = 0; i < word.length(); i++) {
+                    if (vwls.contains(word.substring(i, i + 1).toLowerCase())) {
+                        prefixEnd = i;
+                        break;
+                    }
+                } //end of for-loop
+            } 
+        } //end of if-statement
+        return word.substring(prefixEnd) + "-" + word.substring(0, prefixEnd) + "ay";
     }
 
     /**
@@ -299,7 +302,7 @@ public class Crypter {
      * @param vwls
      * @return 
      */
-    private static String wordFromPigLatin(String word, ArrayList<String> sp, ArrayList<Character> vwls) {
+    private static String wordFromPigLatin(String word, ArrayList<String> vwls) {
         int dashIndex = 0;
         for (int i = 0; i < word.length(); i++) {
             if (word.charAt(i) == '-') {
@@ -312,7 +315,7 @@ public class Crypter {
         }
         int prefixEnd = 0;
         for (int i = dashIndex + 1; i < word.length(); i++) {
-            if (vwls.contains(word.charAt(i))) {
+            if (vwls.contains(word.substring(i, i + 1).toLowerCase())) {
                 prefixEnd = i;
                 break;
             }
@@ -327,28 +330,24 @@ public class Crypter {
      * @return 
      */
     public static String pigLatin(String text, boolean encrypt) {
-        ArrayList<Character> vwls = new ArrayList<>();
-        ArrayList<String> sp = new ArrayList<>();
-        for (char v : vowels) {
+        ArrayList<String> vwls = new ArrayList<>();
+        for (String v : vowels) {
             vwls.add(v);
         }
-        sp.addAll(Arrays.asList(specialCases));
-        text = text.trim().toLowerCase();
+        text = text.trim();
         StringBuffer pigText = new StringBuffer(text);
-        Scanner scan = new Scanner(text);
-        boolean moreWords = true;
-        boolean inAWord = true;
-        int startIndex = 0;
-        int n = 0;
+        int startIndex = 0, n = 0;
+        boolean moreWords = n < pigText.length() - 1,
+                inAWord = false;
         while (moreWords) {
             while (inAWord) {
                 if (Character.isLetter(pigText.charAt(n)) || pigText.charAt(n) == '\'' || pigText.charAt(n) == '-') {
                     n++;
                     if (n > pigText.length() - 1) {
                         if (encrypt) {
-                            pigText.replace(startIndex, n, wordToPigLatin(pigText.substring(startIndex, n), sp, vwls));
+                            pigText.replace(startIndex, n, wordToPigLatin(pigText.substring(startIndex, n), vwls));
                         } else {
-                            pigText.replace(startIndex, n, wordFromPigLatin(pigText.substring(startIndex, n), sp, vwls));
+                            pigText.replace(startIndex, n, wordFromPigLatin(pigText.substring(startIndex, n), vwls));
                         }
                         moreWords = false;
                         inAWord = false;
@@ -356,9 +355,9 @@ public class Crypter {
                 } else {
                     String newWord;
                     if (encrypt) {
-                        newWord = wordToPigLatin(pigText.substring(startIndex, n), sp, vwls);
+                        newWord = wordToPigLatin(pigText.substring(startIndex, n), vwls);
                     } else {
-                        newWord = wordFromPigLatin(pigText.substring(startIndex, n), sp, vwls);
+                        newWord = wordFromPigLatin(pigText.substring(startIndex, n), vwls);
                     }
                     pigText.replace(startIndex, n, newWord);
                     n = startIndex + newWord.length();
@@ -367,7 +366,6 @@ public class Crypter {
                 }
             }
             while (!inAWord) {
-                n++;
                 if (n >= pigText.length() - 1) {
                     inAWord = true;
                     moreWords = false;
@@ -375,6 +373,7 @@ public class Crypter {
                     startIndex = n;
                     inAWord = true;
                 }
+                n++;
             }
         }
         return pigText.toString();
