@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Crypter {
-    public static final String[] LANGUAGES = {"English", "Latin", "French", "Spanish"};
-    public static final int ENGLISH = 0, LATIN = 1, FRENCH = 2, SPANISH = 3;
     private static final String[] vowels = {"a", "e", "i", "o", "u"};
     private static final String[] binaryArray = {" ", "!", "\"", "#", "$", "%","&", "'", 
         "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6",
@@ -21,112 +19,7 @@ public class Crypter {
     public static final int HORIZONTAL = 0, VERTICAL = 1, DIAGONAL = 2;
 
     private Crypter() {
-    }
-    
-    /**
-     * Return standard frequency of letters for a given language.  
-     * Values can be relative to one another or total to 100%.
-     * @param language
-     * @return 
-     */
-    public static Object[][] getStandardFrequency(int language) {
-        Object[][] standardFrequency = new Object[26][2];
-        switch (language) {
-            case LATIN:
-                Object[][] latinFrequency = {                
-                    {"i", 11.44}, {"e", 11.38}, {"a", 8.89}, {"u", 8.46}, {"t", 8.00},
-                     {"s", 7.60}, {"r", 6.67}, {"n", 6.28}, {"o", 5.40},{"m", 4.025},
-                     {"c", 3.99}, {"l", 3.15}, {"p", 3.03}, {"d", 2.77}, {"b", 1.58},
-                     {"q", 1.51}, {"g", 1.21}, {"v", 0.96}, {"f", 0.93}, {"h", 0.69},
-                     {"x", 0.60}, {"y", 0.07}, {"z", 0.01}
-                };
-                standardFrequency = latinFrequency;
-                break;
-            case FRENCH:
-                Object[][] frenchFrequency = {                
-                    {"e", 15.10}, {"a", 8.13}, {"s", 7.91}, {"t", 7.11}, {"i", 6.94},
-                     {"r", 6.43}, {"n", 6.42}, {"u", 6.05}, {"l", 5.68}, {"o", 5.27},
-                     {"d", 3.55}, {"m", 3.23}, {"c", 3.15}, {"p", 3.03}, {"é", 2.13},
-                     {"v", 1.83}, {"h", 1.08}, {"g", 0.97}, {"f", 0.96}, {"b", 0.93},
-                     {"q", 0.89}, {"j", 0.71}, {"à", 0.54}, {"x", 0.42}, {"è", 0.35},
-                     {"ê", 0.24}, {"z", 0.21}, {"y", 0.19}, {"k", 0.16}, {"w", 0.04}
-                };
-                standardFrequency = frenchFrequency;
-                break;
-            case SPANISH:
-                Object[][] spanishFrequency = {                
-                    {"e", 13.72}, {"a", 11.72}, {"o", 8.44}, {"s", 7.20}, {"n", 6.83},
-                     {"r", 6.41},  {"i", 5.28}, {"l", 5.24}, {"d", 4.67}, {"t", 4.60},
-                     {"u", 4.55}, {"c", 3.87}, {"m", 3.08}, {"p", 2.89}, {"b", 1.49},
-                     {"h", 1.18}, {"q", 1.11}, {"y", 1.09}, {"v", 1.05}, {"g", 1.00},
-                     {"ó", 0.76}, {"í", 0.70}, {"f", 0.69}, {"j", 0.52}, {"z", 0.47},
-                     {"á", 0.44}, {"é", 0.36}, {"ñ", 0.17}, {"x", 0.14}, {"ú", 0.12},
-                     {"k", 0.11}, {"w", 0.04}, {"ü", 0.02}
-                };
-                standardFrequency = spanishFrequency;
-                break;
-            default:
-                //default = english
-                Object[][] englishFrequency = {                
-                    {"e", 12.702}, {"t", 9.056}, {"a", 8.167}, {"o", 7.507}, {"i", 6.966},
-                     {"n", 6.749}, {"s", 6.327}, {"h", 6.094}, {"r", 5.987}, {"d", 4.253},
-                     {"l", 4.025}, {"c", 2.782}, {"u", 2.758}, {"m", 2.406}, {"w", 2.361},
-                     {"f", 2.228}, {"g", 2.015}, {"y", 1.974}, {"p", 1.929}, {"b", 1.492},
-                     {"v", 0.978}, {"k", 0.772}, {"j", 0.153}, {"x", 0.150}, {"q", 0.095},
-                     {"z", 0.74}
-                };
-                standardFrequency = englishFrequency;
-                break;
-        }
-        return standardFrequency;
-    }
-    
-    public static double[] getRelativeFrequency(int language) {
-        double[] standardFrequency = new double[26];
-        switch (language) {
-            case LATIN:
-                double[] latinFrequency = {
-                    0.777098, 0.138112, 0.348776, 0.242133, 0.994755, 0.081294, 
-                    0.105769, 0.060315, 1.000000, 0.000000, 0.000000, 0.275350, 
-                    0.470280, 0.548951, 0.472028, 0.264860, 0.131993, 0.583042, 
-                    0.664336, 0.699301, 0.739510, 0.083916, 0.000000, 0.052448, 
-                    0.006119, 0.000874
-                };
-                standardFrequency = latinFrequency;
-                break;
-            case FRENCH:
-                double[] frenchFrequency = {
-                    0.538411, 0.061589, 0.208609, 0.235099, 1.000000, 0.063576, 
-                    0.064238, 0.071523, 0.459603, 0.047020, 0.010596, 0.376159, 
-                    0.213907, 0.425166, 0.349007, 0.200662, 0.058940, 0.425828, 
-                    0.523841, 0.470861, 0.400662, 0.121192, 0.002649, 0.027815, 
-                    0.012583, 0.013907
-                };
-                standardFrequency = frenchFrequency;
-                break;
-            case SPANISH:
-                double[] spanishFrequency = {
-                    0.854227, 0.108601, 0.282070, 0.340379, 1.000000, 0.050292, 
-                    0.072886, 0.086006, 0.384840, 0.037901, 0.008017, 0.381924, 
-                    0.224490, 0.497813, 0.615160, 0.210641, 0.080904, 0.467201, 
-                    0.524781, 0.335277, 0.331633, 0.076531, 0.002915, 0.010204, 
-                    0.079446, 0.034257
-                };
-                standardFrequency = spanishFrequency;
-                break;
-            default: //default is english
-                double[] englishFrequency = {
-                    0.642906, 0.117450, 0.218999, 0.334796, 0.999901, 0.175388, 
-                    0.158621, 0.479720, 0.548364, 0.012044, 0.060772, 0.316848, 
-                    0.189400, 0.531281, 0.590951, 0.151851, 0.007478, 0.471297, 
-                    0.498061, 0.712888, 0.217110, 0.076988, 0.185858, 0.011808, 
-                    0.155393, 0.005825
-                };
-                standardFrequency = englishFrequency;
-                break;
-        }
-        return standardFrequency;
-    }
+    }    
 
     /**
      * Method for shifting characters in a given text by a certain amount.
@@ -246,7 +139,7 @@ public class Crypter {
     public static ArrayList<String> autoFindPatterns(int length, String text) {
         ArrayList<String> stats = new ArrayList<>();
         ArrayList<String> patternsChecked = new ArrayList<>();
-        String cText = text.toLowerCase();
+        String cText = text.toLowerCase().replaceAll("\\s", "");
         for (int startIndex = 0; startIndex < cText.length() - length; startIndex++) {
             int previousIndex = startIndex;
             int repetitions = 0, shortestDistance = Integer.MAX_VALUE;
@@ -264,7 +157,7 @@ public class Crypter {
                 }
                 if (shortestDistance == Integer.MAX_VALUE)
                     shortestDistance = 0;
-                stats.add(pattern + "," + repetitions + "," + shortestDistance);
+                stats.add(pattern + "๘" + repetitions + "๘" + shortestDistance);
             }
         }
         return stats;
@@ -291,7 +184,7 @@ public class Crypter {
                     }
                 } //end of for-loop
             } 
-        } //end of if-statement
+        } //end of first if-statement
         return word.substring(prefixEnd) + "-" + word.substring(0, prefixEnd) + "ay";
     }
 
@@ -424,67 +317,6 @@ public class Crypter {
         return "" + newArray;
     }
 
-    /**
-     * Method that calculates the frequency of all characters in the text.
-     * Includes everything but whitespace.
-     *
-     * @param text: Text to be analyzed
-     * @return : 2D array, each internal array containing the character and its
-     * frequency
-     */
-    public static Object[][] getMessageFrequency(String text) {
-        ArrayList<Integer> charAmts = new ArrayList();
-        ArrayList<Character> messageChars = new ArrayList();
-        char[] textArray = text.toLowerCase().replaceAll("\\s", "").toCharArray();
-        for (int i = 0; i < textArray.length; i++) {
-            char c = textArray[i];
-            if (!messageChars.contains(c)) {
-                messageChars.add(c);
-                charAmts.add(1);
-            } else {
-                charAmts.set(messageChars.indexOf(c), charAmts.get(messageChars.indexOf(c)) + 1);
-            }
-        }
-        Object[][] frequency = new Object[messageChars.size()][2];
-        int totalChars = textArray.length;
-        for (int i = 0; i < messageChars.size(); i++) {
-            frequency[i][0] = messageChars.get(i);
-            frequency[i][1] = 100. * (double) charAmts.get(i) / totalChars;
-        }
-        return frequency;
-    }
-
-    /**
-     * Calculate the frequency of specific patterns in the text
-     *
-     * @param text: the message to parse through
-     * @param lookFor: the patterns to look for
-     * @return : A 2D array, each array containing a pattern and its frequency
-     */
-    public static Object[][] getSpecificMessageFrequency(String text, ArrayList<String> lookFor) {
-        text = text.toLowerCase().replaceAll("\\s", "");
-        ArrayList<Integer> amts = new ArrayList<>();
-        for (int i = 0; i < lookFor.size(); i++) {
-            StringBuffer strb = new StringBuffer(text);
-            int count = 0;
-            if (!lookFor.get(i).isEmpty() && !lookFor.get(i).equals("")) {
-                int index = strb.indexOf(lookFor.get(i));
-                while (index != -1) {
-                    count++;
-                    strb = strb.delete(0, index + lookFor.get(i).length());
-                    index = strb.indexOf(lookFor.get(i));
-                }
-            }
-            amts.add(count);
-        }
-
-        Object[][] frequency = new Object[amts.size()][2];
-        for (int i = 0; i < lookFor.size(); i++) {
-            frequency[i][0] = lookFor.get(i);
-            frequency[i][1] = 100. * (double) amts.get(i) / text.length();
-        }
-        return frequency;
-    }
 
     /**
      * Create a box from the given string.  It accounts for if the given size needs more letters than
@@ -682,6 +514,5 @@ public class Crypter {
             
         }
         return newText.toString();
-    }
-       
+    }       
 }

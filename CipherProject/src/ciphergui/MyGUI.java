@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import java.util.Scanner;
 import java.io.*;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -37,7 +39,6 @@ public abstract class MyGUI extends JFrame {
         MyTextArea textAreas[] = {originalTextArea, newTextArea};
         for (MyTextArea textArea : textAreas) {
             if (textArea != null) {
-                textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, MyTextArea.getFontSize()));
                 textArea.setBackground(Properties.getTextAreaBG());
                 textArea.setForeground(Properties.getTextAreaFG());
             }
@@ -58,6 +59,7 @@ public abstract class MyGUI extends JFrame {
         File file = fileChooser.getSelectedFile();
         PrintWriter output;
         if (result == 0) {
+            file = new File(file.toString() + ".txt");
             if (file.exists()) {
                 result = JOptionPane.showConfirmDialog(null, "A file with this name already exists.  Do you wish to overwrite it?",
                         "", JOptionPane.ERROR_MESSAGE);
@@ -67,23 +69,24 @@ public abstract class MyGUI extends JFrame {
             try {
                 output = new PrintWriter(file);
             } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null, "There was an error loading the file.");
+                JOptionPane.showMessageDialog(null, "There was an error saving the file.");
                 return;
             }
-            if (originalTextArea != null) {
+            for (String[] replacement : SubstitutionCipherGui.getReplacements()) { //print replacements
+                output.println(Arrays.asList(replacement));
+            }
+            output.println(Arrays.toString(BoxCipherGui.getSettings())); //print box settings
+            output.println(Arrays.toString(BoxCipherGui.getOrientation())); //box orientation
+            output.println(Arrays.toString(BoxCipherGui.getBoxSize())); //box size
+            output.println(VigenereKnownGui.getKeyword()); //known keyword
+            output.println(Properties.getLanguage()); //language
+            if (originalTextArea != null) { //text working with
                 output.println(originalTextArea.getText());
             } else {
                 output.println("Enter text here.");
             }
-            for (String[] replacement : SubstitutionCipherGui.getReplacements()) {
-                output.println(Arrays.asList(replacement));
-            }
-            output.println(Arrays.toString(BoxCipherGui.getSettings()));
-            output.println(Arrays.toString(BoxCipherGui.getOrientation()));
-            output.println(Arrays.toString(BoxCipherGui.getBoxSize()));
-            output.println(VigenereKnownGui.getKeyword());
-            output.println(Properties.getLanguage());
             output.close();
+            file.setReadOnly();
         }
     }
 
@@ -93,16 +96,16 @@ public abstract class MyGUI extends JFrame {
      * @return 
      */
     public static boolean load() {
+        //open the file
         JFileChooser fileChooser = new JFileChooser("C:\\Users\\" + System.getProperty("user.name") + "\\Documents");
         int result = fileChooser.showOpenDialog(null);
         File file = fileChooser.getSelectedFile();
         Scanner scan;
-        if (result == 0) {
-            try {
+        if (result == 0) { //if a file was selected
+            try { //try to open the file
                 scan = new Scanner(file);
-                try {
-                    originalTextArea.setText(scan.nextLine() + "");
-                    String[][] replacements = new String[26][2];
+                try { //if the file was able to be loaded...
+                    String[][] replacements = new String[26][2]; //1. load replacements
                     for (int i = 0; i < 26; i++) {
                         String first = scan.next();
                         replacements[i][0] = first.substring(1, first.length() - 1);
@@ -111,25 +114,30 @@ public abstract class MyGUI extends JFrame {
                         scan.nextLine();
                     }
                     SubstitutionCipherGui.setReplacements(replacements);
-                    boolean bSettings[] = new boolean[4];
+                    boolean bSettings[] = new boolean[4]; //2. load box settings
                     for (int i = 0; i < 4; i++) {
                         String b = TextFormatter.formatText(scan.next(), TextFormatter.ONLY_LETTERS);
                         bSettings[i] = b.equals("true");
                     }
                     BoxCipherGui.setSettings(bSettings);
                     scan.nextLine();
-                    int[] bOrientation = new int[2];
+                    int[] bOrientation = new int[2]; //3. load box orientation
                     bOrientation[0] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
                     bOrientation[1] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
                     BoxCipherGui.setOrientation(bOrientation);
                     scan.nextLine();
-                    int[] bSize = new int[2];
+                    int[] bSize = new int[2]; //4.load box size
                     bSize[0] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
                     bSize[1] = Integer.parseInt(scan.next().replaceAll("\\D", ""));
                     BoxCipherGui.setBoxSize(bSize);
                     scan.nextLine();
-                    VigenereKnownGui.setKeyword(scan.nextLine());
+                    VigenereKnownGui.setKeyword(scan.nextLine()); //5. load vigenere keyword
                     Properties.setLanguage(Integer.parseInt("0" + scan.nextLine()));
+                    originalTextArea.setText(""); // 6. read in the original text
+                    while (scan.hasNext()) {
+                        originalTextArea.append(scan.nextLine());
+                        originalTextArea.append("\n");
+                    }
                     scan.close();
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Sorry, this file does not have the correct format.\n"

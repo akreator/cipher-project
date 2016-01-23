@@ -122,9 +122,9 @@ public class PatternFinderGui extends MyGUI {
                 ArrayList<String> patterns = Crypter.autoFindPatterns(n, originalTextArea.getText().replaceAll("\\s", ""));
                 ArrayList<History> patternHist = new ArrayList<>(patterns.size());
                 for (String p : patterns) {
-                    patternHist.add(new History(p.substring(0, p.indexOf(",")), 
-                            Integer.parseInt(p.substring(p.indexOf(",") + 1, p.lastIndexOf(","))), 
-                            Integer.parseInt(p.substring(p.lastIndexOf(",") + 1))));
+                    patternHist.add(new History(p.substring(0, p.indexOf("๘")), 
+                            Integer.parseInt(p.substring(p.indexOf("๘") + 1, p.lastIndexOf("๘"))), 
+                            Integer.parseInt(p.substring(p.lastIndexOf("๘") + 1))));
                 }
                 checkHistory(patternHist);
             } else if (e.getSource() == knownLength) {

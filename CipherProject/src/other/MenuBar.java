@@ -56,7 +56,7 @@ public class MenuBar extends JMenuBar {
         }
         switchCipherMenu.add(switchItems[0]);
         switchCipherMenu.add(switchItems[1]);
-        JMenu vignereCipherMenu = new JMenu("Vignere Cipher");
+        JMenu vignereCipherMenu = new JMenu("Vigenere Cipher");
         switchCipherMenu.add(vignereCipherMenu);
         vignereCipherMenu.add(switchItems[2]);
         vignereCipherMenu.add(switchItems[3]);
@@ -65,14 +65,10 @@ public class MenuBar extends JMenuBar {
         switchCipherMenu.add(switchItems[5]);
         switchCipherMenu.add(switchItems[6]);
         this.add(switchCipherMenu);
-    }
-
-    private void initFormat() {
-        textArea.addCaretListener(new TextListener());
         
         //language menu
         JMenu languageMenu = new JMenu("Language");
-        String[] languageNames = Crypter.LANGUAGES;
+        String[] languageNames = FrequencyCalculator.LANGUAGES;
         for (int i = 0; i < languageItems.length; i++) {
             languageItems[i] = new JMenuItem(languageNames[i]);
             languageItems[i].setActionCommand("" + i);
@@ -80,9 +76,11 @@ public class MenuBar extends JMenuBar {
             languageMenu.add(languageItems[i]);
         }
         this.add(languageMenu);
-        
-        
-        
+    }
+
+    private void initFormat() {
+        textArea.addCaretListener(new TextListener());   
+                
         //format menu
         JMenu formatMenu = new JMenu("Edit");
         String[] formatNames = {"Spaces", "Punctuation", "Numbers", "Upper", "Lower", 
@@ -169,16 +167,16 @@ public class MenuBar extends JMenuBar {
             int n = Integer.parseInt(e.getActionCommand());
             switch (n) {
                 case 1:
-                    Properties.setLanguage(Crypter.LATIN);
+                    Properties.setLanguage(FrequencyCalculator.LATIN);
                     break;
                 case 2:
-                    Properties.setLanguage(Crypter.FRENCH);
+                    Properties.setLanguage(FrequencyCalculator.FRENCH);
                     break;
                 case 3:
-                    Properties.setLanguage(Crypter.SPANISH);
+                    Properties.setLanguage(FrequencyCalculator.SPANISH);
                     break;
                 default:
-                    Properties.setLanguage(Crypter.ENGLISH);
+                    Properties.setLanguage(FrequencyCalculator.ENGLISH);
                     break;
             }  
             manageFrame(true);

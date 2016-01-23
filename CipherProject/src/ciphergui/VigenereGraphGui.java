@@ -168,13 +168,13 @@ public class VigenereGraphGui extends MyGUI {
     }
     
     public void createStandardGraph() {
-        sFrame.setTitle("Standard Fequency of " + Crypter.LANGUAGES[Properties.getLanguage()] + " Letters");
+        sFrame.setTitle("Standard Fequency of " + FrequencyCalculator.LANGUAGES[Properties.getLanguage()] + " Letters");
         sFrame.setSize(350, 200);
         sFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         GraphComp standardComp = new GraphComp(0, 10, 300, 100, 
-                "Standard Fequency of " + Crypter.LANGUAGES[Properties.getLanguage()] + " Letters", 
-                Crypter.getRelativeFrequency(Properties.getLanguage()));
+                "Standard Fequency of " + FrequencyCalculator.LANGUAGES[Properties.getLanguage()] + " Letters", 
+                FrequencyCalculator.getRelativeLanguageFrequency(Properties.getLanguage()));
         JPanel fillerPaneY = new JPanel();
         fillerPaneY.setPreferredSize(new Dimension(0, 15));
         JPanel fillerPaneX = new JPanel();

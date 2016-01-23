@@ -1,9 +1,9 @@
 package ciphergui;
 
-import other.MenuBar;
-import other.MyTextArea;
+import other.*;
 import texttools.*;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +20,7 @@ public class BoxCipherGui extends MyGUI {
     private static boolean topToBottom = true, leftToRight = true, readTopToBottom = true, readLeftToRight = true;
     private static int boxOrientation = Crypter.HORIZONTAL, readOrientation = Crypter.HORIZONTAL;
     private char[][] box = new char[0][0];
+    private Icon radioIcon;
     
     public BoxCipherGui() {
         super(800, 580, "Transposition Cipher: Box");
@@ -148,6 +149,7 @@ public class BoxCipherGui extends MyGUI {
     }
     
     private JRadioButton[] createJRadioButtonGroup(String[] names, String[] actionCommands, int selected) {
+        updateIcon();
         JRadioButton[] buttons = new JRadioButton[names.length];
         ButtonGroup bg = new ButtonGroup();
         for (int i = 0; i < names.length; i++) {
@@ -185,14 +187,21 @@ public class BoxCipherGui extends MyGUI {
         return settingsPane;
     }
     
+    private void updateIcon() {
+        //default = default background and foreground
+        //set to default initially and change if default not selected
+        Color bg = Properties.getRadioBG();
+        Color fg = Properties.getRadioFG();  
+    }
+    
     public static void setBoxSize(int[] size) {
         row.setText(size[0] + "");
         col.setText(size[1] + "");
     }
     
     public static int[] getBoxSize() {
-        int rows = Integer.parseInt("0" + row.getText());
-        int cols = Integer.parseInt("0" + col.getText());
+        int rows = Integer.parseInt("0" + row.getText().replaceAll("\\D", ""));
+        int cols = Integer.parseInt("0" + col.getText().replaceAll("\\D", ""));
         int[] size = { rows, cols };
         return size;
     }
@@ -219,7 +228,7 @@ public class BoxCipherGui extends MyGUI {
         readLeftToRight = settings[3];
     }
     
-    public int truthToNum(boolean truth) {
+    private int truthToNum(boolean truth) {
         if (truth)
             return 0;
         else
@@ -228,16 +237,19 @@ public class BoxCipherGui extends MyGUI {
     
     @Override
     public void refresh() {
+        updateIcon();
         int[] rSelections = { readOrientation, truthToNum(readLeftToRight), truthToNum(readTopToBottom)};
         int[] bSelections = { boxOrientation, truthToNum(leftToRight), truthToNum(topToBottom) };
         for (int i = 0; i < rSelections.length; i++) {
             for (int j = 0; j < readButtons.get(i).length; j++) {
+                readButtons.get(i)[j].setIcon(radioIcon);
                 if (j == rSelections[i])
                     readButtons.get(i)[j].setSelected(true);
             }
         }
         for (int i = 0; i < bSelections.length; i++) {
             for (int j = 0; j < boxButtons.get(i).length; j++) {
+                boxButtons.get(i)[j].setIcon(radioIcon);
                 if (j == bSelections[i])
                     boxButtons.get(i)[j].setSelected(true);
             }

@@ -18,7 +18,7 @@ public class Run {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-            JOptionPane.showMessageDialog(null, "Sorry, but you do not have the Nimbus package.\n"
+            JOptionPane.showMessageDialog(null, "Sorry, but you do not have the Nimbus package.  Some features may not be supported.\n"
                     + "Email akreator0@gmail.com with your operating system to let them know.", 
                     "Package not available", JOptionPane.ERROR_MESSAGE);
         }

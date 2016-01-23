@@ -1,7 +1,7 @@
 package ciphergui;
 
 import other.*;
-import texttools.Crypter;
+import texttools.*;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -60,8 +60,8 @@ public class CaesarGui extends MyGUI {
         //YOU THOUGHT THAT WAS BAD??
         //WELCOME TO THE SECOND LEVEL OF THE INFERNO: BOX LAYOUTS
         standardComp = new GraphComp(40, 50, 395, 200, "Standard " + 
-                Crypter.LANGUAGES[Properties.getLanguage()] + " Letter Frequency", 
-                Crypter.getRelativeFrequency(Properties.getLanguage()));
+                FrequencyCalculator.LANGUAGES[Properties.getLanguage()] + " Letter Frequency", 
+                FrequencyCalculator.getRelativeLanguageFrequency(Properties.getLanguage()));
         messageComp = new GraphComp(15, 50, 395, 200, "Letter Frequency of Text", originalTextArea.getText());
         JPanel graphPane = new JPanel();
         graphPane.setLayout(new BoxLayout(graphPane, BoxLayout.LINE_AXIS));
@@ -77,10 +77,14 @@ public class CaesarGui extends MyGUI {
         add(graphPane);
     }
     
+    public void updateShiftLabel() {
+        shiftLabel.setText("Shift Amount: " + shiftAmt);
+    }
+    
     @Override
     public void refresh() {
-        standardComp.setTitle("Standard " + Crypter.LANGUAGES[Properties.getLanguage()] + " Letter Frequency");
-        standardComp.setFrequency(Crypter.getRelativeFrequency(Properties.getLanguage()));
+        standardComp.setTitle("Standard " + FrequencyCalculator.LANGUAGES[Properties.getLanguage()] + " Letter Frequency");
+        standardComp.setFrequency(FrequencyCalculator.getRelativeLanguageFrequency(Properties.getLanguage()));
         repaint();
     }
     
@@ -92,13 +96,8 @@ public class CaesarGui extends MyGUI {
             repaint();
         }        
     }
-    
-    public void updateShiftLabel() {
-        shiftLabel.setText("Shift Amount: " + shiftAmt);
-    }
 
     class GraphGuiListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == leftShift) {

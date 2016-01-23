@@ -1,7 +1,6 @@
 package ciphergui;
 
 import other.Properties;
-import texttools.Crypter;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -9,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import texttools.FrequencyCalculator;
 
 public class PropertiesGui {
 
@@ -32,7 +32,7 @@ public class PropertiesGui {
         JPanel preferencesPane = new JPanel();
         preferencesPane.setLayout(new BoxLayout(preferencesPane, BoxLayout.PAGE_AXIS));
 
-        languageChoice = new JComboBox(Crypter.LANGUAGES);
+        languageChoice = new JComboBox(FrequencyCalculator.LANGUAGES);
         languageChoice.addActionListener(new PropertiesActionListener());
         JPanel languagePane = new JPanel();
         languagePane.add(new JLabel("Language of text:"));
@@ -70,7 +70,6 @@ public class PropertiesGui {
     }
 
     class PropertiesActionListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == languageChoice) {
@@ -85,7 +84,7 @@ public class PropertiesGui {
                     Properties.setTheme(selectedButton);
                     SwingUtilities.updateComponentTreeUI(frame);
                 } catch (NumberFormatException n) {
-                    System.out.println("not a number");
+                    //not a number error
                 }
             }
         }

@@ -1,7 +1,7 @@
 package ciphergui;
 
 import other.*;
-import texttools.Crypter;
+import texttools.*;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -51,16 +51,16 @@ public class SubstitutionCipherGui extends MyGUI {
 
         // **** tablepane ****
         //standard table + label
-        standardTable = new FrequencyTable(Crypter.getStandardFrequency(Properties.getLanguage()), columnNames);
+        standardTable = new FrequencyTable(FrequencyCalculator.getStandardFrequency(Properties.getLanguage()), columnNames);
         JScrollPane sPane = new JScrollPane(standardTable.createTable());
         standardLabel = new JLabel("Standard Frequency of " + 
-                Crypter.LANGUAGES[Properties.getLanguage()] + " Letters");
+                FrequencyCalculator.LANGUAGES[Properties.getLanguage()] + " Letters");
         JPanel standardPane = new JPanel();
         standardPane.setLayout(new BoxLayout(standardPane, BoxLayout.PAGE_AXIS));
         standardPane.add(standardLabel);
         standardPane.add(sPane);
         //messageTable
-        messageTable = new FrequencyTable(Crypter.getMessageFrequency(""), columnNames);
+        messageTable = new FrequencyTable(FrequencyCalculator.getMessageFrequency(""), columnNames);
         JScrollPane mPane = new JScrollPane(messageTable.createTable());
         JLabel mLabel = new JLabel("Frequency of Input Characters");
         JPanel messagePane = new JPanel();
@@ -153,9 +153,9 @@ public class SubstitutionCipherGui extends MyGUI {
             switchTable.setValueAt(replacements[i][0], 0, i);
             switchTable.setValueAt(replacements[i][1], 1, i);
         }
-        standardTable.updateTable(Crypter.getStandardFrequency(Properties.getLanguage())); 
+        standardTable.updateTable(FrequencyCalculator.getStandardFrequency(Properties.getLanguage())); 
         standardLabel.setText("Standard Frequency of " + 
-                Crypter.LANGUAGES[Properties.getLanguage()] + " Letters");
+                FrequencyCalculator.LANGUAGES[Properties.getLanguage()] + " Letters");
     }
 
     class SubstitutionListener implements ActionListener {
@@ -227,22 +227,22 @@ public class SubstitutionCipherGui extends MyGUI {
             } else if (e.getSource() == analyzeOptions && !originalTextArea.getText().equals("") && originalTextArea.getText() != null) {
                 switch (analyzeOptions.getSelectedIndex()) {
                     case 1: //analyze letters only
-                        messageTable.updateTable(Crypter.getMessageFrequency(
+                        messageTable.updateTable(FrequencyCalculator.getMessageFrequency(
                                 originalTextArea.getText().replaceAll("[^a-zA-Z]", "")));
                         break;
                     case 2: //analyze letters and numbers
-                        messageTable.updateTable(Crypter.getMessageFrequency(
+                        messageTable.updateTable(FrequencyCalculator.getMessageFrequency(
                                 originalTextArea.getText().replaceAll("[^a-zA-Z0-9]", "")));
                         break;
                     case 3: //analyze all characters
-                        messageTable.updateTable(Crypter.getMessageFrequency(originalTextArea.getText()));
+                        messageTable.updateTable(FrequencyCalculator.getMessageFrequency(originalTextArea.getText()));
                         break;
                     case 4: //analyze top row only
                         updateReplacements();
                         ArrayList<String> array = new ArrayList<>();
                         for ( String[] r : replacements) 
                             array.add(r[0]);
-                        messageTable.updateTable(Crypter.getSpecificMessageFrequency(originalTextArea.getText(), array));
+                        messageTable.updateTable(FrequencyCalculator.getSpecificMessageFrequency(originalTextArea.getText(), array));
                 }
                 repaint();
             } else if (e.getSource() == enter && originalTextArea.getText() != null && !originalTextArea.getText().equals("")) {

@@ -1,5 +1,6 @@
 package ciphergui;
 
+import static ciphergui.MyGUI.originalTextArea;
 import other.MenuBar;
 import other.MyTextArea;
 import javax.swing.*;
@@ -8,6 +9,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import other.Properties;
 
 public abstract class BasicGui extends MyGUI {
 

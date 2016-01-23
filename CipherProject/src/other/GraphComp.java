@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.Dimension;
 import javax.swing.*;
 import java.util.Arrays;
+import texttools.FrequencyCalculator;
 
 /**
  * Component that analyzes the input and creates a graph representing the
@@ -17,8 +18,8 @@ public class GraphComp extends JComponent {
 
     private String text;
 
-    private int[] letAmt = new int[26];
     private double[] letFrequency = new double[26];
+    private String[] importantChars;
 
     private Graphics2D g2;
 
@@ -32,7 +33,7 @@ public class GraphComp extends JComponent {
         graphHeight = height;
         graphTitle = title;
     }
-
+    
    /**
    * Create a graph showing the frequency of letters in a message
    * 
@@ -46,8 +47,27 @@ public class GraphComp extends JComponent {
     public GraphComp(int x, int y, int width, int height, String title, String message) {
         this(x, y, width, height, title);
         text = message.toLowerCase().replaceAll("\\W", "").replaceAll("\\d", "");
-        getCharAmt();
-        getFrequency();
+        importantChars = TextFormatter.ALPHABET;
+        getRelativeFrequency();
+        this.setPreferredSize(new Dimension(graphWidth, graphHeight));
+    }
+    
+    /***
+     * Create a graph showing the frequency of specified patterns/letters as specified by
+     * lookFor
+     *
+     * @param x: top left x-coord
+     * @param y: top left y-coord
+     * @param width: width of the graph
+     * @param height: height of the graph
+     * @param title: graph title
+     * @param lookFor: patterns to look for
+     */
+    public GraphComp(int x, int y, int width, int height, String title, String message, String[] lookFor) {
+        this(x, y, width, height, title);
+        text = message.toLowerCase().replaceAll("\\W", "");
+        importantChars = lookFor;
+        getRelativeFrequency();
         this.setPreferredSize(new Dimension(graphWidth, graphHeight));
     }
 
@@ -109,116 +129,25 @@ public class GraphComp extends JComponent {
     }
 
     /**
-     * Count how many times characters appear in the message.
-   *
-     */
-    private void getCharAmt() {
-        char[] textArray = text.toCharArray();
-        int textLength = textArray.length;
-        for (int i = 0; i < textArray.length; i++) {
-            switch (textArray[i]) {
-                case 'a':
-                    letAmt[0] = letAmt[0] + 1;
-                    break;
-                case 'b':
-                    letAmt[1] = letAmt[1] + 1;
-                    break;
-                case 'c':
-                    letAmt[2] = letAmt[2] + 1;
-                    break;
-                case 'd':
-                    letAmt[3] = letAmt[3] + 1;
-                    break;
-                case 'e':
-                    letAmt[4] = letAmt[4] + 1;
-                    break;
-                case 'f':
-                    letAmt[5] = letAmt[5] + 1;
-                    break;
-                case 'g':
-                    letAmt[6] = letAmt[6] + 1;
-                    break;
-                case 'h':
-                    letAmt[7] = letAmt[7] + 1;
-                    break;
-                case 'i':
-                    letAmt[8] = letAmt[8] + 1;
-                    break;
-                case 'j':
-                    letAmt[9] = letAmt[9] + 1;
-                    break;
-                case 'k':
-                    letAmt[10] = letAmt[10] + 1;
-                    break;
-                case 'l':
-                    letAmt[11] = letAmt[11] + 1;
-                    break;
-                case 'm':
-                    letAmt[12] = letAmt[12] + 1;
-                    break;
-                case 'n':
-                    letAmt[13] = letAmt[13] + 1;
-                    break;
-                case 'o':
-                    letAmt[14] = letAmt[14] + 1;
-                    break;
-                case 'p':
-                    letAmt[15] = letAmt[15] + 1;
-                    break;
-                case 'q':
-                    letAmt[16] = letAmt[16] + 1;
-                    break;
-                case 'r':
-                    letAmt[17] = letAmt[17] + 1;
-                    break;
-                case 's':
-                    letAmt[18] = letAmt[18] + 1;
-                    break;
-                case 't':
-                    letAmt[19] = letAmt[19] + 1;
-                    break;
-                case 'u':
-                    letAmt[20] = letAmt[20] + 1;
-                    break;
-                case 'v':
-                    letAmt[21] = letAmt[21] + 1;
-                    break;
-                case 'w':
-                    letAmt[22] = letAmt[22] + 1;
-                    break;
-                case 'x':
-                    letAmt[23] = letAmt[23] + 1;
-                    break;
-                case 'y':
-                    letAmt[24] = letAmt[24] + 1;
-                    break;
-                case 'z':
-                    letAmt[25] = letAmt[25] + 1;
-                    break;
-                default:
-                    System.out.println("ERROR.");
-                    break;
-            }
-        }
-    }
-
-    /**
      * Calculate the frequency of characters in the message (Rather than the
      * amount of times they appear)
-   *
+     *
      */
-    private void getFrequency() {
+    private void getRelativeFrequency() {
+        Object[][] frequencies = FrequencyCalculator.getSpecificMessageFrequency(text, importantChars);
+        for (int i = 0; i < frequencies.length; i++)
+            letFrequency[i] = (double) frequencies[i][1];
         //find the letter that repeats the most
         double max = 0;
-        for (int i = 0; i < 26; i++) {
-            if (letAmt[i] > max) {
-                max = letAmt[i];
+        for (int i = 0; i < letFrequency.length; i++) {
+            if (letFrequency[i] > max) {
+                max = letFrequency[i];
             }
         }
 
         //take the frequency relative to the max value (to scale graph)
         for (int i = 0; i < 26; i++) {
-            letFrequency[i] = (double) letAmt[i] / max;
+            letFrequency[i] = (double) letFrequency[i] / max;
         }
     }
 
@@ -242,12 +171,10 @@ public class GraphComp extends JComponent {
     }
 
     public void setMessage(String message) {
-        Arrays.fill(letAmt, 0);
         Arrays.fill(letFrequency, 0);
-        text = message.toLowerCase().replaceAll("\\W", "").replaceAll("\\d", "");
+        text = message.toLowerCase().replaceAll("\\W", "");
         shiftNum = 0;
-        getCharAmt();
-        getFrequency();
+        getRelativeFrequency();
     }
 
     public int getShift() {
